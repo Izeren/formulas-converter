@@ -2,9 +2,19 @@
 
 #include "IVisitorResult.h"
 
+/*
+	¬ажный блок forward declaration, здесь нужно указать
+	все возможные типы вершин дерева, которое мы планируем
+	обходить
+*/
 class COpExp;
 class CNumExp;
 class CIdExp;
+
+/*
+	ƒл€ каждого типа вершин нужно объ€вить и реализовать
+	в соответствующем визиторе метод visit
+*/
 
 class IVisitor 
 {

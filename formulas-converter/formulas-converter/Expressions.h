@@ -46,10 +46,10 @@ public:
 
 class CNumExp : public IExpression {
 public:
-	CNumExp(int number = 0);
+	CNumExp(std::string value = "");
 	IVisitorResult* Accept(IVisitor *visitor) override;
 	~CNumExp();
-	double number;
+	std::string value;
 };
 
 /*

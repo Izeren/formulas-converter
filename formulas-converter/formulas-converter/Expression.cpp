@@ -14,10 +14,10 @@ IVisitorResult* CIdExp::Accept(IVisitor *visitor)
 
 CIdExp::~CIdExp() {}
 
-//CNumExp
-CNumExp::CNumExp(int number)
+//CNumExp:
+CNumExp::CNumExp(std::string value)
 {
-	this->number = number;
+	this->value = value;
 }
 
 IVisitorResult* CNumExp::Accept(IVisitor *visitor)
