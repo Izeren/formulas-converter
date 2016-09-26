@@ -3,6 +3,8 @@
 #include <utility>
 #include <algorithm>
 #include <string>
+#include <vector>
+#include <math.h>
 
 #include "PlotterWindow.h"
 
@@ -64,9 +66,46 @@ void CPlotterWindow::OnCreate()
 
 double CPlotterWindow::simpleFunc( double x )
 {
-	return x*x;
+	return sin(x);
 }
 
+bool CPlotterWindow::drawExtremumPoints(HDC targetDC, std::vector<POINT> points)
+{
+	HPEN pen = CreatePen(PS_SOLID, 2, colorRed);
+	SelectObject(targetDC, pen);
+	for (int i = 0; i < points.size(); i++)
+		Ellipse(targetDC, points[i].x - 5, points[i].y - 5, points[i].x + 5, points[i].y + 5);
+	DeleteObject(pen);
+	return true;
+}
+
+CPlotterWindow::pointType CPlotterWindow::checkOnExtremum(int pixelX)
+{
+	RECT clientRect;
+	::GetClientRect(handle, &clientRect);
+	int currentWidth = clientRect.right - clientRect.left;
+	int currentHeight = clientRect.bottom - clientRect.top;
+	double stepX = (xRange.end - xRange.begin) / currentWidth;
+	double stepY = (yRange.end - yRange.begin) / currentHeight;
+
+	//Предыдущая точка
+	double prevX = xRange.begin + stepX * (pixelX - 1);
+	double prevY = simpleFunc(prevX);
+
+	//Текущая точка
+	double currX = xRange.begin + stepX * pixelX;
+	double currY = simpleFunc(currX);
+
+	//Следующая точка точка
+	double nextX = xRange.begin + stepX * (pixelX + 1);
+	double nextY = simpleFunc(nextX);
+
+	if (prevY > currY &&  currY < nextY)
+		return MINIMUM;
+	if (prevY < currY &&  currY > nextY)
+		return MAXIMUM;
+	return NONE;
+}
 
 void CPlotterWindow::drawFunction( HDC targetDC )
 {
@@ -74,19 +113,36 @@ void CPlotterWindow::drawFunction( HDC targetDC )
 	::GetClientRect( handle, &clientRect );
 	int currentWidth = clientRect.right - clientRect.left;
 	int currentHeight = clientRect.bottom - clientRect.top;
-	POINT* points = new POINT[ currentWidth ];
-	//сколько пикселей в 1 единице координат
-	double step = currentWidth / ( xRange.end - xRange.begin );
-	for( int x = 0; x <= currentWidth; x++) {
-		double coord = x / step - currentWidth / step / 2;
-		double value =( -simpleFunc( coord ) + currentHeight / 2 );
-		points[ x ] = { x, ( int )value };
-	}
-	HPEN pen = CreatePen( PS_SOLID, lineWidth, colorBlue );
-	SelectObject( targetDC, pen );
-	Polyline( targetDC, points, currentWidth );
-	DeleteObject( pen );
+	std::vector<POINT> points;
+	double stepX = (xRange.end - xRange.begin) / currentWidth;
+	double stepY = (yRange.end - yRange.begin) / currentHeight;
+	std::vector <POINT> maximums;
+	std::vector <POINT> minimums;
+	for( int pixelX = 0; pixelX <= currentWidth; pixelX++) {
+		double coordX = xRange.begin + stepX * pixelX;
+		double coordY = -simpleFunc(coordX);
+		double pixelY = coordY / stepY + currentHeight / 2;
 
+		switch (checkOnExtremum(pixelX)) {
+		case MAXIMUM:
+			maximums.push_back({ pixelX, (int)pixelY });
+			break;
+		case MINIMUM:
+			minimums.push_back({ pixelX, (int)pixelY });
+			break;
+		default:
+			break;
+		};
+		
+		if (pixelY >= 0 && pixelY <= currentWidth - 1)
+			points.push_back({ pixelX, (int)pixelY });
+	}
+
+	for (int i = 0; i < points.size() - 1; i++)
+		drawLine(targetDC, points[i].x, points[i].y, points[i + 1].x, points[i + 1].y, colorBlue, PS_SOLID, lineWidth);
+
+	drawExtremumPoints(targetDC, maximums);
+	drawExtremumPoints(targetDC, minimums);
 }
 
 void CPlotterWindow::drawLine( HDC targetDC, int x1, int y1, int x2, int y2,
@@ -124,7 +180,7 @@ void CPlotterWindow::drawCoordSystem( HDC targetDC )
 		else {
 			drawLine( targetDC, 0, coord, currentWidth, coord, colorGray, PS_DASH, 1 );
 			//TODO 4 надо заменить на длину числа
-			TextOut( targetDC, currentWidth / 2 + 1, coord, std::to_wstring( xRange.end - i).c_str(), 4);
+			TextOut( targetDC, currentWidth / 2 + 1, coord, std::to_wstring( yRange.end - i).c_str(), 4);
 		}
 	}
 
@@ -138,7 +194,7 @@ void CPlotterWindow::drawCoordSystem( HDC targetDC )
 				continue;
 			}
 			drawLine(targetDC, coord, 0, coord, currentHeight, colorSilver, PS_DASH, 1);
-			TextOut(targetDC, coord, currentHeight / 2 + 1, std::to_wstring(yRange.begin + i).c_str(), 4);
+			TextOut(targetDC, coord, currentHeight / 2 + 1, std::to_wstring(xRange.begin + i).c_str(), 4);
 		}
 	}
 
@@ -172,8 +228,8 @@ void CPlotterWindow::OnPaint()
 	FillRect( displayBufferDC, &clientRect, ( HBRUSH )GetStockObject( WHITE_BRUSH ) );
 		
 //рисовать здесь
-	xRange = Range(-20.0, 20.0);
-	yRange = Range(-20.0, 20.0);
+	xRange = Range(-20, 20);
+	yRange = Range(-2, 2);
 
 	drawCoordSystem( displayBufferDC );
 	drawFunction( displayBufferDC);

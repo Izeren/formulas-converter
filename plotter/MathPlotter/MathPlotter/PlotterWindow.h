@@ -42,10 +42,11 @@ private:
 	static const int lineWidth;
 	//базовые цвета
 	static const COLORREF colorBlue = RGB(23,189,255);
+	static const COLORREF colorRed = RGB(255, 10, 10);
 	static const COLORREF colorBlack = RGB(0, 0, 0);
 	static const COLORREF colorSilver = RGB(192, 192, 192);
 	static const COLORREF colorGray = RGB(140, 140, 140);
-
+	static enum pointType {MAXIMUM, MINIMUM, NONE};
 	//размеры рисуемого диапазона
 	Range xRange;
 	Range yRange;
@@ -58,6 +59,12 @@ private:
 	void drawFunction(HDC targetDC/*здесь будет указатель на структуру с функцией*/);
 	//пример простой функции
 	double simpleFunc( double x );
+	//Проверят текущую точку на экстремум, возвращает
+	// -1 - точка локального минимума
+	// 0 - не экстремум
+	//1 - точка локального максимума
+	pointType checkOnExtremum(int pixelX);
+	bool drawExtremumPoints(HDC targetDC, std::vector<POINT> points);
 	
 	static LRESULT __stdcall windowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
 
