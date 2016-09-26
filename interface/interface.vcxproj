@@ -151,6 +151,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cmatheditor_window.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="interface.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="symbol_add.bmp" />
+    <Image Include="toolbar1.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

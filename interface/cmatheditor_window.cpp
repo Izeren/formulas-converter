@@ -1,6 +1,7 @@
+#pragma comment(lib, "comctl32.lib")
 #include "cmatheditor_window.h"
-
 #include <Windows.h>
+#include <commctrl.h>
 
 const LPCWSTR CMatheditorWindow::class_name_ = L"MatheditorWindow";
 
@@ -40,6 +41,58 @@ bool CMatheditorWindow::Create() {
 	if (handle_ == NULL) {
 		return false;
 	}
+	//HWND hWndToolbar = CreateWindowEx(0, TOOLBARCLASSNAME, NULL, WS_CHILD | TBSTYLE_WRAPABLE, 0, 0, 0, 0, handle_, NULL, GetModuleHandle(NULL), NULL);
+	// Declare and initialize local constants.
+	const int ImageListID = 0;
+	const int numButtons = 3;
+	const int bitmapSize = 16;
+
+	const DWORD buttonStyles = BTNS_AUTOSIZE;
+
+	// Create the toolbar.
+	HWND hWndToolbar = CreateWindowEx(0, TOOLBARCLASSNAME, NULL,
+		WS_CHILD | TBSTYLE_WRAPABLE, 0, 0, 0, 0,
+		handle_, NULL, GetModuleHandle(NULL), NULL);
+
+	if (hWndToolbar == NULL)
+		return NULL;
+
+	HIMAGELIST g_hImageList = NULL;
+
+	// Create the image list.
+	g_hImageList = ImageList_Create(bitmapSize, bitmapSize,   // Dimensions of individual bitmaps.
+		ILC_COLOR16 | ILC_MASK,   // Ensures transparent background.
+		numButtons, 0);
+
+	// Set the image list.
+	SendMessage(hWndToolbar, TB_SETIMAGELIST,
+		(WPARAM)ImageListID,
+		(LPARAM)g_hImageList);
+
+	// Load the button images.
+	SendMessage(hWndToolbar, TB_LOADIMAGES,
+		(WPARAM)IDB_STD_SMALL_COLOR,
+		(LPARAM)HINST_COMMCTRL);
+
+	// Initialize button info.
+	// IDM_NEW, IDM_OPEN, and IDM_SAVE are application-defined command constants.
+
+	TBBUTTON tbButtons[numButtons] =
+	{
+		{ MAKELONG(STD_FILENEW,  ImageListID), NULL,  TBSTATE_ENABLED, buttonStyles,{ 0 }, 0, (INT_PTR)L"New" },
+		{ MAKELONG(STD_FILEOPEN, ImageListID), NULL, TBSTATE_ENABLED, buttonStyles,{ 0 }, 0, (INT_PTR)L"Open" },
+		{ MAKELONG(STD_FILESAVE, ImageListID), NULL, 0,               buttonStyles,{ 0 }, 0, (INT_PTR)L"Save" }
+	};
+
+	// Add buttons.
+	SendMessage(hWndToolbar, TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
+	SendMessage(hWndToolbar, TB_ADDBUTTONS, (WPARAM)numButtons, (LPARAM)&tbButtons);
+
+	// Resize the toolbar, and then show it.
+	SendMessage(hWndToolbar, TB_AUTOSIZE, 0, 0);
+	ShowWindow(hWndToolbar, TRUE);
+
+	return hWndToolbar;
 	return true;
 }
 
@@ -95,3 +148,5 @@ LRESULT _stdcall CMatheditorWindow::localWindowProc(HWND handle, UINT message, W
 	}
 	return 0;
 }
+
+
