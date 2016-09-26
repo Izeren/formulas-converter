@@ -1,6 +1,6 @@
-#include "ExpressionTree/Expression.h"
-#include "ExpressionTree/CSintacticValdationVisitor.h"
-#include "ExpressionTree/CSintacticVisitorResults.h"
+#include "expression_tree/Expression.h"
+#include "visitors/CSintacticValdationVisitor.h"
+#include "visitor_results/CSintacticVisitorResults.h"
 #include <iostream>
 
 int main()

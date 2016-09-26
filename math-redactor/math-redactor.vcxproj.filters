@@ -1,81 +1,96 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="ExpressionTree">
-      <UniqueIdentifier>{a226afd5-6c33-4023-828c-cfa8777210d1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="LSV">
-      <UniqueIdentifier>{14c78976-2045-40f7-8676-a3022236c9da}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="ExpressionTree\CSintacticValidationVisitor.cpp">
-      <Filter>ExpressionTree</Filter>
+    <ClCompile Include="visitors\CSintacticValidationVisitor.cpp">
+      <Filter>visitors</Filter>
     </ClCompile>
-    <ClCompile Include="ExpressionTree\CSintacticVisitorResults.cpp">
-      <Filter>ExpressionTree</Filter>
+    <ClCompile Include="visitor_results\CSintacticVisitorResults.cpp">
+      <Filter>visitor_results</Filter>
     </ClCompile>
-    <ClCompile Include="ExpressionTree\Expression.cpp">
-      <Filter>ExpressionTree</Filter>
+    <ClCompile Include="expression_tree\Expression.cpp">
+      <Filter>expression_tree</Filter>
     </ClCompile>
-    <ClCompile Include="ExpressionTree\LSVUtils.cpp">
-      <Filter>ExpressionTree</Filter>
+    <ClCompile Include="parsers\MathMLParser.cpp">
+      <Filter>parsers</Filter>
     </ClCompile>
-    <ClCompile Include="LSV\Converter.cpp">
-      <Filter>LSV</Filter>
+    <ClCompile Include="parsers\OpenMathParser.cpp">
+      <Filter>parsers</Filter>
     </ClCompile>
-    <ClCompile Include="LSV\MathMLParser.cpp">
-      <Filter>LSV</Filter>
+    <ClCompile Include="parsers\TexParser.cpp">
+      <Filter>parsers</Filter>
     </ClCompile>
-    <ClCompile Include="LSV\OpenMathParser.cpp">
-      <Filter>LSV</Filter>
+    <ClCompile Include="converters\Converter.cpp">
+      <Filter>converters</Filter>
     </ClCompile>
-    <ClCompile Include="LSV\TexParser.cpp">
-      <Filter>LSV</Filter>
+    <ClCompile Include="utils\LSVUtils.cpp">
+      <Filter>utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ExpressionTree\formulas-converter.vcxproj.filters">
-      <Filter>ExpressionTree</Filter>
+    <Filter Include="visitors">
+      <UniqueIdentifier>{b6611b87-2a55-48d0-9e5c-8f72d5945c3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="visitor_results">
+      <UniqueIdentifier>{54549158-e815-4bb9-a787-77607c4e20ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="expression_tree">
+      <UniqueIdentifier>{4027954b-299a-42ca-ab55-c40312533f9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="parsers">
+      <UniqueIdentifier>{78719139-5e1c-4777-9349-d4f0498ce331}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="converters">
+      <UniqueIdentifier>{907d744f-4df6-42d5-9680-21f5bd12ca95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils">
+      <UniqueIdentifier>{cbd4443f-6da9-4f92-8d8f-1b656a923a82}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="visitors\CSintacticValdationVisitor.h">
+      <Filter>visitors</Filter>
+    </ClInclude>
+    <ClInclude Include="visitors\IVisitor.h">
+      <Filter>visitors</Filter>
+    </ClInclude>
+    <ClInclude Include="visitors\MathMLBuildVisitor.h">
+      <Filter>visitors</Filter>
+    </ClInclude>
+    <ClInclude Include="visitor_results\CBuildVisitorResult.h">
+      <Filter>visitor_results</Filter>
+    </ClInclude>
+    <ClInclude Include="visitor_results\CSintacticVisitorResults.h">
+      <Filter>visitor_results</Filter>
+    </ClInclude>
+    <ClInclude Include="visitor_results\IVisitorResult.h">
+      <Filter>visitor_results</Filter>
+    </ClInclude>
+    <ClInclude Include="expression_tree\Expressions.h">
+      <Filter>expression_tree</Filter>
+    </ClInclude>
+    <ClInclude Include="parsers\MathMLParser.h">
+      <Filter>parsers</Filter>
+    </ClInclude>
+    <ClInclude Include="parsers\OpenMathParser.h">
+      <Filter>parsers</Filter>
+    </ClInclude>
+    <ClInclude Include="parsers\TexParser.h">
+      <Filter>parsers</Filter>
+    </ClInclude>
+    <ClInclude Include="converters\Converter.h">
+      <Filter>converters</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\LSVUtils.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="expression_tree\formulas-converter.vcxproj">
+      <Filter>expression_tree</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="ExpressionTree\CSintacticValdationVisitor.h">
-      <Filter>ExpressionTree</Filter>
-    </ClInclude>
-    <ClInclude Include="ExpressionTree\CSintacticVisitorResults.h">
-      <Filter>ExpressionTree</Filter>
-    </ClInclude>
-    <ClInclude Include="ExpressionTree\Expression.h">
-      <Filter>ExpressionTree</Filter>
-    </ClInclude>
-    <ClInclude Include="ExpressionTree\IVisitor.h">
-      <Filter>ExpressionTree</Filter>
-    </ClInclude>
-    <ClInclude Include="ExpressionTree\IVisitorResult.h">
-      <Filter>ExpressionTree</Filter>
-    </ClInclude>
-    <ClInclude Include="ExpressionTree\LSVUtils.h">
-      <Filter>ExpressionTree</Filter>
-    </ClInclude>
-    <ClInclude Include="LSV\CBuildVisitorResult.h">
-      <Filter>LSV</Filter>
-    </ClInclude>
-    <ClInclude Include="LSV\Converter.h">
-      <Filter>LSV</Filter>
-    </ClInclude>
-    <ClInclude Include="LSV\MathMLBuildVisitor.h">
-      <Filter>LSV</Filter>
-    </ClInclude>
-    <ClInclude Include="LSV\MathMLParser.h">
-      <Filter>LSV</Filter>
-    </ClInclude>
-    <ClInclude Include="LSV\OpenMathParser.h">
-      <Filter>LSV</Filter>
-    </ClInclude>
-    <ClInclude Include="LSV\TexParser.h">
-      <Filter>LSV</Filter>
-    </ClInclude>
+    <None Include="expression_tree\formulas-converter.vcxproj.filters">
+      <Filter>expression_tree</Filter>
+    </None>
   </ItemGroup>
 </Project>
