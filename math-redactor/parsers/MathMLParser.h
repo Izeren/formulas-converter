@@ -1,7 +1,6 @@
 #pragma once
 
-#include "./../ExpressionTree/Expression.h"
-#include "./../ExpressionTree/LSVUtils.h"
+#include "./../expression_tree/Expressions.h"
 
 class CMathMLParser {
 

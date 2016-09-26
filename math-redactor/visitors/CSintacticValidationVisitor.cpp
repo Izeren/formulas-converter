@@ -1,8 +1,4 @@
 #include "CSintacticValdationVisitor.h"
-#include "CSintacticVisitorResults.h"
-#include <iostream>
-#include <algorithm>
-#include "LSVUtils.h"
 
 CSintacticValidationVisitor::CSintacticValidationVisitor() {}
 

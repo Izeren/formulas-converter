@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IVisitorResult.h"
+#include "../visitor_results/IVisitorResult.h"
 
 /*
 	Важный блок forward declaration, здесь нужно указать

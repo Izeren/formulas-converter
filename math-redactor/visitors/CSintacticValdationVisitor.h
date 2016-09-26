@@ -1,10 +1,15 @@
 #pragma once
 
 #include "IVisitor.h"
-#include "IVisitorResult.h"
-#include "Expressions.h"
+#include "../visitor_results/CSintacticVisitorResults.h"
+#include "../expression_tree/Expressions.h"
+#include "../utils/LSVUtils.h"
+
+#include <iostream>
+#include <algorithm>
 #include <string>
 #include <set>
+
 class CSintacticValidationVisitor : public IVisitor {
 public:
 

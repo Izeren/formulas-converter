@@ -1,7 +1,7 @@
 #pragma once
 
-#include "IVisitor.h"
-#include "IVisitorResult.h"
+#include "../visitors/IVisitor.h"
+#include "../visitor_results/IVisitorResult.h"
 #include <string>
 
 /*
