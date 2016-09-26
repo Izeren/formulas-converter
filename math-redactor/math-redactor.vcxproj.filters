@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ExpressionTree">
+      <UniqueIdentifier>{a226afd5-6c33-4023-828c-cfa8777210d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LSV">
+      <UniqueIdentifier>{14c78976-2045-40f7-8676-a3022236c9da}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Converter.cpp">
+      <Filter>LSV</Filter>
+    </ClCompile>
+    <ClCompile Include="MathMLParser.cpp">
+      <Filter>LSV</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenMathParser.cpp">
+      <Filter>LSV</Filter>
+    </ClCompile>
+    <ClCompile Include="TexParser.cpp">
+      <Filter>LSV</Filter>
+    </ClCompile>
+    <ClCompile Include="CSintacticVisitorResults.cpp">
+      <Filter>ExpressionTree</Filter>
+    </ClCompile>
+    <ClCompile Include="LSVUtils.cpp">
+      <Filter>ExpressionTree</Filter>
+    </ClCompile>
+    <ClCompile Include="Expression.cpp">
+      <Filter>ExpressionTree</Filter>
+    </ClCompile>
+    <ClCompile Include="CSintacticValidationVisitor.cpp">
+      <Filter>ExpressionTree</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ExpressionTree\formulas-converter.vcxproj.filters">
+      <Filter>ExpressionTree</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MathMLParser.h">
+      <Filter>LSV</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenMathParser.h">
+      <Filter>LSV</Filter>
+    </ClInclude>
+    <ClInclude Include="TexParser.h">
+      <Filter>LSV</Filter>
+    </ClInclude>
+    <ClInclude Include="Converter.h">
+      <Filter>LSV</Filter>
+    </ClInclude>
+    <ClInclude Include="IVisitorResult.h">
+      <Filter>ExpressionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="LSVUtils.h">
+      <Filter>ExpressionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="CSintacticVisitorResults.h">
+      <Filter>ExpressionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="CSintacticValdationVisitor.h">
+      <Filter>ExpressionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="IVisitor.h">
+      <Filter>ExpressionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="CBuildVisitorResult.h">
+      <Filter>LSV</Filter>
+    </ClInclude>
+    <ClInclude Include="Expression.h">
+      <Filter>ExpressionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="MathMLBuildVisitor.h">
+      <Filter>LSV</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
