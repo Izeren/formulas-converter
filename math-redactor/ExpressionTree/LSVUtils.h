@@ -3,10 +3,6 @@
 #include <string>
 #include <regex>
 
-enum Format {
-
-};
-
 namespace LSVUtils
 {
 	bool checkIdName(std::string name);

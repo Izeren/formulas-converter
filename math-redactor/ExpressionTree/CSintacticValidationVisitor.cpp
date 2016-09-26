@@ -17,16 +17,16 @@ IVisitorResult* CSintacticValidationVisitor::Visit(COpExp *exp)
 
 	CSintacticVisitorResults* result;
 	bool leftValidationStatus = false, rightValidationStatus = false;
-	if (exp->leftOperand)
+	if (exp->getFirstOperand())
 	{
-		result = reinterpret_cast<CSintacticVisitorResults*>(exp->leftOperand->Accept(this));
+		result = reinterpret_cast<CSintacticVisitorResults*>(exp->getFirstOperand()->Accept(this));
 		leftValidationStatus = result->isValidated();
 		delete result;
 	}
 	
-	if (exp->rightOperand)
+	if (exp->getSecondOperand())
 	{
-		result = reinterpret_cast<CSintacticVisitorResults*>(exp->rightOperand->Accept(this));
+		result = reinterpret_cast<CSintacticVisitorResults*>(exp->getSecondOperand()->Accept(this));
 		rightValidationStatus = result->isValidated();
 		delete result;
 	}
@@ -37,21 +37,23 @@ IVisitorResult* CSintacticValidationVisitor::Visit(COpExp *exp)
 }
 
 IVisitorResult* CSintacticValidationVisitor::Visit(CNumExp *exp) {
-
-	bool validationStatus = false;
-	if (exp->value != "")
-	{
-		validationStatus = LSVUtils::checkDouble(exp->value);
-	}
+	bool validationStatus = true;
 	return new CSintacticVisitorResults(validationStatus);
 }
 
-IVisitorResult* CSintacticValidationVisitor::Visit(CIdExp *exp) {
+IVisitorResult* CSintacticValidationVisitor::Visit(CIdExp *exp)
+{
 
-	bool validationStatus = false;
-	if (exp->name != "") 
+	bool validationStatus = exp->getName() != "error_name";
+	return new CSintacticVisitorResults(validationStatus);
+}
+
+IVisitorResult* CSintacticValidationVisitor::Visit(CSumExp *exp) {
+
+	bool validationStatus = true;
+	if (exp->getIndexName() == "error_name" || exp->getExpression() == 0)
 	{
-		validationStatus = LSVUtils::checkIdName(exp->name);
+		validationStatus = false;
 	}
 	return new CSintacticVisitorResults(validationStatus);
 }
