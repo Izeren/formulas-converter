@@ -67,7 +67,8 @@ double CPlotterWindow::simpleFunc( double x )
 	return x*x;
 }
 
-void CPlotterWindow::drawFunction( HDC targetDC, Range xRange, Range yRange )
+
+void CPlotterWindow::drawFunction( HDC targetDC )
 {
 	RECT clientRect;
 	::GetClientRect( handle, &clientRect );
@@ -88,9 +89,10 @@ void CPlotterWindow::drawFunction( HDC targetDC, Range xRange, Range yRange )
 
 }
 
-void CPlotterWindow::drawLine( HDC targetDC, int x1, int y1, int x2, int y2, COLORREF color = colorBlack )
+void CPlotterWindow::drawLine( HDC targetDC, int x1, int y1, int x2, int y2,
+	COLORREF color = colorBlack, int fnPenStyle = PS_SOLID, int nWidth = lineWidth )
 {
-	HPEN pen = CreatePen( PS_SOLID, lineWidth, colorBlack );
+	HPEN pen = CreatePen( fnPenStyle, nWidth, color );
 	SelectObject( targetDC, pen );
 	POINT* points = new POINT[ 2 ];
 	points[ 0 ] = { x1, y1 };
@@ -99,14 +101,50 @@ void CPlotterWindow::drawLine( HDC targetDC, int x1, int y1, int x2, int y2, COL
 	DeleteObject( pen );
 }
 
+
 void CPlotterWindow::drawCoordSystem( HDC targetDC )
 {
 	RECT clientRect;
 	::GetClientRect(handle, &clientRect);
 	int currentWidth = clientRect.right - clientRect.left;
 	int currentHeight = clientRect.bottom - clientRect.top;
+	//сколько пикселей в 1 единице координат
+	//по x
+	double stepX = currentWidth / (xRange.end - xRange.begin);
+    //по y	
+	double stepY = currentHeight / (yRange.end - yRange.begin);
+
+
+	//рисуем сетку, подписываем числа
+	for ( int i = 0; i * stepY < currentHeight; ++i ) {
+		double coord = i * stepY;
+		if( i % 5 != 0 ){
+			drawLine( targetDC, 0, coord, currentWidth, coord, colorSilver, PS_DASH, 0.5 );
+		}
+		else {
+			drawLine( targetDC, 0, coord, currentWidth, coord, colorGray, PS_DASH, 1 );
+			//TODO 4 надо заменить на длину числа
+			TextOut( targetDC, currentWidth / 2 + 1, coord, std::to_wstring( xRange.end - i).c_str(), 4);
+		}
+	}
+
+	for ( int i = 0; i * stepX < currentWidth; ++i ) {
+		double coord = i * stepX;
+		if ( i % 5 != 0 ) {
+			drawLine( targetDC, coord, 0, coord, currentHeight, colorSilver, PS_DASH, 0.5 );
+		}
+		else {
+			if( yRange.begin + i == 0 ){
+				continue;
+			}
+			drawLine(targetDC, coord, 0, coord, currentHeight, colorSilver, PS_DASH, 1);
+			TextOut(targetDC, coord, currentHeight / 2 + 1, std::to_wstring(yRange.begin + i).c_str(), 4);
+		}
+	}
+
 	drawLine( targetDC, currentWidth / 2, 0, currentWidth / 2, currentHeight );
 	drawLine( targetDC, 0, currentHeight / 2, currentWidth, currentHeight / 2 );
+	
 	
 
 }
@@ -134,8 +172,11 @@ void CPlotterWindow::OnPaint()
 	FillRect( displayBufferDC, &clientRect, ( HBRUSH )GetStockObject( WHITE_BRUSH ) );
 		
 //рисовать здесь
+	xRange = Range(-20.0, 20.0);
+	yRange = Range(-20.0, 20.0);
+
 	drawCoordSystem( displayBufferDC );
-	drawFunction( displayBufferDC, Range( -20.0, 20.0 ), Range( -20.0, 20.0 ) );
+	drawFunction( displayBufferDC);
 
 	BitBlt(windowDC, clientRect.left, clientRect.top, clientRect.right - clientRect.left,
 		clientRect.bottom - clientRect.top, displayBufferDC, 0, 0, SRCCOPY);

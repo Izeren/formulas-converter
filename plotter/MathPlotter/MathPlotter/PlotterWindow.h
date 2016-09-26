@@ -43,15 +43,19 @@ private:
 	//базовые цвета
 	static const COLORREF colorBlue = RGB(23,189,255);
 	static const COLORREF colorBlack = RGB(0, 0, 0);
+	static const COLORREF colorSilver = RGB(192, 192, 192);
+	static const COLORREF colorGray = RGB(140, 140, 140);
+
 	//размеры рисуемого диапазона
 	Range xRange;
 	Range yRange;
 	//отрисовка прямой
-	void drawLine( HDC targetDC, int x1, int y1, int x2, int y2, COLORREF color );
+	void drawLine( HDC targetDC, int x1, int y1, int x2, int y2,
+		COLORREF color, int fnPenStyle, int nWidth );
 	//отрисовка стартового поля с системой координат
 	void drawCoordSystem( HDC targetDC );
 	//главная процедура отрисовки функции
-	void drawFunction(HDC targetDC,/*здесь будет указатель на структуру с функцией*/ Range xRange, Range yRange );
+	void drawFunction(HDC targetDC/*здесь будет указатель на структуру с функцией*/);
 	//пример простой функции
 	double simpleFunc( double x );
 	
