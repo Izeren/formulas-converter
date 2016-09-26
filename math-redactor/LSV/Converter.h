@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Expression.h"
-#include "LSVUtils.h"
+#include "./../ExpressionTree/Expression.h"
+#include "./../ExpressionTree/LSVUtils.h"
 
 class Converter {
 

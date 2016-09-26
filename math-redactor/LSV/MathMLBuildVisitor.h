@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Expression.h"
+#include "./../ExpressionTree/Expression.h"
 
 
 class MathMLBuildVisitor : public IVisitor {

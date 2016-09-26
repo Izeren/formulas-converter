@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IVisitorResult.h"
+#include "./../ExpressionTree/IVisitorResult.h"
 #include <string>
 
 class CBuildVisitorResult : public IVisitorResult {

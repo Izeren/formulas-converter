@@ -10,29 +10,29 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Converter.cpp">
-      <Filter>LSV</Filter>
-    </ClCompile>
-    <ClCompile Include="MathMLParser.cpp">
-      <Filter>LSV</Filter>
-    </ClCompile>
-    <ClCompile Include="OpenMathParser.cpp">
-      <Filter>LSV</Filter>
-    </ClCompile>
-    <ClCompile Include="TexParser.cpp">
-      <Filter>LSV</Filter>
-    </ClCompile>
-    <ClCompile Include="CSintacticVisitorResults.cpp">
+    <ClCompile Include="ExpressionTree\CSintacticValidationVisitor.cpp">
       <Filter>ExpressionTree</Filter>
     </ClCompile>
-    <ClCompile Include="LSVUtils.cpp">
+    <ClCompile Include="ExpressionTree\CSintacticVisitorResults.cpp">
       <Filter>ExpressionTree</Filter>
     </ClCompile>
-    <ClCompile Include="Expression.cpp">
+    <ClCompile Include="ExpressionTree\Expression.cpp">
       <Filter>ExpressionTree</Filter>
     </ClCompile>
-    <ClCompile Include="CSintacticValidationVisitor.cpp">
+    <ClCompile Include="ExpressionTree\LSVUtils.cpp">
       <Filter>ExpressionTree</Filter>
+    </ClCompile>
+    <ClCompile Include="LSV\Converter.cpp">
+      <Filter>LSV</Filter>
+    </ClCompile>
+    <ClCompile Include="LSV\MathMLParser.cpp">
+      <Filter>LSV</Filter>
+    </ClCompile>
+    <ClCompile Include="LSV\OpenMathParser.cpp">
+      <Filter>LSV</Filter>
+    </ClCompile>
+    <ClCompile Include="LSV\TexParser.cpp">
+      <Filter>LSV</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -41,40 +41,40 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MathMLParser.h">
+    <ClInclude Include="ExpressionTree\CSintacticValdationVisitor.h">
+      <Filter>ExpressionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="ExpressionTree\CSintacticVisitorResults.h">
+      <Filter>ExpressionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="ExpressionTree\Expression.h">
+      <Filter>ExpressionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="ExpressionTree\IVisitor.h">
+      <Filter>ExpressionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="ExpressionTree\IVisitorResult.h">
+      <Filter>ExpressionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="ExpressionTree\LSVUtils.h">
+      <Filter>ExpressionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="LSV\CBuildVisitorResult.h">
       <Filter>LSV</Filter>
     </ClInclude>
-    <ClInclude Include="OpenMathParser.h">
+    <ClInclude Include="LSV\Converter.h">
       <Filter>LSV</Filter>
     </ClInclude>
-    <ClInclude Include="TexParser.h">
+    <ClInclude Include="LSV\MathMLBuildVisitor.h">
       <Filter>LSV</Filter>
     </ClInclude>
-    <ClInclude Include="Converter.h">
+    <ClInclude Include="LSV\MathMLParser.h">
       <Filter>LSV</Filter>
     </ClInclude>
-    <ClInclude Include="IVisitorResult.h">
-      <Filter>ExpressionTree</Filter>
-    </ClInclude>
-    <ClInclude Include="LSVUtils.h">
-      <Filter>ExpressionTree</Filter>
-    </ClInclude>
-    <ClInclude Include="CSintacticVisitorResults.h">
-      <Filter>ExpressionTree</Filter>
-    </ClInclude>
-    <ClInclude Include="CSintacticValdationVisitor.h">
-      <Filter>ExpressionTree</Filter>
-    </ClInclude>
-    <ClInclude Include="IVisitor.h">
-      <Filter>ExpressionTree</Filter>
-    </ClInclude>
-    <ClInclude Include="CBuildVisitorResult.h">
+    <ClInclude Include="LSV\OpenMathParser.h">
       <Filter>LSV</Filter>
     </ClInclude>
-    <ClInclude Include="Expression.h">
-      <Filter>ExpressionTree</Filter>
-    </ClInclude>
-    <ClInclude Include="MathMLBuildVisitor.h">
+    <ClInclude Include="LSV\TexParser.h">
       <Filter>LSV</Filter>
     </ClInclude>
   </ItemGroup>
