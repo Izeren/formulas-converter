@@ -21,12 +21,18 @@
     <ClCompile Include="cmatheditor_window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CEditControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cmatheditor_window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CEditControl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

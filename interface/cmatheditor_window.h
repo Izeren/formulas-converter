@@ -2,6 +2,7 @@
 
 #include <Windows.h>
 #include "resource.h"
+#include "CEditControl.h"
 
 class CMatheditorWindow {
 public:
@@ -17,9 +18,12 @@ protected:
 	void OnDestroy();
 	void OnNCCreate(HWND handle);
 	void OnCreate();
+	void OnSize();
 private:
 	static const LPCWSTR class_name_;
 	HWND handle_;
+
+	CEditControl editControl;
 
 	virtual LRESULT __stdcall localWindowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
 	static LRESULT __stdcall windowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);

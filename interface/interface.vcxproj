@@ -146,10 +146,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CEditControl.cpp" />
     <ClCompile Include="cmatheditor_window.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CEditControl.h" />
     <ClInclude Include="cmatheditor_window.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

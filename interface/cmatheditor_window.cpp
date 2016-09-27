@@ -4,8 +4,10 @@
 #include <commctrl.h>
 
 const LPCWSTR CMatheditorWindow::class_name_ = L"MatheditorWindow";
+const int ToolbarSize = 42;
 
 CMatheditorWindow::CMatheditorWindow() : handle_(0) {
+	editControl = CEditControl();
 }
 
 CMatheditorWindow::~CMatheditorWindow() {
@@ -28,7 +30,7 @@ bool CMatheditorWindow::RegisterClassW() {
 bool CMatheditorWindow::Create() {
 	handle_ = CreateWindowEx(0, class_name_,
 		L"Matheditor",
-		WS_OVERLAPPED,
+		WS_EX_OVERLAPPEDWINDOW | WS_SIZEBOX | WS_SYSMENU,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
@@ -98,11 +100,23 @@ bool CMatheditorWindow::Create() {
 
 void CMatheditorWindow::Show(int cmdShow) {
 	ShowWindow(handle_, cmdShow);
+	editControl.Show(cmdShow);
 	UpdateWindow(handle_);
+}
+
+void CMatheditorWindow::OnCreate() {
+	editControl.Create(handle_);
 }
 
 void CMatheditorWindow::OnNCCreate(HWND handle) {
 	handle_ = handle;
+}
+
+void CMatheditorWindow::OnSize()
+{
+	RECT rect;
+	::GetClientRect(handle_, &rect);
+	SetWindowPos(editControl.GetHandle(), HWND_TOP, rect.left, rect.top + ToolbarSize, rect.right - rect.left, rect.bottom - rect.top, 0);
 }
 
 LRESULT _stdcall CMatheditorWindow::windowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam) {
@@ -128,9 +142,6 @@ LRESULT _stdcall CMatheditorWindow::windowProc(HWND handle, UINT message, WPARAM
 	return 0;
 }
 
-void CMatheditorWindow::OnCreate() {
-}
-
 void CMatheditorWindow::OnDestroy() {
     PostQuitMessage(0);
 }
@@ -142,7 +153,10 @@ LRESULT _stdcall CMatheditorWindow::localWindowProc(HWND handle, UINT message, W
 		break;
 	case WM_CREATE:
 		OnCreate();
-		break;
+		return DefWindowProc(handle, message, wParam, lParam);
+	case WM_SIZE:
+		OnSize();
+		return DefWindowProc(handle, message, wParam, lParam);
 	default:
 		return DefWindowProc(handle, message, wParam, lParam);
 	}
