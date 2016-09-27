@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{255F9D32-9E90-4579-A097-DD5D57FAC906}</ProjectGuid>
+    <ProjectGuid>{CA89E89D-E441-438A-A7DD-EB1662DAA975}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>mathredactor</RootNamespace>
     <ProjectName>LSV_module</ProjectName>
