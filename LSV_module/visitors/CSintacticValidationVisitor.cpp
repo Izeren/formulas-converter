@@ -1,55 +1,50 @@
 #include "CSintacticValdationVisitor.h"
 
-CSintacticValidationVisitor::CSintacticValidationVisitor() {}
-
 void CSintacticValidationVisitor::ClearVisitor()
 {
-	visibleIds.clear();
+	this->visibleIds.clear();
 }
 
 
-IVisitorResult* CSintacticValidationVisitor::Visit(COpExp *exp)
+void CSintacticValidationVisitor::Visit(COpExp &exp)
 {
 
-	CSintacticVisitorResults* result;
+	
 	bool leftValidationStatus = false, rightValidationStatus = false;
-	if (exp->getFirstOperand())
+	if (exp.getFirstOperand())
 	{
-		result = reinterpret_cast<CSintacticVisitorResults*>(exp->getFirstOperand()->Accept(this));
-		leftValidationStatus = result->isValidated();
-		delete result;
+		exp.getFirstOperand()->Accept(*this);
+		leftValidationStatus = this->isValidated;
 	}
 	
-	if (exp->getSecondOperand())
+	if (exp.getSecondOperand())
 	{
-		result = reinterpret_cast<CSintacticVisitorResults*>(exp->getSecondOperand()->Accept(this));
-		rightValidationStatus = result->isValidated();
-		delete result;
+		exp.getSecondOperand()->Accept(*this);
+		rightValidationStatus = this->isValidated;
 	}
 	
-	bool validationStatus = leftValidationStatus & rightValidationStatus;
-	return new CSintacticVisitorResults(validationStatus);
-
+	this->isValidated &= leftValidationStatus & rightValidationStatus;
 }
 
-IVisitorResult* CSintacticValidationVisitor::Visit(CNumExp *exp) {
-	bool validationStatus = true;
-	return new CSintacticVisitorResults(validationStatus);
-}
+void CSintacticValidationVisitor::Visit(CNumExp &exp) {}
 
-IVisitorResult* CSintacticValidationVisitor::Visit(CIdExp *exp)
+void CSintacticValidationVisitor::Visit(CIdExp &exp)
 {
-
-	bool validationStatus = exp->getName() != "error_name";
-	return new CSintacticVisitorResults(validationStatus);
+	bool validationStatus = exp.getName() != BAD_ID;
+	this->isValidated &= validationStatus;
 }
 
-IVisitorResult* CSintacticValidationVisitor::Visit(CSumExp *exp) {
+void CSintacticValidationVisitor::Visit(CSumExp &exp) {
 
 	bool validationStatus = true;
-	if (exp->getIndexName() == "error_name" || exp->getExpression() == 0)
+	if (exp.getIndexName() == BAD_ID || exp.getExpression() == NULL)
 	{
 		validationStatus = false;
 	}
-	return new CSintacticVisitorResults(validationStatus);
+	this->isValidated &= validationStatus;
+}
+
+bool CSintacticValidationVisitor::getValidationStatus() const
+{
+	return this->isValidated;
 }

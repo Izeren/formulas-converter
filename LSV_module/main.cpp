@@ -1,20 +1,18 @@
-#include "expression_tree/Expression.h"
+#include "expression_tree/Expressions.h"
 #include "visitors/CSintacticValdationVisitor.h"
-#include "visitor_results/CSintacticVisitorResults.h"
 #include <iostream>
 
 int main()
 {
-	IExpression *operationTree = new COpExp(
-		reinterpret_cast<IExpression *>(new CIdExp("a")),
-		reinterpret_cast<IExpression *>(new CNumExp("0.5"))
+	auto operationTree = std::make_shared<COpExp>(
+		static_cast<std::shared_ptr<IExpression>>(std::make_shared<CIdExp>("a")),
+		static_cast<std::shared_ptr<IExpression>>(std::make_shared<CNumExp>("0.5")),
+		PLUS
 	);
-	CSintacticValidationVisitor *validationVisitor = new CSintacticValidationVisitor();
-	CSintacticVisitorResults *results = 
-		reinterpret_cast<CSintacticVisitorResults *>(operationTree->Accept(validationVisitor));
-	std::cout << results->isValidated() << "\n";
-	delete operationTree;
-	delete results;
+	CSintacticValidationVisitor temp = CSintacticValidationVisitor();
+	IVisitor &visitor = temp;
+	operationTree->Accept(visitor);
+	std::cout << temp.getValidationStatus() << "\n";
 	
 	return 0;
 }

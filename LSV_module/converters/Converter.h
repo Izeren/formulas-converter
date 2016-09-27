@@ -7,6 +7,6 @@ class Converter {
 
 public:
 
-	std::string convert(std::string expr, Format from, Format to);
+	//std::string convert(std::string expr, Format from, Format to);
 
 };

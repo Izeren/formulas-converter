@@ -80,14 +80,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="converters\Converter.cpp" />
-    <ClCompile Include="expression_tree\Expression.cpp" />
+    <ClCompile Include="expression_tree\Expressions.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MathMLBuildVisitor.cpp" />
     <ClCompile Include="parsers\MathMLParser.cpp" />
     <ClCompile Include="parsers\OpenMathParser.cpp" />
     <ClCompile Include="parsers\TexParser.cpp" />
     <ClCompile Include="utils\LSVUtils.cpp" />
     <ClCompile Include="visitors\CSintacticValidationVisitor.cpp" />
-    <ClCompile Include="visitor_results\CSintacticVisitorResults.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="converters\Converter.h" />
@@ -99,13 +99,6 @@
     <ClInclude Include="visitors\CSintacticValdationVisitor.h" />
     <ClInclude Include="visitors\IVisitor.h" />
     <ClInclude Include="visitors\MathMLBuildVisitor.h" />
-    <ClInclude Include="visitor_results\CBuildVisitorResult.h" />
-    <ClInclude Include="visitor_results\CSintacticVisitorResults.h" />
-    <ClInclude Include="visitor_results\IVisitorResult.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="expression_tree\formulas-converter.vcxproj" />
-    <None Include="expression_tree\formulas-converter.vcxproj.filters" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
