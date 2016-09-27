@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{255F9D32-9E90-4579-A097-DD5D57FAC906}</ProjectGuid>
+    <ProjectGuid>{3AA8B984-F799-478B-B8FC-237E96F25F69}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>mathredactor</RootNamespace>
     <ProjectName>LSV_module</ProjectName>
@@ -20,7 +20,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -91,7 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="converters\Converter.h" />
-    <ClInclude Include="expression_tree\Expressions.h" />
+    <ClInclude Include="expression_tree\Expression.h" />
     <ClInclude Include="parsers\MathMLParser.h" />
     <ClInclude Include="parsers\OpenMathParser.h" />
     <ClInclude Include="parsers\TexParser.h" />

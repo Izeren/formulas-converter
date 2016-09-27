@@ -2,7 +2,7 @@
 
 #include "IVisitor.h"
 #include "../visitor_results/CSintacticVisitorResults.h"
-#include "../expression_tree/Expressions.h"
+#include "../expression_tree/Expression.h"
 #include "../utils/LSVUtils.h"
 
 #include <iostream>

@@ -11,7 +11,7 @@ private:
 
 public:
 
-	CBuildVisitorResult(std::string result) : result(result) {}
+	CBuildVisitorResult(std::string &result) : result(result) {}
 
 	std::string getResult() { return result; }
 
