@@ -14,6 +14,7 @@ int main()
 		reinterpret_cast<CSintacticVisitorResults *>(operationTree->Accept(validationVisitor));
 	std::cout << results->isValidated() << "\n";
 	delete operationTree;
+	delete results;
 	
 	return 0;
 }
