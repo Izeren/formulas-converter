@@ -13,6 +13,7 @@ int main()
 	CSintacticVisitorResults *results = 
 		reinterpret_cast<CSintacticVisitorResults *>(operationTree->Accept(validationVisitor));
 	std::cout << results->isValidated() << "\n";
+	delete operationTree;
 	
 	return 0;
 }
