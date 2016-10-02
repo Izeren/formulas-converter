@@ -20,8 +20,12 @@ public:
 	void Visit(CSumExp &exp) override;
 
 	bool getValidationStatus() const;
+	void setVisibleIds(const std::set<std::string> &visibleIds);
+	void setError(const std::string &errorText);
 
 private:
 	std::set<std::string> visibleIds;
+	std::set<std::string> visibleSumIndices;
+	std::string validationError;
 	bool isValidated;
 };
