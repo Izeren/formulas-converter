@@ -66,9 +66,6 @@
     <ClInclude Include="visitor_results\IVisitorResult.h">
       <Filter>visitor_results</Filter>
     </ClInclude>
-    <ClInclude Include="expression_tree\Expressions.h">
-      <Filter>expression_tree</Filter>
-    </ClInclude>
     <ClInclude Include="parsers\MathMLParser.h">
       <Filter>parsers</Filter>
     </ClInclude>
@@ -83,6 +80,9 @@
     </ClInclude>
     <ClInclude Include="utils\LSVUtils.h">
       <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="expression_tree\Expression.h">
+      <Filter>expression_tree</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
