@@ -5,12 +5,6 @@
     <ClCompile Include="visitors\CSintacticValidationVisitor.cpp">
       <Filter>visitors</Filter>
     </ClCompile>
-    <ClCompile Include="visitor_results\CSintacticVisitorResults.cpp">
-      <Filter>visitor_results</Filter>
-    </ClCompile>
-    <ClCompile Include="expression_tree\Expression.cpp">
-      <Filter>expression_tree</Filter>
-    </ClCompile>
     <ClCompile Include="parsers\MathMLParser.cpp">
       <Filter>parsers</Filter>
     </ClCompile>
@@ -26,13 +20,14 @@
     <ClCompile Include="utils\LSVUtils.cpp">
       <Filter>utils</Filter>
     </ClCompile>
+    <ClCompile Include="expression_tree\Expressions.cpp">
+      <Filter>expression_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="MathMLBuildVisitor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="visitors">
       <UniqueIdentifier>{b6611b87-2a55-48d0-9e5c-8f72d5945c3d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="visitor_results">
-      <UniqueIdentifier>{54549158-e815-4bb9-a787-77607c4e20ff}</UniqueIdentifier>
     </Filter>
     <Filter Include="expression_tree">
       <UniqueIdentifier>{4027954b-299a-42ca-ab55-c40312533f9e}</UniqueIdentifier>
@@ -57,14 +52,8 @@
     <ClInclude Include="visitors\MathMLBuildVisitor.h">
       <Filter>visitors</Filter>
     </ClInclude>
-    <ClInclude Include="visitor_results\CBuildVisitorResult.h">
-      <Filter>visitor_results</Filter>
-    </ClInclude>
-    <ClInclude Include="visitor_results\CSintacticVisitorResults.h">
-      <Filter>visitor_results</Filter>
-    </ClInclude>
-    <ClInclude Include="visitor_results\IVisitorResult.h">
-      <Filter>visitor_results</Filter>
+    <ClInclude Include="expression_tree\Expression.h">
+      <Filter>expression_tree</Filter>
     </ClInclude>
     <ClInclude Include="parsers\MathMLParser.h">
       <Filter>parsers</Filter>
@@ -84,13 +73,5 @@
     <ClInclude Include="expression_tree\Expression.h">
       <Filter>expression_tree</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="expression_tree\formulas-converter.vcxproj">
-      <Filter>expression_tree</Filter>
-    </None>
-    <None Include="expression_tree\formulas-converter.vcxproj.filters">
-      <Filter>expression_tree</Filter>
-    </None>
   </ItemGroup>
 </Project>

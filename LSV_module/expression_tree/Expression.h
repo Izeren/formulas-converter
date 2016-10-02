@@ -1,8 +1,9 @@
 ﻿#pragma once
 
+#define BAD_ID "error_name"
 #include "../visitors/IVisitor.h"
-#include "../visitor_results/IVisitorResult.h"
 #include <string>
+#include <memory>
 
 /*
 	Для хранения текущей формулы внутри редактора
@@ -11,16 +12,13 @@
 	(подробнее см. Википедия Посетитель (шаблон проектирования))
 	Здесь есть описание отдельных классов, которые составляют
 	вершины дерева, они все реализуют общий интерфейс Expression.
-	Так как часто хочется, чтобы на руках был результат обхода
-	дерева визитором, объявлен некоторый абстрактный класс
-	IVisitorResult (фактически, это аналог void *)
 */
 
 class IExpression
 {
 public:
 	virtual ~IExpression() {}
-	virtual IVisitorResult* Accept(IVisitor *) = 0;
+	virtual void Accept(IVisitor &) = 0;
 };
 
 /*
@@ -32,11 +30,11 @@ public:
 
 class CIdExp : public IExpression {
 public:
-	IVisitorResult* Accept(IVisitor *visitor) override;
-	CIdExp(std::string name = "x");
-	virtual ~CIdExp();
+	void Accept(IVisitor &visitor) override;
+	CIdExp();
+	CIdExp(const std::string &name);
 
-	bool setName(std::string name);
+	bool setName(const std::string &name);
 	std::string getName() const;
 	bool setAddress(const double* address);
 	const double *getAddress() const;
@@ -54,12 +52,11 @@ private:
 
 class CNumExp : public IExpression {
 public:
-	CNumExp(std::string value = "");
+	CNumExp(const std::string &value);
 	CNumExp(double value = 0);
-	IVisitorResult* Accept(IVisitor *visitor) override;
-	virtual ~CNumExp();
+	void Accept(IVisitor &visitor) override;
 
-	bool setValue(std::string value);
+	bool setValue(const std::string &value);
 	void setValue(double value);
 	double getValue() const;
 
@@ -77,14 +74,14 @@ enum TOperation { PLUS, MINUS, MULTIPLY, DIVISE, FRAC, POWER};
 
 class COpExp : public IExpression {
 public:
-	IVisitorResult* Accept(IVisitor *visitor) override;
-	COpExp(IExpression *leftOperand = nullptr, IExpression *rightOperand = nullptr, TOperation operation = PLUS);
-	virtual ~COpExp();
+	void Accept(IVisitor &visitor) override;
+	COpExp(std::shared_ptr<IExpression> leftOperand, std::shared_ptr<IExpression> rightOperand, TOperation operation);
+	COpExp();
 
-	bool setFirstOperand(IExpression *pointer);
-	IExpression *getFirstOperand() const;
-	bool setSecondOperand(IExpression *pointer);
-	IExpression *getSecondOperand() const;
+	bool setFirstOperand(std::shared_ptr<IExpression> pointer);
+	std::shared_ptr<IExpression> getFirstOperand() const;
+	bool setSecondOperand(std::shared_ptr<IExpression> pointer);
+	std::shared_ptr<IExpression> getSecondOperand() const;
 	void setOperation(TOperation operation);
 	TOperation getOperation() const;
 
@@ -94,8 +91,8 @@ public:
 		Для остальных операций, просто слева направо.
 	*/
 private:
-	IExpression *firstOperand;
-	IExpression *secondOperand;
+	std::shared_ptr<IExpression> firstOperand;
+	std::shared_ptr<IExpression> secondOperand;
 	TOperation operation;
 };
 
@@ -113,23 +110,23 @@ private:
 class CSumExp : public IExpression
 {
 public:
-	IVisitorResult* Accept(IVisitor *visitor) override;
-	CSumExp(std::string indexName = "k", int startId = 1, int finishId = 5, IExpression *expression = 0);
-	virtual ~CSumExp();
+	void Accept(IVisitor &visitor) override;
+	CSumExp();
+	CSumExp(const std::string &indexName, int startId, int finishId, std::shared_ptr<IExpression> expression);
 
-	bool setIndexName(std::string indexName);
+	bool setIndexName(const std::string &indexName);
 	std::string getIndexName() const;
 	void setStartId(int startId);
 	int getStartId() const;
 	void setFinishId(int finishId);
 	int getFinishId() const;
-	bool setExpression(IExpression *pointer);
-	IExpression *getExpression() const;
+	bool setExpression(std::shared_ptr<IExpression> pointer);
+	std::shared_ptr<IExpression> getExpression() const;
 
 private:
 
 	std::string indexName;
 	int startId;
 	int finishId;
-	IExpression *expression;
+	std::shared_ptr<IExpression> expression;
 };

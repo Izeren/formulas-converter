@@ -4,7 +4,7 @@
 
 //CIdExp:
 //-------------------------------------------------------------------------------------------------
-CIdExp::CIdExp(std::string name)
+CIdExp::CIdExp(const std::string &name)
 {
 	if (LSVUtils::checkIdName(name))
 	{
@@ -12,18 +12,21 @@ CIdExp::CIdExp(std::string name)
 	}
 	else
 	{
-		this->name = "error_name";
+		this->name = BAD_ID;
 	}
 }
 
-IVisitorResult* CIdExp::Accept(IVisitor *visitor) 
+CIdExp::CIdExp()
 {
-	return visitor->Visit(this);
+	this->name = BAD_ID;
 }
 
-CIdExp::~CIdExp() {}
+void CIdExp::Accept(IVisitor &visitor) 
+{
+	visitor.Visit(*this);
+}
 
-bool CIdExp::setName(std::string name)
+bool CIdExp::setName(const std::string &name)
 {
 	bool isValidName = false;
 	if (LSVUtils::checkIdName(name))
@@ -37,7 +40,6 @@ bool CIdExp::setName(std::string name)
 std::string CIdExp::getName() const 
 {
 	return this->name;
-
 }
 
 bool CIdExp::setAddress(const double* address)
@@ -60,11 +62,14 @@ double CIdExp::getValue() const
 	if (this->valueAddress) {
 		return *(this->valueAddress);
 	}
+	else {
+		return 0;
+	}
 }
 
 //CNumExp:
 //-------------------------------------------------------------------------------------------------
-CNumExp::CNumExp(std::string value)
+CNumExp::CNumExp(const std::string &value)
 {
 	if (LSVUtils::checkDouble(value)) {
 		this->value = atof(value.c_str());
@@ -80,14 +85,12 @@ CNumExp::CNumExp(double value)
 	this->value = value;
 }
 
-IVisitorResult* CNumExp::Accept(IVisitor *visitor)
+void CNumExp::Accept(IVisitor &visitor)
 {
-	return visitor->Visit(this);
+	visitor.Visit(*this);
 }
 
-CNumExp::~CNumExp() {}
-
-bool CNumExp::setValue(std::string value)
+bool CNumExp::setValue(const std::string &value)
 {
 	bool isValidValue = false;
 	if (LSVUtils::checkDouble(value)) {
@@ -111,28 +114,25 @@ double CNumExp::getValue() const
 //COpExp:
 //-------------------------------------------------------------------------------------------------
 
+COpExp::COpExp()
+{
+	this->firstOperand = NULL;
+	this->secondOperand = NULL;
+	this->operation = PLUS;
+}
 
-COpExp::COpExp(IExpression *firstOperand, IExpression *secondOperand, TOperation operation) {
+COpExp::COpExp(std::shared_ptr<IExpression> firstOperand, std::shared_ptr<IExpression> secondOperand, TOperation operation) {
 	this->firstOperand = firstOperand;
 	this->secondOperand = secondOperand;
 	this->operation = operation;
 }
 
-IVisitorResult* COpExp::Accept(IVisitor *visitor)
+void COpExp::Accept(IVisitor &visitor)
 {
-	return visitor->Visit(this);
+	visitor.Visit(*this);
 }
 
-COpExp::~COpExp() {
-	if (firstOperand) {
-		delete firstOperand;
-	}
-	if (secondOperand) {
-		delete secondOperand;
-	}
-}
-
-bool COpExp::setFirstOperand(IExpression *pointer)
+bool COpExp::setFirstOperand(std::shared_ptr<IExpression> pointer)
 {
 	bool isNonzeroPointer = false;
 	if (pointer) {
@@ -142,12 +142,12 @@ bool COpExp::setFirstOperand(IExpression *pointer)
 	return isNonzeroPointer;
 }
 
-IExpression *COpExp::getFirstOperand() const
+std::shared_ptr<IExpression> COpExp::getFirstOperand() const
 {
 	return this->firstOperand;
 }
 
-bool COpExp::setSecondOperand(IExpression *pointer)
+bool COpExp::setSecondOperand(std::shared_ptr<IExpression> pointer)
 {
 	bool isNonzeroPointer = false;
 	if (pointer) {
@@ -157,7 +157,7 @@ bool COpExp::setSecondOperand(IExpression *pointer)
 	return isNonzeroPointer;
 }
 
-IExpression *COpExp::getSecondOperand() const
+std::shared_ptr<IExpression> COpExp::getSecondOperand() const
 {
 	return this->secondOperand;
 }
@@ -175,7 +175,15 @@ TOperation COpExp::getOperation() const
 //CSumExp
 //-------------------------------------------------------------------------------------------------
 
-CSumExp::CSumExp(std::string indexName, int startId, int finishId, IExpression *expression)
+CSumExp::CSumExp()
+{
+	this->indexName = BAD_ID;
+	this->startId = 1;
+	this->finishId = 5;
+	this->expression = NULL;
+}
+
+CSumExp::CSumExp(const std::string &indexName, int startId, int finishId, std::shared_ptr<IExpression> expression)
 {
 	if (LSVUtils::checkIdName(indexName)) 
 	{
@@ -183,21 +191,19 @@ CSumExp::CSumExp(std::string indexName, int startId, int finishId, IExpression *
 	}
 	else
 	{
-		indexName = "error_name";
+		this->indexName = BAD_ID;
 	}
 	this->startId = startId;
 	this->finishId = finishId;
 	this->expression = expression;
 }
 
-IVisitorResult* CSumExp::Accept(IVisitor *visitor)
+void CSumExp::Accept(IVisitor &visitor)
 {
-	return visitor->Visit(this);
+	visitor.Visit(*this);
 }
 
-CSumExp::~CSumExp() {}
-
-bool CSumExp::setIndexName(std::string indexName)
+bool CSumExp::setIndexName(const std::string &indexName)
 {
 	bool isValidName = false;
 	if (LSVUtils::checkIdName(indexName)) {
@@ -232,7 +238,7 @@ int CSumExp::getFinishId() const
 	return this->finishId;
 }
 
-bool CSumExp::setExpression(IExpression *pointer)
+bool CSumExp::setExpression(std::shared_ptr<IExpression> pointer)
 {
 	bool isNonzeroPointer = false;
 	if (pointer) 
@@ -243,7 +249,7 @@ bool CSumExp::setExpression(IExpression *pointer)
 	return isNonzeroPointer;
 }
 
-IExpression *CSumExp::getExpression() const
+std::shared_ptr<IExpression> CSumExp::getExpression() const
 {
 	return this->expression;
 }
