@@ -2,8 +2,11 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="visitors\CSintacticValidationVisitor.cpp">
-      <Filter>visitors</Filter>
+    <ClCompile Include="converters\Converter.cpp">
+      <Filter>converters</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\LSVUtils.cpp">
+      <Filter>utils</Filter>
     </ClCompile>
     <ClCompile Include="parsers\MathMLParser.cpp">
       <Filter>parsers</Filter>
@@ -14,46 +17,25 @@
     <ClCompile Include="parsers\TexParser.cpp">
       <Filter>parsers</Filter>
     </ClCompile>
-    <ClCompile Include="converters\Converter.cpp">
-      <Filter>converters</Filter>
+    <ClCompile Include="MathMLBuildVisitor.cpp">
+      <Filter>visitors</Filter>
     </ClCompile>
-    <ClCompile Include="utils\LSVUtils.cpp">
-      <Filter>utils</Filter>
+    <ClCompile Include="visitors\CSintacticValidationVisitor.cpp">
+      <Filter>visitors</Filter>
     </ClCompile>
-    <ClCompile Include="expression_tree\Expressions.cpp">
+    <ClCompile Include="expression_tree\Expression.cpp">
       <Filter>expression_tree</Filter>
     </ClCompile>
-    <ClCompile Include="MathMLBuildVisitor.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="visitors">
-      <UniqueIdentifier>{b6611b87-2a55-48d0-9e5c-8f72d5945c3d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="expression_tree">
-      <UniqueIdentifier>{4027954b-299a-42ca-ab55-c40312533f9e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="parsers">
-      <UniqueIdentifier>{78719139-5e1c-4777-9349-d4f0498ce331}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="converters">
-      <UniqueIdentifier>{907d744f-4df6-42d5-9680-21f5bd12ca95}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="utils">
-      <UniqueIdentifier>{cbd4443f-6da9-4f92-8d8f-1b656a923a82}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="visitors\CSintacticValdationVisitor.h">
-      <Filter>visitors</Filter>
-    </ClInclude>
-    <ClInclude Include="visitors\IVisitor.h">
-      <Filter>visitors</Filter>
-    </ClInclude>
-    <ClInclude Include="visitors\MathMLBuildVisitor.h">
-      <Filter>visitors</Filter>
+    <ClInclude Include="converters\Converter.h">
+      <Filter>converters</Filter>
     </ClInclude>
     <ClInclude Include="expression_tree\Expression.h">
       <Filter>expression_tree</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\LSVUtils.h">
+      <Filter>utils</Filter>
     </ClInclude>
     <ClInclude Include="parsers\MathMLParser.h">
       <Filter>parsers</Filter>
@@ -64,14 +46,31 @@
     <ClInclude Include="parsers\TexParser.h">
       <Filter>parsers</Filter>
     </ClInclude>
-    <ClInclude Include="converters\Converter.h">
-      <Filter>converters</Filter>
+    <ClInclude Include="visitors\MathMLBuildVisitor.h">
+      <Filter>visitors</Filter>
     </ClInclude>
-    <ClInclude Include="utils\LSVUtils.h">
-      <Filter>utils</Filter>
+    <ClInclude Include="visitors\CSintacticValdationVisitor.h">
+      <Filter>visitors</Filter>
     </ClInclude>
-    <ClInclude Include="expression_tree\Expression.h">
-      <Filter>expression_tree</Filter>
+    <ClInclude Include="visitors\IVisitor.h">
+      <Filter>visitors</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="converters">
+      <UniqueIdentifier>{4cf1a97c-1128-4f56-9695-080623597c57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="expression_tree">
+      <UniqueIdentifier>{749fe088-9da1-4748-a9fc-f49228d0191c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="parsers">
+      <UniqueIdentifier>{2600b5ef-365b-499b-b91e-020b4a1e00fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils">
+      <UniqueIdentifier>{6133f4b9-f23b-4256-a418-e5fb341eded2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="visitors">
+      <UniqueIdentifier>{e7e78bd1-ec2c-40ba-8c9f-bbd861644008}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

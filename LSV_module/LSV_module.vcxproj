@@ -80,7 +80,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="converters\Converter.cpp" />
-    <ClCompile Include="expression_tree\Expressions.cpp" />
+    <ClCompile Include="expression_tree\Expression.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathMLBuildVisitor.cpp" />
     <ClCompile Include="parsers\MathMLParser.cpp" />
