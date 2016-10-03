@@ -46,7 +46,7 @@ bool CMatheditorWindow::Create() {
 	//HWND hWndToolbar = CreateWindowEx(0, TOOLBARCLASSNAME, NULL, WS_CHILD | TBSTYLE_WRAPABLE, 0, 0, 0, 0, handle_, NULL, GetModuleHandle(NULL), NULL);
 	// Declare and initialize local constants.
 	const int ImageListID = 0;
-	const int numButtons = 3;
+	const int numButtons = 4;
 	const int bitmapSize = 16;
 
 	const DWORD buttonStyles = BTNS_AUTOSIZE;
@@ -83,7 +83,8 @@ bool CMatheditorWindow::Create() {
 	{
 		{ MAKELONG(STD_FILENEW,  ImageListID), NULL,  TBSTATE_ENABLED, buttonStyles,{ 0 }, 0, (INT_PTR)L"New" },
 		{ MAKELONG(STD_FILEOPEN, ImageListID), NULL, TBSTATE_ENABLED, buttonStyles,{ 0 }, 0, (INT_PTR)L"Open" },
-		{ MAKELONG(STD_FILESAVE, ImageListID), NULL, 0,               buttonStyles,{ 0 }, 0, (INT_PTR)L"Save" }
+		{ MAKELONG(STD_FILESAVE, ImageListID), NULL, TBSTATE_ENABLED,               buttonStyles,{ 0 }, 0, (INT_PTR)L"Save" },
+		{ 0, NULL, TBSTATE_ENABLED, 0,  buttonStyles,{ 0 }, 0, (INT_PTR)L"Divide" }
 	};
 
 	// Add buttons.
@@ -131,7 +132,7 @@ LRESULT _stdcall CMatheditorWindow::windowProc(HWND handle, UINT message, WPARAM
 		}
 		overlapped_window->OnNCCreate(handle);
 		return TRUE;
-	}
+	} 
 	default:
 		CMatheditorWindow* overlapped_window = (CMatheditorWindow*)GetWindowLongPtr(handle, GWLP_USERDATA);
 		if (overlapped_window) {
@@ -151,6 +152,22 @@ LRESULT _stdcall CMatheditorWindow::localWindowProc(HWND handle, UINT message, W
 	case WM_DESTROY:
 		OnDestroy();
 		break;
+	case WM_NOTIFY:
+		switch (((NMHDR *)lParam)->code)
+		{
+		case NM_CLICK:
+		{ 
+			NMLINK* pNMLink = (NMLINK*)lParam;
+			LITEM iItem = pNMLink->item;
+			// Custom OutputDebugString
+			if (wParam)
+			{
+				int c;
+			}
+			break;
+		}
+		}
+	break;
 	case WM_CREATE:
 		OnCreate();
 		return DefWindowProc(handle, message, wParam, lParam);

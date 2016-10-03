@@ -148,11 +148,16 @@
   <ItemGroup>
     <ClCompile Include="CEditControl.cpp" />
     <ClCompile Include="cmatheditor_window.cpp" />
+    <ClCompile Include="CRect.cpp" />
+    <ClCompile Include="FracControl.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CEditControl.h" />
     <ClInclude Include="cmatheditor_window.h" />
+    <ClInclude Include="CRect.h" />
+    <ClInclude Include="FracControl.h" />
+    <ClInclude Include="IChild.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +166,7 @@
   <ItemGroup>
     <Image Include="symbol_add.bmp" />
     <Image Include="toolbar1.bmp" />
+    <Image Include="toolbar2.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
