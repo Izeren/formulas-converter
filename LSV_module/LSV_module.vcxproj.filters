@@ -26,6 +26,9 @@
     <ClCompile Include="expression_tree\Expression.cpp">
       <Filter>expression_tree</Filter>
     </ClCompile>
+    <ClCompile Include="pugixml\pugixml.cpp">
+      <Filter>pugixml</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="converters\Converter.h">
@@ -55,6 +58,12 @@
     <ClInclude Include="visitors\IVisitor.h">
       <Filter>visitors</Filter>
     </ClInclude>
+    <ClInclude Include="pugixml\pugiconfig.hpp">
+      <Filter>pugixml</Filter>
+    </ClInclude>
+    <ClInclude Include="pugixml\pugixml.hpp">
+      <Filter>pugixml</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="converters">
@@ -71,6 +80,9 @@
     </Filter>
     <Filter Include="visitors">
       <UniqueIdentifier>{e7e78bd1-ec2c-40ba-8c9f-bbd861644008}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pugixml">
+      <UniqueIdentifier>{2bc5c249-7d37-41f0-8c51-f1840bf82d66}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
