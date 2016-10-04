@@ -4,8 +4,9 @@
 #include "../visitors/IVisitor.h"
 #include <string>
 #include <memory>
+#include <iostream>
 
-/*
+/**
 	Для хранения текущей формулы внутри редактора
 	используется древовидная структура. Вся работа с
 	ней осуществляется при помощи паттерна Visitor
@@ -13,7 +14,6 @@
 	Здесь есть описание отдельных классов, которые составляют
 	вершины дерева, они все реализуют общий интерфейс Expression.
 */
-
 class IExpression
 {
 public:
@@ -21,13 +21,12 @@ public:
 	virtual void Accept(IVisitor &) = 0;
 };
 
-/*
+/**
 	CIdExp отвечает за переменные, он хранит только имя
 	переменной, которое используется для подстановки 
 	соответствующего значения при вычислении, сохранения,
 	а также проверки формулы на валидность
 */
-
 class CIdExp : public IExpression {
 public:
 	void Accept(IVisitor &visitor) override;
@@ -45,11 +44,10 @@ private:
 	const double *valueAddress; // Для быстрых вычислений
 };
 
-/*
+/**
 	CNumExp отвечает за числовые константы, с целью 
 	упрощения будем полагать, что они все вещественные
 */
-
 class CNumExp : public IExpression {
 public:
 	CNumExp(const std::string &value);
@@ -64,14 +62,16 @@ private:
 	double value;
 };
 
-/*
-	COpExp отвечает за арифметические действия над
-	над вычислимыми выражениями (IExpression), хранит 
-	левый, правый операнды, а также саму операцию
+
+
+enum TOperation { PLUS, MINUS, MULTIPLY, DIVIDE, FRAC, POWER };
+
+
+/**
+COpExp отвечает за арифметические действия над
+над вычислимыми выражениями (IExpression), хранит
+левый, правый операнды, а также саму операцию
 */
-
-enum TOperation { PLUS, MINUS, MULTIPLY, DIVISE, FRAC, POWER};
-
 class COpExp : public IExpression {
 public:
 	void Accept(IVisitor &visitor) override;
@@ -97,7 +97,7 @@ private:
 };
 
 
-/*
+/**
 	CSumExp отвечает за индексированную конечную сумму
 	вычислимых выражений (IExpression), хранит в себе
 	имя переменной счетчика, начальное значение суммирования

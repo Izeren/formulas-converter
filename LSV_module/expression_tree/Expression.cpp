@@ -114,8 +114,7 @@ double CNumExp::getValue() const
 //COpExp:
 //-------------------------------------------------------------------------------------------------
 
-COpExp::COpExp()
-{
+COpExp::COpExp() {
 	this->firstOperand = NULL;
 	this->secondOperand = NULL;
 	this->operation = PLUS;
