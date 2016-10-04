@@ -1,6 +1,14 @@
 <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
-    <mfrac bevelled='true'>
-      <mn>1</mn>
-      <mi>x</mi>
-    </mfrac>
+  <msup>
+    <mrow>
+      <mo>(</mo>
+        <mrow>
+          <mrow><mn>3</mn><mo>*</mo><mi>x</mi></mrow>
+          <mo>-</mo>
+          <mrow><mn>2</mn><mo>*</mo><mi>y</mi></mrow>
+        </mrow>
+      <mo>)</mo>
+    </mrow>
+    <mn>2</mn>
+  </msup>
 </math>

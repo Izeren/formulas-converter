@@ -140,6 +140,8 @@ class CMathMLParser {
 				process_op(expr_stack, op_stack.top());
 
 			}
+			op_stack.push(cur_op);
+			may_unary = true;
 		}
 	}
 
@@ -189,35 +191,70 @@ class CMathMLParser {
 
 	std::shared_ptr<IExpression> parseExpr(pugi::xml_node &node) {
 
+		int node_size = std::distance(node.children().begin(), node.children().end());
+
+		if (node_size == 0) {
+			return nullptr;
+		}
+
 		std::stack<std::shared_ptr<IExpression>> expr_stack;
 		std::stack<char> op_stack;
 		bool may_unary = true;
 
-		for (pugi::xml_node_iterator it = node.begin(); it != node.end(); ++it) {
-			
-			if (nameEqual(*it, "mo")) {
-				parseOperator(*it, expr_stack, op_stack, may_unary);
+		if (node_size == 1 && node.first_child().type() == pugi::node_pcdata) {
+			std::string value = std::string(node.first_child().value());
+			if (nameEqual(node, "mo")) {
+				errorMessage("Expression node consists only from operator: " + value);
 			}
-			else {
-				if (nameEqual(*it, "mn")) {
-					parseNum(*it, expr_stack);
+			else if (nameEqual(node, "mn")) {
+				parseNum(node, expr_stack);
+			}
+			else if (nameEqual(node, "mi")) {
+				parseId(node, expr_stack);
+			}
+			else if (nameEqual(node, "msup")) {
+				expr_stack.push(parsePower(node));
+			}
+			else if (nameEqual(node, "mfrac")) {
+				expr_stack.push(parseFrac(node));
+			}
+			else if (nameEqual(node, "munderover")) {
+				if (nameEqual(node, "mo")) {
+					errorMessage("Expression node consists only from operator sum");
 				}
-				else if (nameEqual(*it, "mi")) {
-					parseId(*it, expr_stack);
+			}
+		} 
+		else {
+			
+			for (pugi::xml_node_iterator it = node.begin(); it != node.end(); ++it) {
+
+				if (nameEqual(*it, "mo")) {
+					parseOperator(*it, expr_stack, op_stack, may_unary);
 				}
-				else if (nameEqual(*it, "msup")) {
-					expr_stack.push(parsePower(*it));
+				else {
+					if (nameEqual(*it, "mn")) {
+						parseNum(*it, expr_stack);
+					}
+					else if (nameEqual(*it, "mi")) {
+						parseId(*it, expr_stack);
+					}
+					else if (nameEqual(*it, "msup")) {
+						expr_stack.push(parsePower(*it));
+					}
+					else if (nameEqual(*it, "mfrac")) {
+						expr_stack.push(parseFrac(*it));
+					}
+					else if (nameEqual(*it, "munderover")) {
+						pugi::xml_node sum = *it;
+						++it;
+						pugi::xml_node expr = *it;
+						expr_stack.push(parseSum(sum, expr));
+					}
+					else if (nameEqual(*it, "mrow")) {
+						expr_stack.push(parseExpr(*it));
+					}
+					may_unary = false;
 				}
-				else if (nameEqual(*it, "mfrac")) {
-					expr_stack.push(parseFrac(*it));
-				}
-				else if (nameEqual(*it, "munderover")) {
-					pugi::xml_node sum = *it;
-					++it;
-					pugi::xml_node expr = *it;
-					expr_stack.push(parseSum(sum, expr));
-				}
-				may_unary = false;
 			}
 		}
 
@@ -225,6 +262,7 @@ class CMathMLParser {
 			process_op(expr_stack, op_stack.top());
 			op_stack.pop();
 		}
+
 		if (expr_stack.size() != 1) {
 			errorMessage("Incorrect expression at node " + std::string(node.name()));
 		}

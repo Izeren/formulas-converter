@@ -20,7 +20,7 @@ int main()
 	try {
 		parser.parseFromFile("format_files/expr.mathml");
 	} catch (std::exception &ex) {
-		std::cout << ex.what();
+		std::cout << ex.what() << std::endl;
 	}
 
 	system("pause");
