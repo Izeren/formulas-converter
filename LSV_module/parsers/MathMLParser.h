@@ -42,26 +42,26 @@ class CMathMLParser {
 			-1;
 	}
 
-	TOperation getTOp(char op) {
+	LSVUtils::TOperation getTOp(char op) {
 		switch (op) {
 		case '+':  {
-			return TOperation::PLUS;
+			return LSVUtils::TOperation::PLUS;
 			break;
 		}
 		case '-':  {
-			return TOperation::MINUS;
+			return LSVUtils::TOperation::MINUS;
 			break;
 		}
 		case '*':  {
-			return TOperation::MULTIPLY;
+			return LSVUtils::TOperation::MULTIPLY;
 			break;
 		}
 		case '/':  {
-			return TOperation::DIVIDE;
+			return LSVUtils::TOperation::DIVIDE;
 			break;
 		}
 		case '^':  {
-			return TOperation::POWER;
+			return LSVUtils::TOperation::POWER;
 			break;
 		}
 		}
@@ -87,7 +87,7 @@ class CMathMLParser {
 			}
 			case '-':  {
 				std::shared_ptr<IExpression> zero = std::static_pointer_cast<IExpression>(std::make_shared<CNumExp>(0));
-				expr_stack.push(std::static_pointer_cast<IExpression>(std::make_shared<COpExp>(zero, l, TOperation::MINUS)));
+				expr_stack.push(std::static_pointer_cast<IExpression>(std::make_shared<COpExp>(zero, l, LSVUtils::TOperation::MINUS)));
 				break;
 			}
 			}
@@ -95,7 +95,7 @@ class CMathMLParser {
 		else {
 			std::shared_ptr<IExpression> r = expr_stack.top();  expr_stack.pop();
 			std::shared_ptr<IExpression> l = expr_stack.top();  expr_stack.pop();
-			TOperation t_op = getTOp(op);
+			LSVUtils::TOperation t_op = getTOp(op);
 			expr_stack.push(std::static_pointer_cast<IExpression>(std::make_shared<COpExp>(l, r, t_op)));
 		}
 	}
@@ -361,7 +361,7 @@ class CMathMLParser {
 		std::shared_ptr<IExpression> first_expr = parseExpr(first);
 		std::shared_ptr<IExpression> second_expr = parseExpr(second);
 
-		return std::static_pointer_cast<IExpression>(std::make_shared<COpExp>(first_expr, second_expr, TOperation::POWER));
+		return std::static_pointer_cast<IExpression>(std::make_shared<COpExp>(first_expr, second_expr, LSVUtils::TOperation::POWER));
 	}
 
 	std::shared_ptr<IExpression> parseFrac(pugi::xml_node &node) {
@@ -380,7 +380,7 @@ class CMathMLParser {
 		std::shared_ptr<IExpression> first_expr = parseExpr(first);
 		std::shared_ptr<IExpression> second_expr = parseExpr(second);
 
-		return std::static_pointer_cast<IExpression>(std::make_shared<COpExp>(first_expr, second_expr, TOperation::FRAC));
+		return std::static_pointer_cast<IExpression>(std::make_shared<COpExp>(first_expr, second_expr, LSVUtils::TOperation::FRAC));
 	}
 
 

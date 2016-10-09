@@ -21,10 +21,6 @@ bool LSVUtils::checkDouble(std::string value)
 	return std::regex_match(value, floatNumber);
 }
 
-enum TOperation { PLUS, MINUS, MULTIPLY, DIVIDE, FRAC, POWER, SUMMATION };
-
-enum TPriority { SUMMATION, ADDITION_SUBSTRACTION, MULTIPLICATION, POWER };
-
 
 std::unordered_map<LSVUtils::TOperation, LSVUtils::TPriority> LSVUtils::utilsSettings::operationPriorities = {
 	{ LSVUtils::TOperation::PLUS, LSVUtils::TPriority::ADDITION_SUBSTRACTION },
@@ -32,6 +28,6 @@ std::unordered_map<LSVUtils::TOperation, LSVUtils::TPriority> LSVUtils::utilsSet
 	{ LSVUtils::TOperation::MULTIPLY, LSVUtils::TPriority::MULTIPLICATION_DIVISION },
 	{ LSVUtils::TOperation::DIVIDE, LSVUtils::TPriority::MULTIPLICATION_DIVISION },
 	{ LSVUtils::TOperation::FRAC, LSVUtils::TPriority::MULTIPLICATION_DIVISION },
-	{ LSVUtils::TOperation::SUMMATION, LSVUtils::TPriority::SUMMATION},
-	{ LSVUtils::TOperation::POWER, LSVUtils::TPriority::POWER }
+	{ LSVUtils::TOperation::SUM, LSVUtils::TPriority::SUMMATION },
+	{ LSVUtils::TOperation::POWER, LSVUtils::TPriority::POWERING }
 };
