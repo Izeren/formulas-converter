@@ -117,22 +117,22 @@ double CNumExp::getValue() const
 //COpExp:
 //-------------------------------------------------------------------------------------------------
 
-std::unordered_map<TOperation, std::string> COpExp::operationNames = {
-	{ PLUS, "+" },
-	{ MINUS, "-" },
-	{ MULTIPLY, "*" },
-	{ DIVIDE, "/" },
-	{ FRAC, "--" },
-	{ POWER, "^" }
+std::unordered_map<LSVUtils::TOperation, std::string> COpExp::operationNames = {
+	{ LSVUtils::TOperation::PLUS, "+" },
+	{ LSVUtils::TOperation::MINUS, "-" },
+	{ LSVUtils::TOperation::MULTIPLY, "*" },
+	{ LSVUtils::TOperation::DIVIDE, "/" },
+	{ LSVUtils::TOperation::FRAC, "--" },
+	{ LSVUtils::TOperation::POWER, "^" }
 };
 
 COpExp::COpExp() {
 	this->firstOperand = NULL;
 	this->secondOperand = NULL;
-	this->operation = PLUS;
+	this->operation = LSVUtils::TOperation::PLUS;
 }
 
-COpExp::COpExp(std::shared_ptr<IExpression> firstOperand, std::shared_ptr<IExpression> secondOperand, TOperation operation) {
+COpExp::COpExp(std::shared_ptr<IExpression> firstOperand, std::shared_ptr<IExpression> secondOperand, LSVUtils::TOperation operation) {
 	this->firstOperand = firstOperand;
 	this->secondOperand = secondOperand;
 	this->operation = operation;
@@ -173,12 +173,12 @@ std::shared_ptr<IExpression> COpExp::getSecondOperand() const
 	return this->secondOperand;
 }
 
-void COpExp::setOperation(TOperation operation)
+void COpExp::setOperation(LSVUtils::TOperation operation)
 {
 	this->operation = operation;
 }
 
-TOperation COpExp::getOperation() const
+LSVUtils::TOperation COpExp::getOperation() const
 {
 	return this->operation;
 }

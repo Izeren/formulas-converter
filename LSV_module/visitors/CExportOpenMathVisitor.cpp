@@ -16,21 +16,21 @@ void CExportOpenMathVisitor::Visit(COpExp &exp)
 	this->description += "{(";
 	switch (exp.getOperation())
 	{
-	case FRAC:
-	{
-		this->addFracOperation(exp);
-		break;
-	}
-	case POWER:
-	{
-		this->addPowerOperation(exp);
-		break;
-	}
-	default:
-	{
-		this->addAriphmeticOp(exp.getOperation(), exp);
-		break;
-	}
+		case LSVUtils::TOperation::FRAC:
+		{
+			this->addFracOperation(exp);
+			break;
+		}
+		case LSVUtils::TOperation::POWER:
+		{
+			this->addPowerOperation(exp);
+			break;
+		}
+		default:
+		{
+			this->addAriphmeticOp(exp.getOperation(), exp);
+			break;
+		}
 	}
 	this->description += ")}";
 }
@@ -59,7 +59,7 @@ std::string CExportOpenMathVisitor::getOpenMathFile() const
 	return 	this->description;
 }
 
-void CExportOpenMathVisitor::addAriphmeticOp(TOperation operation, COpExp &exp)
+void CExportOpenMathVisitor::addAriphmeticOp(LSVUtils::TOperation operation, COpExp &exp)
 {
 	exp.getFirstOperand()->Accept(*this);
 	this->description += COpExp::operationNames[operation];

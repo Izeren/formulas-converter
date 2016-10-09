@@ -20,7 +20,7 @@ public:
 private:
 	std::string description;
 	int lastVisited;
-	void addAriphmeticOp(TOperation operation, COpExp &exp);
+	void addAriphmeticOp(LSVUtils::TOperation operation, COpExp &exp);
 	void addFracOperation(COpExp &exp);
 	void addPowerOperation(COpExp &exp);
 

@@ -10,27 +10,26 @@ void CExportTexVisitor::ClearVisitor()
 	this->description = "";
 }
 
-
 void CExportTexVisitor::Visit(COpExp &exp)
 {
 	this->description += "{(";
 	switch (exp.getOperation())
 	{
-	case FRAC:
-	{
-		this->addFracOperation(exp);
-		break;
-	}
-	case POWER:
-	{
-		this->addPowerOperation(exp);
-		break;
-	}
-	default:
-	{
-		this->addAriphmeticOp(exp.getOperation(), exp);
-		break;
-	}
+		case LSVUtils::TOperation::FRAC:
+		{
+			this->addFracOperation(exp);
+			break;
+		}
+		case LSVUtils::TOperation::POWER:
+		{
+			this->addPowerOperation(exp);
+			break;
+		}
+		default:
+		{
+			this->addAriphmeticOp(exp.getOperation(), exp);
+			break;
+		}
 	}
 	this->description += ")}";
 }
@@ -59,7 +58,7 @@ std::string CExportTexVisitor::getTexFile() const
 	return this->description;
 }
 
-void CExportTexVisitor::addAriphmeticOp(TOperation operation, COpExp &exp)
+void CExportTexVisitor::addAriphmeticOp(LSVUtils::TOperation operation, COpExp &exp)
 {
 	exp.getFirstOperand()->Accept(*this);
 	this->description += COpExp::operationNames[operation];

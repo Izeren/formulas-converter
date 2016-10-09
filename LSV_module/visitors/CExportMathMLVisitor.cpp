@@ -16,12 +16,12 @@ void CExportMathMLVisitor::Visit(COpExp &exp)
 	this->description += "<mrow><mo>(</mo>\n";
 	switch (exp.getOperation()) 
 	{
-		case FRAC: 
+		case LSVUtils::TOperation::FRAC: 
 		{
 			this->addFracOperation(exp);
 			break;
 		}
-		case POWER:
+		case LSVUtils::TOperation::POWER:
 		{
 			this->addPowerOperation(exp);
 			break;
@@ -65,7 +65,7 @@ std::string CExportMathMLVisitor::getMathMLFile() const
 		this->description + "</math>\n";
 }
 
-void CExportMathMLVisitor::addAriphmeticOp(TOperation operation, COpExp &exp)
+void CExportMathMLVisitor::addAriphmeticOp(LSVUtils::TOperation operation, COpExp &exp)
 {
 	exp.getFirstOperand()->Accept(*this);
 	this->description += "<mo>" + COpExp::operationNames[operation] + "</mo>\n";
