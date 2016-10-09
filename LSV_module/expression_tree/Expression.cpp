@@ -4,6 +4,9 @@
 
 //CIdExp:
 //-------------------------------------------------------------------------------------------------
+
+int CIdExp::MISSED_NODE = 0;
+
 CIdExp::CIdExp(const std::string &name)
 {
 	if (LSVUtils::checkIdName(name))
@@ -114,6 +117,15 @@ double CNumExp::getValue() const
 //COpExp:
 //-------------------------------------------------------------------------------------------------
 
+std::unordered_map<TOperation, std::string> COpExp::operationNames = {
+	{ PLUS, "+" },
+	{ MINUS, "-" },
+	{ MULTIPLY, "*" },
+	{ DIVIDE, "/" },
+	{ FRAC, "--" },
+	{ POWER, "^" }
+};
+
 COpExp::COpExp() {
 	this->firstOperand = NULL;
 	this->secondOperand = NULL;
@@ -169,6 +181,11 @@ void COpExp::setOperation(TOperation operation)
 TOperation COpExp::getOperation() const
 {
 	return this->operation;
+}
+
+std::string COpExp::getStringOperation() const
+{
+	return COpExp::operationNames[this->operation];
 }
 
 //CSumExp

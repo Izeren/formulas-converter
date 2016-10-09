@@ -19,6 +19,7 @@ class IVisitor
 {
 
 public:
+	virtual ~IVisitor() {}
 	virtual void Visit(COpExp &exp) = 0;
 	virtual void Visit(CNumExp &exp) = 0;
 	virtual void Visit(CIdExp &exp) = 0;

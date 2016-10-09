@@ -89,6 +89,10 @@
     <ClCompile Include="parsers\TexParser.cpp" />
     <ClCompile Include="pugixml\pugixml.cpp" />
     <ClCompile Include="utils\LSVUtils.cpp" />
+    <ClCompile Include="visitors\CExportMathMLVisitor.cpp" />
+    <ClCompile Include="visitors\CExportOpenMathVisitor.cpp" />
+    <ClCompile Include="visitors\CExportTexVisitor.cpp" />
+    <ClCompile Include="visitors\CPrintVisitor.cpp" />
     <ClCompile Include="visitors\CSintacticValidationVisitor.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -100,6 +104,10 @@
     <ClInclude Include="pugixml\pugiconfig.hpp" />
     <ClInclude Include="pugixml\pugixml.hpp" />
     <ClInclude Include="utils\LSVUtils.h" />
+    <ClInclude Include="visitors\CExportMathMLVisitor.h" />
+    <ClInclude Include="visitors\CExportOpenMathVisitor.h" />
+    <ClInclude Include="visitors\CExportTexVisitor.h" />
+    <ClInclude Include="visitors\CPrintVisitor.h" />
     <ClInclude Include="visitors\CSintacticValdationVisitor.h" />
     <ClInclude Include="visitors\IVisitor.h" />
     <ClInclude Include="visitors\MathMLBuildVisitor.h" />

@@ -5,6 +5,7 @@
 #include <string>
 #include <memory>
 #include <iostream>
+#include <unordered_map>
 
 /**
 	Для хранения текущей формулы внутри редактора
@@ -19,6 +20,7 @@ class IExpression
 public:
 	virtual ~IExpression() {}
 	virtual void Accept(IVisitor &) = 0;
+	static int MISSED_NODE;
 };
 
 /**
@@ -66,7 +68,6 @@ private:
 
 enum TOperation { PLUS, MINUS, MULTIPLY, DIVIDE, FRAC, POWER };
 
-
 /**
 COpExp отвечает за арифметические действия над
 над вычислимыми выражениями (IExpression), хранит
@@ -84,6 +85,9 @@ public:
 	std::shared_ptr<IExpression> getSecondOperand() const;
 	void setOperation(TOperation operation);
 	TOperation getOperation() const;
+	std::string getStringOperation() const;
+
+	static std::unordered_map<TOperation, std::string> operationNames;
 
 	/*
 		Для операции FRAC, операнды нумеруются сверху вниз

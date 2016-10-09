@@ -29,6 +29,18 @@
     <ClCompile Include="pugixml\pugixml.cpp">
       <Filter>pugixml</Filter>
     </ClCompile>
+    <ClCompile Include="visitors\CPrintVisitor.cpp">
+      <Filter>visitors</Filter>
+    </ClCompile>
+    <ClCompile Include="visitors\CExportMathMLVisitor.cpp">
+      <Filter>visitors</Filter>
+    </ClCompile>
+    <ClCompile Include="visitors\CExportOpenMathVisitor.cpp">
+      <Filter>visitors</Filter>
+    </ClCompile>
+    <ClCompile Include="visitors\CExportTexVisitor.cpp">
+      <Filter>visitors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="converters\Converter.h">
@@ -63,6 +75,18 @@
     </ClInclude>
     <ClInclude Include="pugixml\pugixml.hpp">
       <Filter>pugixml</Filter>
+    </ClInclude>
+    <ClInclude Include="visitors\CPrintVisitor.h">
+      <Filter>visitors</Filter>
+    </ClInclude>
+    <ClInclude Include="visitors\CExportMathMLVisitor.h">
+      <Filter>visitors</Filter>
+    </ClInclude>
+    <ClInclude Include="visitors\CExportOpenMathVisitor.h">
+      <Filter>visitors</Filter>
+    </ClInclude>
+    <ClInclude Include="visitors\CExportTexVisitor.h">
+      <Filter>visitors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
