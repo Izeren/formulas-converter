@@ -18,9 +18,6 @@ public:
 	std::string getFile() const override;
 
 private:
-	std::string description;
-	std::stack<LSVUtils::TPriority> priorities;
-	int lastVisited;
 
 	void addAriphmeticOp(LSVUtils::TOperation operation, COpExp &exp) override;
 	void addFracOperation(COpExp &exp) override;

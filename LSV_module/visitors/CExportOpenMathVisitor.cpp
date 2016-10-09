@@ -7,8 +7,15 @@ CExportOpenMathVisitor::CExportOpenMathVisitor()
 
 void CExportOpenMathVisitor::Visit(COpExp &exp)
 {
-	this->description += "{(";
-	switch (exp.getOperation())
+	LSVUtils::TOperation operation = exp.getOperation();
+	LSVUtils::TPriority priority = LSVUtils::utilsSettings::operationPriorities[operation];
+	bool isNotPrioritised = this->priorities.top() > priority;
+	this->priorities.push(priority);
+	this->description += "{";
+	if (isNotPrioritised) {
+		this->description += "(";
+	}
+	switch (operation)
 	{
 		case LSVUtils::TOperation::FRAC:
 		{
@@ -26,7 +33,11 @@ void CExportOpenMathVisitor::Visit(COpExp &exp)
 			break;
 		}
 	}
-	this->description += ")}";
+	if (isNotPrioritised) {
+		this->description += ")";
+	}
+	this->description += "}";
+	this->priorities.pop();
 }
 
 void CExportOpenMathVisitor::Visit(CNumExp &exp)
@@ -41,11 +52,22 @@ void CExportOpenMathVisitor::Visit(CIdExp &exp)
 
 void CExportOpenMathVisitor::Visit(CSumExp &exp)
 {
-	this->description += "{(sum from{";
+	bool isNotPrioritised = this->priorities.top() > LSVUtils::TPriority::SUMMATION;
+	this->priorities.push(LSVUtils::TPriority::SUMMATION);
+	
+	this->description += "{";
+	if (isNotPrioritised) {
+		this->description += "(";
+	}
+	this->description += "sum from{";
 	this->description += exp.getIndexName() + "=" + std::to_string(exp.getStartId()) + "} to{";
 	this->description += std::to_string(exp.getFinishId()) + "} ";
 	exp.getExpression()->Accept(*this);
-	this->description += ")}";
+	if (isNotPrioritised) {
+		this->description += ")";
+	}
+	this->description += "}";
+	this->priorities.pop();
 }
 
 std::string CExportOpenMathVisitor::getFile() const

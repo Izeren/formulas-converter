@@ -7,8 +7,14 @@ CExportMathMLVisitor::CExportMathMLVisitor()
 
 void CExportMathMLVisitor::Visit(COpExp &exp)
 {
-	this->description += "<mrow><mo>(</mo>\n";
-	switch (exp.getOperation()) 
+	LSVUtils::TOperation operation = exp.getOperation();
+	LSVUtils::TPriority priority = LSVUtils::utilsSettings::operationPriorities[operation];
+	bool isNotPrioritised = this->priorities.top() > priority;
+	this->priorities.push(priority);
+	if (isNotPrioritised) {
+		this->description += "<mo>(</mo>\n";
+	}
+	switch (operation) 
 	{
 		case LSVUtils::TOperation::FRAC: 
 		{
@@ -26,7 +32,10 @@ void CExportMathMLVisitor::Visit(COpExp &exp)
 			break;
 		}
 	}
-	this->description += "<mo>)</mo></mrow>\n";
+	if (isNotPrioritised) {
+		this->description += "<mo>)</mo>\n";
+	}
+	this->priorities.pop();
 }
 
 void CExportMathMLVisitor::Visit(CNumExp &exp)
@@ -41,16 +50,25 @@ void CExportMathMLVisitor::Visit(CIdExp &exp)
 
 void CExportMathMLVisitor::Visit(CSumExp &exp)
 {
-	this->description += "<mrow>\n";
-	this->description += "<munderover>\n";
-	this->description += "<mo>&sum;</mo>";
-	this->description += "<mrow><mi>" + exp.getIndexName() + "</mi>";
-	this->description += "<mo>=</mo>";
-	this->description += "<mn>" + std::to_string(exp.getStartId()) + "</mn></mrow>\n";
+	bool isNotPrioritised = this->priorities.top() > LSVUtils::TPriority::SUMMATION;
+	this->priorities.push(LSVUtils::TPriority::SUMMATION);
+	if (isNotPrioritised) {
+		this->description += "<mo>(</mo>\n";
+	}
+	this->description += "<mrow>";
+	this->description += "<munderover>";
+	this->description += "<mo>&sum;</mo>\n";
+	this->description += "<mrow><mi>" + exp.getIndexName() + "</mi>\n";
+	this->description += "<mo>=</mo>\n";
+	this->description += "<mn>" + std::to_string(exp.getStartId()) + "</mn>\n</mrow>\n";
 	this->description += "<mn>" + std::to_string(exp.getFinishId()) + "</mn>\n";
 	this->description += "</munderover>\n";
 	exp.getExpression()->Accept(*this);
 	this->description += "</mrow>\n";
+	if (isNotPrioritised) {
+		this->description += "<mo>)</mo>\n";
+	}
+	this->priorities.pop();
 }
 
 std::string CExportMathMLVisitor::getFile() const
@@ -64,7 +82,6 @@ void CExportMathMLVisitor::addAriphmeticOp(LSVUtils::TOperation operation, COpEx
 	exp.getFirstOperand()->Accept(*this);
 	this->description += "<mo>" + COpExp::operationNames[operation] + "</mo>\n";
 	exp.getSecondOperand()->Accept(*this);
-
 }
 
 void CExportMathMLVisitor::addFracOperation(COpExp &exp)
