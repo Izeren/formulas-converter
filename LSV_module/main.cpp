@@ -2,6 +2,7 @@
 #include "visitors/CSintacticValdationVisitor.h"
 #include "visitors/CPrintVisitor.h"
 #include "visitors/CExportMathMLVisitor.h"
+#include "visitors/CExportOpenMathVisitor.h"
 #include "parsers/MathMLParser.h"
 #include <iostream>
 
@@ -10,7 +11,7 @@ int main()
 	CMathMLParser parser;
 
 	try {
-		std::shared_ptr<IExpression> operationTree = parser.parseFromFile("format_files/expr2.mathml");
+		std::shared_ptr<IExpression> operationTree = parser.parseFromFile("format_files/expr.mathml");
 		CSintacticValidationVisitor validationVisitor = CSintacticValidationVisitor();
 		std::set<std::string> visibleIds = {"x", "y"};
 		validationVisitor.setVisibleIds(visibleIds);
@@ -20,9 +21,9 @@ int main()
 		std::cout << printVisitor.getDigraphDescription();
 		std::cout << validationVisitor.getValidationStatus() << " " << validationVisitor.getError() << "\n";
 
-		CExportMathMLVisitor exportVisitor = CExportMathMLVisitor();
+		CExportOpenMathVisitor exportVisitor = CExportOpenMathVisitor();
 		operationTree->Accept(exportVisitor);
-		std::cout << exportVisitor.getMathMLFile() << "\n";
+		std::cout << exportVisitor.getOpenMathFile() << "\n";
 	} catch (std::exception &ex) {
 		std::cout << ex.what() << std::endl;
 	}
