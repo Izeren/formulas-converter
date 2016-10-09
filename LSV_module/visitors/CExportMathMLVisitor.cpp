@@ -65,20 +65,6 @@ std::string CExportMathMLVisitor::getMathMLFile() const
 		this->description + "</math>\n";
 }
 
-void CExportMathMLVisitor::addNode(const std::string &name, const std::string &label)
-{
-	this->description += "\t" + name + "[label=\"" + label + "\"];\n";
-}
-void CExportMathMLVisitor::addEdge(const std::string &from, const std::string &to)
-{
-	this->description += "\t" + from + " -> " + to + ";\n";
-}
-
-void CExportMathMLVisitor::addEdge(int from, int to)
-{
-	addEdge(std::to_string(from), std::to_string(to));
-}
-
 void CExportMathMLVisitor::addAriphmeticOp(TOperation operation, COpExp &exp)
 {
 	exp.getFirstOperand()->Accept(*this);

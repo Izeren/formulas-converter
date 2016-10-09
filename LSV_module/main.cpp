@@ -10,7 +10,7 @@ int main()
 	CMathMLParser parser;
 
 	try {
-		std::shared_ptr<IExpression> operationTree = parser.parseFromFile("format_files/expr.mathml");
+		std::shared_ptr<IExpression> operationTree = parser.parseFromFile("format_files/expr2.mathml");
 		CSintacticValidationVisitor validationVisitor = CSintacticValidationVisitor();
 		std::set<std::string> visibleIds = {"x", "y"};
 		validationVisitor.setVisibleIds(visibleIds);
