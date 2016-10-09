@@ -23,7 +23,7 @@ private:
 	void addNode(const std::string &name, const std::string &label);
 	void addEdge(const std::string &from, const std::string &to);
 	void addEdge(int from, int to);
-	void addAriphmeticOp(TOperation operation);
+	void addAriphmeticOp(TOperation operation, COpExp &exp);
 	void addFracOperation(COpExp &exp);
 	void addPowerOperation(COpExp &exp);
 

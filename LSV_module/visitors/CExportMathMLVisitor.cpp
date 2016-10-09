@@ -13,24 +13,26 @@ void CExportMathMLVisitor::ClearVisitor()
 
 void CExportMathMLVisitor::Visit(COpExp &exp)
 {
-	this->description += "<mrow>\n";
-	exp.getFirstOperand()->Accept(*this);
+	this->description += "<mrow><mo>(</mo>\n";
 	switch (exp.getOperation()) 
 	{
 		case FRAC: 
 		{
 			this->addFracOperation(exp);
+			break;
 		}
 		case POWER:
 		{
 			this->addPowerOperation(exp);
+			break;
 		}
 		default:
 		{
-			this->addAriphmeticOp(exp.getOperation());
+			this->addAriphmeticOp(exp.getOperation(), exp);
+			break;
 		}
 	}
-	this->description += "</mrow>\n";
+	this->description += "<mo>)</mo></mrow>\n";
 }
 
 void CExportMathMLVisitor::Visit(CNumExp &exp)
@@ -77,16 +79,19 @@ void CExportMathMLVisitor::addEdge(int from, int to)
 	addEdge(std::to_string(from), std::to_string(to));
 }
 
-void CExportMathMLVisitor::addAriphmeticOp(TOperation operation)
+void CExportMathMLVisitor::addAriphmeticOp(TOperation operation, COpExp &exp)
 {
+	exp.getFirstOperand()->Accept(*this);
 	this->description += "<mo>" + COpExp::operationNames[operation] + "</mo>\n";
+	exp.getSecondOperand()->Accept(*this);
+
 }
 
 void CExportMathMLVisitor::addFracOperation(COpExp &exp)
 {
 	this->description += "<mfrac>\n";
 	exp.getFirstOperand()->Accept(*this);
-	exp.getFirstOperand()->Accept(*this);
+	exp.getSecondOperand()->Accept(*this);
 	this->description += "</mfrac>\n";
 }
 
@@ -94,6 +99,6 @@ void CExportMathMLVisitor::addPowerOperation(COpExp &exp)
 {
 	this->description += "<msup>\n";
 	exp.getFirstOperand()->Accept(*this);
-	exp.getFirstOperand()->Accept(*this);
+	exp.getSecondOperand()->Accept(*this);
 	this->description += "</msup>\n";
 }
