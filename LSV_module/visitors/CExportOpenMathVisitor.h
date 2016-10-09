@@ -1,27 +1,28 @@
 #pragma once
 
-#include "IVisitor.h"
+#include "IExportVisitor.h"
 #include "../expression_tree/Expression.h"
 #include "../utils/LSVUtils.h"
 
-class CExportOpenMathVisitor : public IVisitor
+class CExportOpenMathVisitor : public IExportVisitor
 {
 public:
 
 	CExportOpenMathVisitor();
-	void ClearVisitor();
 	void Visit(COpExp &exp) override;
 	void Visit(CNumExp &exp) override;
 	void Visit(CIdExp &exp) override;
 	void Visit(CSumExp &exp) override;
 
-	std::string getOpenMathFile() const;
+	std::string getFile() const override;
 
 private:
 	std::string description;
+	std::stack<LSVUtils::TPriority> priorities;
 	int lastVisited;
-	void addAriphmeticOp(LSVUtils::TOperation operation, COpExp &exp);
-	void addFracOperation(COpExp &exp);
-	void addPowerOperation(COpExp &exp);
+
+	void addAriphmeticOp(LSVUtils::TOperation operation, COpExp &exp) override;
+	void addFracOperation(COpExp &exp) override;
+	void addPowerOperation(COpExp &exp) override;
 
 };

@@ -5,7 +5,7 @@
 //CIdExp:
 //-------------------------------------------------------------------------------------------------
 
-int CIdExp::MISSED_NODE = 0;
+int IExpression::MISSED_NODE = 0;
 
 CIdExp::CIdExp(const std::string &name)
 {

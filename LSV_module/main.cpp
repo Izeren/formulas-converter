@@ -24,7 +24,7 @@ int main()
 
 		CExportTexVisitor exportVisitor = CExportTexVisitor();
 		operationTree->Accept(exportVisitor);
-		std::cout << exportVisitor.getTexFile() << "\n";
+		std::cout << exportVisitor.getFile() << "\n";
 	} catch (std::exception &ex) {
 		std::cout << ex.what() << std::endl;
 	}

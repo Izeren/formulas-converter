@@ -5,11 +5,6 @@ CExportTexVisitor::CExportTexVisitor()
 	this->ClearVisitor();
 }
 
-void CExportTexVisitor::ClearVisitor()
-{
-	this->description = "";
-}
-
 void CExportTexVisitor::Visit(COpExp &exp)
 {
 	this->description += "{(";
@@ -46,14 +41,14 @@ void CExportTexVisitor::Visit(CIdExp &exp)
 
 void CExportTexVisitor::Visit(CSumExp &exp)
 {
-	this->description += "{(\sum_{";
+	this->description += "{(\\sum_{";
 	this->description += exp.getIndexName() + "=" + std::to_string(exp.getStartId()) + "}^{";
 	this->description += std::to_string(exp.getFinishId()) + "} ";
 	exp.getExpression()->Accept(*this);
 	this->description += ")}";
 }
 
-std::string CExportTexVisitor::getTexFile() const
+std::string CExportTexVisitor::getFile() const
 {
 	return this->description;
 }
@@ -67,7 +62,7 @@ void CExportTexVisitor::addAriphmeticOp(LSVUtils::TOperation operation, COpExp &
 
 void CExportTexVisitor::addFracOperation(COpExp &exp)
 {
-	this->description += "\frac";
+	this->description += "\\frac";
 	exp.getFirstOperand()->Accept(*this);
 	exp.getSecondOperand()->Accept(*this);
 }

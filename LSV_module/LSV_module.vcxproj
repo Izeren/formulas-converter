@@ -55,6 +55,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -94,6 +95,7 @@
     <ClCompile Include="visitors\CExportTexVisitor.cpp" />
     <ClCompile Include="visitors\CPrintVisitor.cpp" />
     <ClCompile Include="visitors\CSintacticValidationVisitor.cpp" />
+    <ClCompile Include="visitors\IExportVisitor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="converters\Converter.h" />
@@ -109,6 +111,7 @@
     <ClInclude Include="visitors\CExportTexVisitor.h" />
     <ClInclude Include="visitors\CPrintVisitor.h" />
     <ClInclude Include="visitors\CSintacticValdationVisitor.h" />
+    <ClInclude Include="visitors\IExportVisitor.h" />
     <ClInclude Include="visitors\IVisitor.h" />
     <ClInclude Include="visitors\MathMLBuildVisitor.h" />
   </ItemGroup>

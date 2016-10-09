@@ -5,12 +5,6 @@ CExportOpenMathVisitor::CExportOpenMathVisitor()
 	this->ClearVisitor();
 }
 
-void CExportOpenMathVisitor::ClearVisitor()
-{
-	this->description = "";
-}
-
-
 void CExportOpenMathVisitor::Visit(COpExp &exp)
 {
 	this->description += "{(";
@@ -54,7 +48,7 @@ void CExportOpenMathVisitor::Visit(CSumExp &exp)
 	this->description += ")}";
 }
 
-std::string CExportOpenMathVisitor::getOpenMathFile() const
+std::string CExportOpenMathVisitor::getFile() const
 {
 	return 	this->description;
 }

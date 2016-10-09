@@ -5,12 +5,6 @@ CExportMathMLVisitor::CExportMathMLVisitor()
 	this->ClearVisitor();
 }
 
-void CExportMathMLVisitor::ClearVisitor()
-{
-	this->description = "";
-}
-
-
 void CExportMathMLVisitor::Visit(COpExp &exp)
 {
 	this->description += "<mrow><mo>(</mo>\n";
@@ -59,7 +53,7 @@ void CExportMathMLVisitor::Visit(CSumExp &exp)
 	this->description += "</mrow>\n";
 }
 
-std::string CExportMathMLVisitor::getMathMLFile() const
+std::string CExportMathMLVisitor::getFile() const
 {
 	return "<math xmlns = 'http://www.w3.org/1998/Math/MathML' display = 'block'>" +
 		this->description + "</math>\n";

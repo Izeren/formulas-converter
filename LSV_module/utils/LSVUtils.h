@@ -16,7 +16,7 @@ namespace LSVUtils
 	bool checkDouble(std::string value);
 
 
-	static class utilsSettings {
+	class utilsSettings {
 	public:
 		static std::unordered_map<TOperation, TPriority> operationPriorities;
 	};

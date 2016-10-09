@@ -41,6 +41,9 @@
     <ClCompile Include="visitors\CExportTexVisitor.cpp">
       <Filter>visitors</Filter>
     </ClCompile>
+    <ClCompile Include="visitors\IExportVisitor.cpp">
+      <Filter>visitors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="converters\Converter.h">
@@ -86,6 +89,9 @@
       <Filter>visitors</Filter>
     </ClInclude>
     <ClInclude Include="visitors\CExportTexVisitor.h">
+      <Filter>visitors</Filter>
+    </ClInclude>
+    <ClInclude Include="visitors\IExportVisitor.h">
       <Filter>visitors</Filter>
     </ClInclude>
   </ItemGroup>

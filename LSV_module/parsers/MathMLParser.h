@@ -64,6 +64,10 @@ class CMathMLParser {
 			return LSVUtils::TOperation::POWER;
 			break;
 		}
+		default:
+		{
+			return LSVUtils::TOperation::PLUS;
+		}
 		}
 	}
 
