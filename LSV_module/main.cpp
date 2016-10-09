@@ -3,6 +3,7 @@
 #include "visitors/CPrintVisitor.h"
 #include "visitors/CExportMathMLVisitor.h"
 #include "visitors/CExportOpenMathVisitor.h"
+#include "visitors/CExportTexVisitor.h"
 #include "parsers/MathMLParser.h"
 #include <iostream>
 
@@ -21,9 +22,9 @@ int main()
 		std::cout << printVisitor.getDigraphDescription();
 		std::cout << validationVisitor.getValidationStatus() << " " << validationVisitor.getError() << "\n";
 
-		CExportOpenMathVisitor exportVisitor = CExportOpenMathVisitor();
+		CExportTexVisitor exportVisitor = CExportTexVisitor();
 		operationTree->Accept(exportVisitor);
-		std::cout << exportVisitor.getOpenMathFile() << "\n";
+		std::cout << exportVisitor.getTexFile() << "\n";
 	} catch (std::exception &ex) {
 		std::cout << ex.what() << std::endl;
 	}
