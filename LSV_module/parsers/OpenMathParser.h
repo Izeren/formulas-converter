@@ -3,7 +3,7 @@
 #include "./../expression_tree/Expression.h"
 #include "./../pugixml/pugixml.hpp"
 #include "./../utils/LSVUtils.h"
-#include "./../visitors/CExportTexVisitor.h"
+#include "./../visitors/CExportOpenMathVisitor.h"
 #include "Parser.h"
 #include <stdexcept>
 #include <sstream>
@@ -228,7 +228,7 @@ public:
 
 	std::shared_ptr<IExpression> parseFromFile(const char *path) override;
 
-	std::shared_ptr<IExpression> parse(const std::string &str);
+	std::shared_ptr<IExpression> parse(const std::string &str) override;
 
 };
 

@@ -6,7 +6,6 @@
 #include "./../parsers/OpenMathParser.h"
 #include "./../parsers/TexParser.h"
 #include <iostream>
-#include <unordered_map>
 
 class Converter {
 
@@ -16,11 +15,12 @@ public:
 
 	std::string convert(const std::string &expr, LSVUtils::TFormat from, LSVUtils::TFormat to);
 
-	Converter() :
-		get_parser{
-			{ LSVUtils::TEX, std::static_pointer_cast<IParser>(std::make_shared<CTexParser>()) },
-			{ LSVUtils::MATHML, std::static_pointer_cast<IParser>(std::make_shared<CMathMLParser>()) },
-			{ LSVUtils::OPENMATH, std::static_pointer_cast<IParser>(std::make_shared<COpenMathParser>()) }
-	}{}
+	Converter() {
+		get_parser[LSVUtils::TEX] = std::static_pointer_cast<IParser>(std::make_shared<CTexParser>());
+		get_parser[LSVUtils::MATHML] = std::static_pointer_cast<IParser>(std::make_shared<CMathMLParser>());
+		get_parser[LSVUtils::OPENMATH] = std::static_pointer_cast<IParser>(std::make_shared<COpenMathParser>());
+	}
+
+	std::string convert(const char *path, LSVUtils::TFormat from, LSVUtils::TFormat to);
 
 };

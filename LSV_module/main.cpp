@@ -1,34 +1,26 @@
 #include "expression_tree/Expression.h"
 #include "visitors/CSintacticValdationVisitor.h"
 #include "visitors/CPrintVisitor.h"
-#include "visitors/CExportMathMLVisitor.h"
-#include "visitors/CExportOpenMathVisitor.h"
-#include "visitors/CExportTexVisitor.h"
-#include "parsers/MathMLParser.h"
 #include "parsers/TexParser.h"
+#include "converters/Converter.h"
 #include <fstream>
 #include <iostream>
 
 int main()
 {
 	CTexParser parser;
-
+	Converter converter;
 	std::ofstream out("graph");
 
 	try {
-		std::shared_ptr<IExpression> operationTree = parser.parseFromFile("format_files/expr.tex");
-//		CSintacticValidationVisitor validationVisitor = CSintacticValidationVisitor();
-//		std::set<std::string> visibleIds = {"i", "x", "y"};
-//		validationVisitor.setVisibleIds(visibleIds);
-		CPrintVisitor printVisitor = CPrintVisitor();
-		operationTree->Accept(printVisitor);
-		operationTree->Accept(validationVisitor);
-		std::cout << printVisitor.getDigraphDescription();
-		std::cout << validationVisitor.getValidationStatus() << " " << validationVisitor.getError() << "\n";
-		std::cout << std::string(0, '2') << "\n";
-		CExportMathMLVisitor exportVisitor = CExportMathMLVisitor();
-		operationTree->Accept(exportVisitor);
-		std::cout << exportVisitor.getFile() << "\n";
+
+		std::cout << converter.convert("format_files/right_complex_expr.tex", LSVUtils::TFormat::TEX, LSVUtils::TFormat::OPENMATH) << "\n";
+		std::shared_ptr<IExpression> operationTree = parser.parseFromFile("format_files/right_complex_expr.tex");
+
+		CPrintVisitor graph = CPrintVisitor();
+		operationTree->Accept(graph);
+		out << graph.getDigraphDescription();
+
 	} catch (std::exception &ex) {
 		std::cout << ex.what() << std::endl;
 	}
