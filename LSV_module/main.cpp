@@ -22,11 +22,11 @@ int main()
 //		validationVisitor.setVisibleIds(visibleIds);
 		CPrintVisitor printVisitor = CPrintVisitor();
 		operationTree->Accept(printVisitor);
-//		operationTree->Accept(validationVisitor);
-		out << printVisitor.getDigraphDescription();
-//		std::cout << validationVisitor.getValidationStatus() << " " << validationVisitor.getError() << "\n";
-
-		CExportTexVisitor exportVisitor = CExportTexVisitor();
+		operationTree->Accept(validationVisitor);
+		std::cout << printVisitor.getDigraphDescription();
+		std::cout << validationVisitor.getValidationStatus() << " " << validationVisitor.getError() << "\n";
+		std::cout << std::string(0, '2') << "\n";
+		CExportMathMLVisitor exportVisitor = CExportMathMLVisitor();
 		operationTree->Accept(exportVisitor);
 		std::cout << exportVisitor.getFile() << "\n";
 	} catch (std::exception &ex) {

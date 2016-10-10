@@ -60,13 +60,13 @@ void CSintacticValidationVisitor::Visit(CSumExp &exp) {
 	{
 		return this->setError("Wrong or empty index name for sum\n");
 	}
-	if (visibleSumIndices.find(exp.getIndexName()) != visibleSumIndices.end()) {
-		return this->setError("Index name of sum is already used by upper sum\n");
+	if (this->visibleIds.find(exp.getIndexName()) != this->visibleIds.end()) {
+		return this->setError("Index name of sum overlappes the upper variable\n");
 	}
 
-	this->visibleSumIndices.insert(exp.getIndexName());
+	this->visibleIds.insert(exp.getIndexName());
 	exp.getExpression()->Accept(*this);
-	this->visibleSumIndices.erase(exp.getIndexName());
+	this->visibleIds.erase(exp.getIndexName());
 }
 
 bool CSintacticValidationVisitor::getValidationStatus() const

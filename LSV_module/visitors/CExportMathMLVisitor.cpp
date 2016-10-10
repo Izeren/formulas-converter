@@ -11,8 +11,9 @@ void CExportMathMLVisitor::Visit(COpExp &exp)
 	LSVUtils::TPriority priority = LSVUtils::utilsSettings::operationPriorities[operation];
 	bool isNotPrioritised = this->priorities.top() > priority;
 	this->priorities.push(priority);
+	this->openTag("mrow");
 	if (isNotPrioritised) {
-		this->description += "<mo>(</mo>\n";
+		this->addOperatorTag("(");
 	}
 	switch (operation) 
 	{
@@ -33,41 +34,40 @@ void CExportMathMLVisitor::Visit(COpExp &exp)
 		}
 	}
 	if (isNotPrioritised) {
-		this->description += "<mo>)</mo>\n";
+		this->addOperatorTag(")");
 	}
+	this->closeTag("mrow");
 	this->priorities.pop();
 }
 
 void CExportMathMLVisitor::Visit(CNumExp &exp)
 {
-	this->description += "<mn>" + std::to_string(exp.getValue()) + "</mn>\n";
+	this->addNumberTag(exp.getValue());
 }
 
 void CExportMathMLVisitor::Visit(CIdExp &exp)
 {
-	this->description += "<mi>" + exp.getName() + "</mi>\n";
+	this->addIdTag(exp.getName());
 }
 
 void CExportMathMLVisitor::Visit(CSumExp &exp)
 {
-	bool isNotPrioritised = this->priorities.top() > LSVUtils::TPriority::SUMMATION;
 	this->priorities.push(LSVUtils::TPriority::SUMMATION);
-	if (isNotPrioritised) {
-		this->description += "<mo>(</mo>\n";
-	}
-	this->description += "<mrow>";
-	this->description += "<munderover>";
-	this->description += "<mo>&sum;</mo>\n";
-	this->description += "<mrow><mi>" + exp.getIndexName() + "</mi>\n";
-	this->description += "<mo>=</mo>\n";
-	this->description += "<mn>" + std::to_string(exp.getStartId()) + "</mn>\n</mrow>\n";
-	this->description += "<mn>" + std::to_string(exp.getFinishId()) + "</mn>\n";
-	this->description += "</munderover>\n";
+	this->openTag("mrow");
+	this->openTag("munderover");
+	this->addOperatorTag("&sum;");
+	this->openTag("mrow");
+	this->addIdTag(exp.getIndexName());
+	this->addOperatorTag("=");
+	this->addNumberTag(exp.getStartId());
+	this->closeTag("mrow");
+	this->addNumberTag(exp.getFinishId());
+	this->closeTag("munderover");
+	this->addOperatorTag("(");
 	exp.getExpression()->Accept(*this);
-	this->description += "</mrow>\n";
-	if (isNotPrioritised) {
-		this->description += "<mo>)</mo>\n";
-	}
+	this->addOperatorTag(")");
+	this->closeTag("mrow");
+
 	this->priorities.pop();
 }
 
@@ -80,22 +80,49 @@ std::string CExportMathMLVisitor::getFile() const
 void CExportMathMLVisitor::addAriphmeticOp(LSVUtils::TOperation operation, COpExp &exp)
 {
 	exp.getFirstOperand()->Accept(*this);
-	this->description += "<mo>" + COpExp::operationNames[operation] + "</mo>\n";
+	this->addOperatorTag(COpExp::operationNames[operation]);
 	exp.getSecondOperand()->Accept(*this);
 }
 
 void CExportMathMLVisitor::addFracOperation(COpExp &exp)
 {
-	this->description += "<mfrac>\n";
+	this->openTag("mfrac");
 	exp.getFirstOperand()->Accept(*this);
 	exp.getSecondOperand()->Accept(*this);
-	this->description += "</mfrac>\n";
+	this->closeTag("mfrac");
 }
 
 void CExportMathMLVisitor::addPowerOperation(COpExp &exp)
 {
-	this->description += "<msup>\n";
+	this->openTag("msup");
 	exp.getFirstOperand()->Accept(*this);
 	exp.getSecondOperand()->Accept(*this);
-	this->description += "</msup>\n";
+	this->closeTag("msup");
+}
+
+void CExportMathMLVisitor::openTag(const std::string &tag)
+{
+	this->description += std::string(this->depth, '\t') + "<" + tag + ">\n";
+	this->depth += 1;
+}
+
+void CExportMathMLVisitor::closeTag(const std::string &tag)
+{
+	this->depth -= 1;
+	this->description += std::string(this->depth, '\t') + "</" + tag + ">\n";
+}
+
+void CExportMathMLVisitor::addOperatorTag(const std::string &oper)
+{
+	this->description += std::string(this->depth, '\t') + "<mo>" + oper + "</mo>\n";
+}
+
+void CExportMathMLVisitor::addNumberTag(double value)
+{
+	this->description += std::string(this->depth, '\t') + "<mn>" + std::to_string(value) + "</mn>\n";
+}
+
+void CExportMathMLVisitor::addIdTag(const std::string &name)
+{
+	this->description += std::string(this->depth, '\t') + "<mi>" + name + "</mi>\n";
 }

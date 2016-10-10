@@ -11,7 +11,6 @@ void CExportTexVisitor::Visit(COpExp &exp)
 	LSVUtils::TPriority priority = LSVUtils::utilsSettings::operationPriorities[operation];
 	bool isNotPrioritised = this->priorities.top() > priority;
 	this->priorities.push(priority);
-	this->description += "{";
 	if (isNotPrioritised) {
 		this->description += "(";
 	}
@@ -36,37 +35,28 @@ void CExportTexVisitor::Visit(COpExp &exp)
 	if (isNotPrioritised) {
 		this->description += ")";
 	}
-	this->description += "}";
 	this->priorities.pop();
 }
 
 void CExportTexVisitor::Visit(CNumExp &exp)
 {
-	this->description += "{" + std::to_string(exp.getValue()) + "}";
+	this->description += std::to_string(exp.getValue());
 }
 
 void CExportTexVisitor::Visit(CIdExp &exp)
 {
-	this->description += "{" + exp.getName() + "}";
+	this->description += exp.getName();
 }
 
 void CExportTexVisitor::Visit(CSumExp &exp)
 {
-	bool isNotPrioritised = this->priorities.top() > LSVUtils::TPriority::SUMMATION;
 	this->priorities.push(LSVUtils::TPriority::SUMMATION);
-
-	this->description += "{";
-	if (isNotPrioritised) {
-		this->description += "(";
-	}
 	this->description += "\\sum_{";
 	this->description += exp.getIndexName() + "=" + std::to_string(exp.getStartId()) + "}^{";
 	this->description += std::to_string(exp.getFinishId()) + "} ";
+	this->description += "(";
 	exp.getExpression()->Accept(*this);
-	if (isNotPrioritised) {
-		this->description += ")";
-	}
-	this->description += "}";
+	this->description += ")";
 	this->priorities.pop();
 }
 
@@ -84,9 +74,11 @@ void CExportTexVisitor::addAriphmeticOp(LSVUtils::TOperation operation, COpExp &
 
 void CExportTexVisitor::addFracOperation(COpExp &exp)
 {
-	this->description += "\\frac";
+	this->description += "\\frac{";
 	exp.getFirstOperand()->Accept(*this);
+	this->description += "}{";
 	exp.getSecondOperand()->Accept(*this);
+	this->description += "}";
 }
 
 void CExportTexVisitor::addPowerOperation(COpExp &exp)

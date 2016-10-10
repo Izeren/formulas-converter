@@ -27,7 +27,6 @@ public:
 
 private:
 	std::set<std::string> visibleIds;
-	std::set<std::string> visibleSumIndices;
 	std::string validationError;
 	bool isValidated;
 };
