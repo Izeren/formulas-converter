@@ -24,10 +24,6 @@ std::shared_ptr<IExpression> CTexParser::parseFromFile(const char *path) {
 	std::ifstream t(path);
 	std::string str;
 
-	t.seekg(0, std::ios::end);
-	str.reserve(t.tellg());
-	t.seekg(0, std::ios::beg);
-
 	str.assign((std::istreambuf_iterator<char>(t)),
 		std::istreambuf_iterator<char>());
 

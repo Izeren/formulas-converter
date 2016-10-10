@@ -66,7 +66,7 @@ std::shared_ptr<IExpression> CMathMLParser::parse(const std::string &str) {
 	
 	pugi::xml_document doc;
 
-	pugi::xml_parse_result result = doc.load_string(str.c_str);
+	pugi::xml_parse_result result = doc.load_string(str.c_str());
 
 	if (result) {
 

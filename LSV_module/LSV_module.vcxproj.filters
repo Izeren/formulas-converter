@@ -23,9 +23,6 @@
     <ClCompile Include="visitors\CSintacticValidationVisitor.cpp">
       <Filter>visitors</Filter>
     </ClCompile>
-    <ClCompile Include="expression_tree\Expression.cpp">
-      <Filter>expression_tree</Filter>
-    </ClCompile>
     <ClCompile Include="pugixml\pugixml.cpp">
       <Filter>pugixml</Filter>
     </ClCompile>
@@ -43,6 +40,9 @@
     </ClCompile>
     <ClCompile Include="visitors\IExportVisitor.cpp">
       <Filter>visitors</Filter>
+    </ClCompile>
+    <ClCompile Include="expression_tree\Expression.cpp">
+      <Filter>expression_tree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

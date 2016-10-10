@@ -15,7 +15,7 @@ void COpenMathParser::errorMessage(const char *message) {
 
 //public
 std::string COpenMathParser::buildFromTree(std::shared_ptr<IExpression> expr) {
-	CExportTexVisitor exportVisitor = CExportTexVisitor();
+	CExportOpenMathVisitor exportVisitor = CExportOpenMathVisitor();
 	expr->Accept(exportVisitor);
 	return exportVisitor.getFile();
 }
@@ -24,10 +24,6 @@ std::shared_ptr<IExpression> COpenMathParser::parseFromFile(const char *path) {
 
 	std::ifstream t(path);
 	std::string str;
-
-	t.seekg(0, std::ios::end);
-	str.reserve(t.tellg());
-	t.seekg(0, std::ios::beg);
 
 	str.assign((std::istreambuf_iterator<char>(t)),
 		std::istreambuf_iterator<char>());
