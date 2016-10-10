@@ -9,24 +9,24 @@
 #include <string>
 #include <set>
 
-class CSintacticValidationVisitor : public IVisitor {
+class CPrintVisitor : public IVisitor
+{
 public:
 
-	CSintacticValidationVisitor();
 	void ClearVisitor();
-
+	CPrintVisitor();
 	void Visit(COpExp &exp) override;
 	void Visit(CNumExp &exp) override;
 	void Visit(CIdExp &exp) override;
 	void Visit(CSumExp &exp) override;
 
-	std::string getError() const;
-	bool getValidationStatus() const;
-	void setVisibleIds(const std::set<std::string> &visibleIds);
-	void setError(const std::string &errorText);
+	std::string getDigraphDescription() const;
 
 private:
-	std::set<std::string> visibleIds;
-	std::string validationError;
-	bool isValidated;
+	std::string description;
+	int lastVisited;
+	void addNode(const std::string &name, const std::string &label);
+	void addEdge(const std::string &from, const std::string &to);
+	void addEdge(int from, int to);
+
 };

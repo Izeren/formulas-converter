@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../visitor_results/IVisitorResult.h"
-
 /*
 	Важный блок forward declaration, здесь нужно указать
 	все возможные типы вершин дерева, которое мы планируем
@@ -21,8 +19,9 @@ class IVisitor
 {
 
 public:
-	virtual IVisitorResult* Visit(COpExp *exp) = 0;
-	virtual IVisitorResult* Visit(CNumExp *exp) = 0;
-	virtual IVisitorResult* Visit(CIdExp *exp) = 0;
-	virtual IVisitorResult* Visit(CSumExp *exp) = 0;
+	virtual ~IVisitor() {}
+	virtual void Visit(COpExp &exp) = 0;
+	virtual void Visit(CNumExp &exp) = 0;
+	virtual void Visit(CIdExp &exp) = 0;
+	virtual void Visit(CSumExp &exp) = 0;
 };
