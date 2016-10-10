@@ -9,24 +9,14 @@
 #include <stack>
 #include <set>
 #include <map>
-
-namespace StrOp {
-	const std::string PLUS = "+";
-	const std::string MINUS = "-";
-	const std::string MULT = "*";
-	const std::string DIVIDE = "/";
-	const std::string POWER = "^";
-	const std::string SUM = "&sum;";
-	const std::string LBRACE = "(";
-	const std::string RBRACE = ")";
-};
-
-
+#include <unordered_map>
 
 class CMathMLParser {
 
+	std::unordered_map<char, TOperation> get_op;
+
 	bool is_op(char c) {
-		return c == '+' || c == '-' || c == '*' || c == '/' || c == '^';
+		return get_op.find(c) != get_op.end();
 	}
 
 	bool left_assoc(char c) {
@@ -40,35 +30,6 @@ class CMathMLParser {
 			op == '+' || op == '-' ? 1 :
 			op == '*' || op == '/' || op == '%' ? 2 :
 			-1;
-	}
-
-	LSVUtils::TOperation getTOp(char op) {
-		switch (op) {
-		case '+':  {
-			return LSVUtils::TOperation::PLUS;
-			break;
-		}
-		case '-':  {
-			return LSVUtils::TOperation::MINUS;
-			break;
-		}
-		case '*':  {
-			return LSVUtils::TOperation::MULTIPLY;
-			break;
-		}
-		case '/':  {
-			return LSVUtils::TOperation::DIVIDE;
-			break;
-		}
-		case '^':  {
-			return LSVUtils::TOperation::POWER;
-			break;
-		}
-		default:
-		{
-			return LSVUtils::TOperation::PLUS;
-		}
-		}
 	}
 
 	std::string cleanDelims(std::string &line) {
@@ -99,7 +60,7 @@ class CMathMLParser {
 		else {
 			std::shared_ptr<IExpression> r = expr_stack.top();  expr_stack.pop();
 			std::shared_ptr<IExpression> l = expr_stack.top();  expr_stack.pop();
-			LSVUtils::TOperation t_op = getTOp(op);
+			TOperation t_op = get_op[op];
 			expr_stack.push(std::static_pointer_cast<IExpression>(std::make_shared<COpExp>(l, r, t_op)));
 		}
 	}
@@ -393,6 +354,14 @@ class CMathMLParser {
 	void errorMessage(const char *message);
 
 public:
+
+	CMathMLParser() {
+		get_op['+'] = TOperation::PLUS;
+		get_op['-'] = TOperation::MINUS;
+		get_op['*'] = TOperation::MULTIPLY;
+		get_op['/'] = TOperation::DIVIDE;
+		get_op['^'] = TOperation::POWER;
+	}
 
 	std::string buildFromTree(std::shared_ptr<IExpression> expr);
 
