@@ -20,8 +20,9 @@ void CMathMLParser::errorMessage(const char *message) {
 
 //public:
 std::string CMathMLParser::buildFromTree(std::shared_ptr<IExpression> expr) {
-
-	return "";
+	CExportMathMLVisitor exportVisitor = CExportMathMLVisitor();
+	expr->Accept(exportVisitor);
+	return exportVisitor.getFile();
 }
 
 std::shared_ptr<IExpression> CMathMLParser::parseFromFile(const char *path) {

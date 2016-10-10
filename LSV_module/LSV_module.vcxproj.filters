@@ -94,6 +94,9 @@
     <ClInclude Include="visitors\IExportVisitor.h">
       <Filter>visitors</Filter>
     </ClInclude>
+    <ClInclude Include="parsers\Parser.h">
+      <Filter>parsers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="converters">

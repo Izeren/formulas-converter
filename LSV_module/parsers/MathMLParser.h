@@ -3,6 +3,8 @@
 #include "./../expression_tree/Expression.h"
 #include "./../pugixml/pugixml.hpp"
 #include "./../utils/LSVUtils.h"
+#include "./../visitors/CExportMathMLVisitor.h"
+#include "Parser.h"
 #include <stdexcept>
 #include <sstream>
 #include <fstream>
@@ -11,9 +13,9 @@
 #include <map>
 #include <unordered_map>
 
-class CMathMLParser {
+class CMathMLParser: public IParser {
 
-	std::unordered_map<char, TOperation> get_op;
+	std::unordered_map<char, LSVUtils::TOperation> get_op;
 
 	bool is_op(char c) {
 		return get_op.find(c) != get_op.end();
@@ -60,7 +62,7 @@ class CMathMLParser {
 		else {
 			std::shared_ptr<IExpression> r = expr_stack.top();  expr_stack.pop();
 			std::shared_ptr<IExpression> l = expr_stack.top();  expr_stack.pop();
-			TOperation t_op = get_op[op];
+			LSVUtils::TOperation t_op = get_op[op];
 			expr_stack.push(std::static_pointer_cast<IExpression>(std::make_shared<COpExp>(l, r, t_op)));
 		}
 	}
@@ -356,11 +358,11 @@ class CMathMLParser {
 public:
 
 	CMathMLParser() {
-		get_op['+'] = TOperation::PLUS;
-		get_op['-'] = TOperation::MINUS;
-		get_op['*'] = TOperation::MULTIPLY;
-		get_op['/'] = TOperation::DIVIDE;
-		get_op['^'] = TOperation::POWER;
+		get_op['+'] = LSVUtils::TOperation::PLUS;
+		get_op['-'] = LSVUtils::TOperation::MINUS;
+		get_op['*'] = LSVUtils::TOperation::MULTIPLY;
+		get_op['/'] = LSVUtils::TOperation::DIVIDE;
+		get_op['^'] = LSVUtils::TOperation::POWER;
 	}
 
 	std::string buildFromTree(std::shared_ptr<IExpression> expr);
