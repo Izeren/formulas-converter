@@ -2,9 +2,11 @@
 
 #define BAD_ID "error_name"
 #include "../visitors/IVisitor.h"
+#include "../utils/LSVUtils.h"
 #include <string>
 #include <memory>
 #include <iostream>
+#include <unordered_map>
 
 /**
 	Для хранения текущей формулы внутри редактора
@@ -19,6 +21,7 @@ class IExpression
 public:
 	virtual ~IExpression() {}
 	virtual void Accept(IVisitor &) = 0;
+	static int MISSED_NODE;
 };
 
 /**
@@ -62,11 +65,6 @@ private:
 	double value;
 };
 
-
-
-enum TOperation { PLUS, MINUS, MULTIPLY, DIVIDE, FRAC, POWER, SUM };
-
-
 /**
 COpExp отвечает за арифметические действия над
 над вычислимыми выражениями (IExpression), хранит
@@ -75,15 +73,18 @@ COpExp отвечает за арифметические действия на�
 class COpExp : public IExpression {
 public:
 	void Accept(IVisitor &visitor) override;
-	COpExp(std::shared_ptr<IExpression> leftOperand, std::shared_ptr<IExpression> rightOperand, TOperation operation);
+	COpExp(std::shared_ptr<IExpression> leftOperand, std::shared_ptr<IExpression> rightOperand, LSVUtils::TOperation operation);
 	COpExp();
 
 	bool setFirstOperand(std::shared_ptr<IExpression> pointer);
 	std::shared_ptr<IExpression> getFirstOperand() const;
 	bool setSecondOperand(std::shared_ptr<IExpression> pointer);
 	std::shared_ptr<IExpression> getSecondOperand() const;
-	void setOperation(TOperation operation);
-	TOperation getOperation() const;
+	void setOperation(LSVUtils::TOperation operation);
+	LSVUtils::TOperation getOperation() const;
+	std::string getStringOperation() const;
+
+	static std::unordered_map<LSVUtils::TOperation, std::string> operationNames;
 
 	/*
 		Для операции FRAC, операнды нумеруются сверху вниз
@@ -93,7 +94,7 @@ public:
 private:
 	std::shared_ptr<IExpression> firstOperand;
 	std::shared_ptr<IExpression> secondOperand;
-	TOperation operation;
+	LSVUtils::TOperation operation;
 };
 
 

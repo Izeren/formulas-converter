@@ -1,8 +1,14 @@
 #include "CSintacticValdationVisitor.h"
 
+CSintacticValidationVisitor::CSintacticValidationVisitor()
+{
+	this->ClearVisitor();
+}
+
 void CSintacticValidationVisitor::ClearVisitor()
 {
 	this->visibleIds.clear();
+	this->isValidated = true;
 }
 
 
@@ -77,4 +83,9 @@ void CSintacticValidationVisitor::setError(const std::string &errorText)
 {
 	this->isValidated = false;
 	this->validationError = errorText;
+}
+
+std::string CSintacticValidationVisitor::getError() const 
+{
+	return this->validationError;
 }

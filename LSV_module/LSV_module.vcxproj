@@ -55,6 +55,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -89,7 +90,12 @@
     <ClCompile Include="parsers\TexParser.cpp" />
     <ClCompile Include="pugixml\pugixml.cpp" />
     <ClCompile Include="utils\LSVUtils.cpp" />
+    <ClCompile Include="visitors\CExportMathMLVisitor.cpp" />
+    <ClCompile Include="visitors\CExportOpenMathVisitor.cpp" />
+    <ClCompile Include="visitors\CExportTexVisitor.cpp" />
+    <ClCompile Include="visitors\CPrintVisitor.cpp" />
     <ClCompile Include="visitors\CSintacticValidationVisitor.cpp" />
+    <ClCompile Include="visitors\IExportVisitor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="converters\Converter.h" />
@@ -100,7 +106,12 @@
     <ClInclude Include="pugixml\pugiconfig.hpp" />
     <ClInclude Include="pugixml\pugixml.hpp" />
     <ClInclude Include="utils\LSVUtils.h" />
+    <ClInclude Include="visitors\CExportMathMLVisitor.h" />
+    <ClInclude Include="visitors\CExportOpenMathVisitor.h" />
+    <ClInclude Include="visitors\CExportTexVisitor.h" />
+    <ClInclude Include="visitors\CPrintVisitor.h" />
     <ClInclude Include="visitors\CSintacticValdationVisitor.h" />
+    <ClInclude Include="visitors\IExportVisitor.h" />
     <ClInclude Include="visitors\IVisitor.h" />
     <ClInclude Include="visitors\MathMLBuildVisitor.h" />
   </ItemGroup>

@@ -52,7 +52,7 @@ class CMathMLParser {
 			}
 			case '-':  {
 				std::shared_ptr<IExpression> zero = std::static_pointer_cast<IExpression>(std::make_shared<CNumExp>(0));
-				expr_stack.push(std::static_pointer_cast<IExpression>(std::make_shared<COpExp>(zero, l, TOperation::MINUS)));
+				expr_stack.push(std::static_pointer_cast<IExpression>(std::make_shared<COpExp>(zero, l, LSVUtils::TOperation::MINUS)));
 				break;
 			}
 			}
@@ -326,7 +326,7 @@ class CMathMLParser {
 		std::shared_ptr<IExpression> first_expr = parseExpr(first);
 		std::shared_ptr<IExpression> second_expr = parseExpr(second);
 
-		return std::static_pointer_cast<IExpression>(std::make_shared<COpExp>(first_expr, second_expr, TOperation::POWER));
+		return std::static_pointer_cast<IExpression>(std::make_shared<COpExp>(first_expr, second_expr, LSVUtils::TOperation::POWER));
 	}
 
 	std::shared_ptr<IExpression> parseFrac(pugi::xml_node &node) {
@@ -345,7 +345,7 @@ class CMathMLParser {
 		std::shared_ptr<IExpression> first_expr = parseExpr(first);
 		std::shared_ptr<IExpression> second_expr = parseExpr(second);
 
-		return std::static_pointer_cast<IExpression>(std::make_shared<COpExp>(first_expr, second_expr, TOperation::FRAC));
+		return std::static_pointer_cast<IExpression>(std::make_shared<COpExp>(first_expr, second_expr, LSVUtils::TOperation::FRAC));
 	}
 
 
