@@ -35,3 +35,11 @@ std::shared_ptr<IExpression> CTexParser::parseFromFile(const char *path) {
 	cleanDelims(str);
 	return parseExpr(str, start);
 }
+
+std::shared_ptr<IExpression> CTexParser::parse(const std::string &str) {
+
+	size_t start = 0;
+	std::string str_cpy(str);
+	cleanDelims(str_cpy);
+	return parseExpr(str_cpy, start);
+}

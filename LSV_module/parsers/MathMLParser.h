@@ -354,7 +354,7 @@ class CMathMLParser: public IParser {
 	bool nameEqual(pugi::xml_node &node, const char *name);
 	void errorMessage(std::string &message);
 	void errorMessage(const char *message);
-
+	
 public:
 
 	CMathMLParser() {
@@ -365,9 +365,11 @@ public:
 		get_op['^'] = LSVUtils::TOperation::POWER;
 	}
 
-	std::string buildFromTree(std::shared_ptr<IExpression> expr);
+	std::string buildFromTree(std::shared_ptr<IExpression> expr) override;
 
-	std::shared_ptr<IExpression> parseFromFile(const char *path);
+	std::shared_ptr<IExpression> parseFromFile(const char *path) override;
+
+	std::shared_ptr<IExpression> parse(const std::string &str) override;
 
 };
 

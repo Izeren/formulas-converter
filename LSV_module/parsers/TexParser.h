@@ -231,5 +231,7 @@ public:
 
 	std::shared_ptr<IExpression> parseFromFile(const char *path) override;
 
+	std::shared_ptr<IExpression> parse(const std::string &str) override;
+
 };
 

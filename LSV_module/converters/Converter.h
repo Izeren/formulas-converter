@@ -14,7 +14,7 @@ class Converter {
 
 public:
 
-	std::string convert(std::string &expr, LSVUtils::TFormat from, LSVUtils::TFormat to);
+	std::string convert(const std::string &expr, LSVUtils::TFormat from, LSVUtils::TFormat to);
 
 	Converter() :
 		get_parser{
