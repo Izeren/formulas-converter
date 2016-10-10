@@ -17,18 +17,9 @@ int main()
 
 	try {
 		std::shared_ptr<IExpression> operationTree = parser.parseFromFile("format_files/expr.tex");
-//		CSintacticValidationVisitor validationVisitor = CSintacticValidationVisitor();
-//		std::set<std::string> visibleIds = {"i", "x", "y"};
-//		validationVisitor.setVisibleIds(visibleIds);
 		CPrintVisitor printVisitor = CPrintVisitor();
 		operationTree->Accept(printVisitor);
-		operationTree->Accept(validationVisitor);
-		std::cout << printVisitor.getDigraphDescription();
-		std::cout << validationVisitor.getValidationStatus() << " " << validationVisitor.getError() << "\n";
-		std::cout << std::string(0, '2') << "\n";
-		CExportMathMLVisitor exportVisitor = CExportMathMLVisitor();
-		operationTree->Accept(exportVisitor);
-		std::cout << exportVisitor.getFile() << "\n";
+		out << printVisitor.getDigraphDescription();
 	} catch (std::exception &ex) {
 		std::cout << ex.what() << std::endl;
 	}

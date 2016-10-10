@@ -1,3 +1,4 @@
+#pragma once
 #include "./../expression_tree/Expression.h"
 
 class IParser {
