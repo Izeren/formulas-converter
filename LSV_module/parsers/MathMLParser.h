@@ -31,6 +31,7 @@ class CMathMLParser: public IParser {
 		return
 			op == '+' || op == '-' ? 1 :
 			op == '*' || op == '/' || op == '%' ? 2 :
+			op == '^' ? 3 :
 			-1;
 	}
 

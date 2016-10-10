@@ -36,6 +36,7 @@ class COpenMathParser: public IParser {
 			op == 's' ? 0 :
 			op == '+' || op == '-' ? 1 :
 			op == '*' || op == '/' || op == '%' ? 2 :
+			op == '^' ? 3 :
 			-1;
 	}
 
