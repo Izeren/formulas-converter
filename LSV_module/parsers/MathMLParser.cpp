@@ -20,8 +20,9 @@ void CMathMLParser::errorMessage(const char *message) {
 
 //public:
 std::string CMathMLParser::buildFromTree(std::shared_ptr<IExpression> expr) {
-
-	return "";
+	CExportMathMLVisitor exportVisitor = CExportMathMLVisitor();
+	expr->Accept(exportVisitor);
+	return exportVisitor.getFile();
 }
 
 std::shared_ptr<IExpression> CMathMLParser::parseFromFile(const char *path) {
@@ -58,7 +59,41 @@ std::shared_ptr<IExpression> CMathMLParser::parseFromFile(const char *path) {
 		throw std::runtime_error(sstream.str());
 	}
 	
+	return nullptr;
+}
 
+std::shared_ptr<IExpression> CMathMLParser::parse(const std::string &str) {
+	
+	pugi::xml_document doc;
+
+	pugi::xml_parse_result result = doc.load_string(str.c_str);
+
+	if (result) {
+
+		pugi::xml_node root = doc.first_child();
+		if (std::string(root.name()) != "math") {
+			errorMessage("Root element must have name \"math\"");
+		}
+
+		return parseExpr(root);
+	}
+	else {
+
+		std::ostringstream sstream;
+
+		sstream << "CMathMLParser: parsed with errors.\n";
+		sstream << "Error description: " << result.description() << "\n";
+
+		std::stringstream strm(str);
+		strm.seekg(result.offset);
+
+		std::string error_line;
+		strm >> error_line;
+
+		sstream << "Error offset: " << result.offset << " (error at [..." << error_line << "]\n\n";
+
+		throw std::runtime_error(sstream.str());
+	}
 
 	return nullptr;
 }
