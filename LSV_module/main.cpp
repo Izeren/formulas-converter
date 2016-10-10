@@ -1,6 +1,7 @@
 #include "expression_tree/Expression.h"
 #include "visitors/CSintacticValdationVisitor.h"
 #include "parsers\MathMLParser.h"
+#include "parsers\TexParser.h"
 #include <iostream>
 
 int main()
@@ -15,10 +16,10 @@ int main()
 	operationTree->Accept(visitor);
 	std::cout << temp.getValidationStatus() << "\n";
 	
-	CMathMLParser parser;
+	CTexParser parser;
 
 	try {
-		parser.parseFromFile("format_files/expr.mathml");
+		parser.parseFromFile("format_files/expr.tex");
 	} catch (std::exception &ex) {
 		std::cout << ex.what() << std::endl;
 	}

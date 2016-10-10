@@ -64,7 +64,7 @@ private:
 
 
 
-enum TOperation { PLUS, MINUS, MULTIPLY, DIVIDE, FRAC, POWER };
+enum TOperation { PLUS, MINUS, MULTIPLY, DIVIDE, FRAC, POWER, SUM };
 
 
 /**
