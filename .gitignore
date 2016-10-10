@@ -8,6 +8,8 @@ math-redactor.VC.opendb
 *.user
 *.userosscache
 *.sln.docstates
+*.vcxproj
+*.vcxproj.filters
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
