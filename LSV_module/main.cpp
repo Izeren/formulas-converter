@@ -1,18 +1,35 @@
 #include "expression_tree/Expression.h"
 #include "visitors/CSintacticValdationVisitor.h"
-#include "visitor_results/CSintacticVisitorResults.h"
+#include "visitors/CPrintVisitor.h"
+#include "visitors/CExportMathMLVisitor.h"
+#include "visitors/CExportOpenMathVisitor.h"
+#include "visitors/CExportTexVisitor.h"
+#include "parsers/MathMLParser.h"
 #include <iostream>
 
 int main()
 {
-	IExpression *operationTree = new COpExp(
-		reinterpret_cast<IExpression *>(new CIdExp("a")),
-		reinterpret_cast<IExpression *>(new CNumExp("0.5"))
-	);
-	CSintacticValidationVisitor *validationVisitor = new CSintacticValidationVisitor();
-	CSintacticVisitorResults *results = 
-		reinterpret_cast<CSintacticVisitorResults *>(operationTree->Accept(validationVisitor));
-	std::cout << results->isValidated() << "\n";
-	
+	CMathMLParser parser;
+
+	try {
+		std::shared_ptr<IExpression> operationTree = parser.parseFromFile("format_files/expr.mathml");
+		CSintacticValidationVisitor validationVisitor = CSintacticValidationVisitor();
+		std::set<std::string> visibleIds = {"x", "y"};
+		validationVisitor.setVisibleIds(visibleIds);
+		CPrintVisitor printVisitor = CPrintVisitor();
+		operationTree->Accept(printVisitor);
+		operationTree->Accept(validationVisitor);
+		std::cout << printVisitor.getDigraphDescription();
+		std::cout << validationVisitor.getValidationStatus() << " " << validationVisitor.getError() << "\n";
+		std::cout << std::string(0, '2') << "\n";
+		CExportMathMLVisitor exportVisitor = CExportMathMLVisitor();
+		operationTree->Accept(exportVisitor);
+		std::cout << exportVisitor.getFile() << "\n";
+	} catch (std::exception &ex) {
+		std::cout << ex.what() << std::endl;
+	}
+
+	system("pause");
+
 	return 0;
 }

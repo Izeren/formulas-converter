@@ -1,55 +1,91 @@
 #include "CSintacticValdationVisitor.h"
 
-CSintacticValidationVisitor::CSintacticValidationVisitor() {}
+CSintacticValidationVisitor::CSintacticValidationVisitor()
+{
+	this->ClearVisitor();
+}
 
 void CSintacticValidationVisitor::ClearVisitor()
 {
-	visibleIds.clear();
+	this->visibleIds.clear();
+	this->isValidated = true;
 }
 
 
-IVisitorResult* CSintacticValidationVisitor::Visit(COpExp *exp)
+void CSintacticValidationVisitor::Visit(COpExp &exp)
 {
-
-	CSintacticVisitorResults* result;
-	bool leftValidationStatus = false, rightValidationStatus = false;
-	if (exp->getFirstOperand())
+	if (exp.getFirstOperand())
 	{
-		result = reinterpret_cast<CSintacticVisitorResults*>(exp->getFirstOperand()->Accept(this));
-		leftValidationStatus = result->isValidated();
-		delete result;
+		exp.getFirstOperand()->Accept(*this);
+		if (!this->isValidated) {
+			return;
+		}
+	}
+	else 
+	{
+		return this->setError("Missing first operand\n");
 	}
 	
-	if (exp->getSecondOperand())
+	if (exp.getSecondOperand())
 	{
-		result = reinterpret_cast<CSintacticVisitorResults*>(exp->getSecondOperand()->Accept(this));
-		rightValidationStatus = result->isValidated();
-		delete result;
+		exp.getSecondOperand()->Accept(*this);
+	}
+	else
+	{
+		return this->setError("Missing second operand\n");
 	}
 	
-	bool validationStatus = leftValidationStatus & rightValidationStatus;
-	return new CSintacticVisitorResults(validationStatus);
-
 }
 
-IVisitorResult* CSintacticValidationVisitor::Visit(CNumExp *exp) {
-	bool validationStatus = true;
-	return new CSintacticVisitorResults(validationStatus);
-}
+void CSintacticValidationVisitor::Visit(CNumExp &exp) {}
 
-IVisitorResult* CSintacticValidationVisitor::Visit(CIdExp *exp)
+void CSintacticValidationVisitor::Visit(CIdExp &exp)
 {
-
-	bool validationStatus = exp->getName() != "error_name";
-	return new CSintacticVisitorResults(validationStatus);
+	std::string &name = exp.getName();
+	if (name == BAD_ID) {
+		return this->setError("Wrong or empty variable name\n");
+	}
+	if (visibleIds.find(name) == visibleIds.end())
+	{
+		return this->setError(std::string("The unxpected variable: ") + exp.getName() + "\n");
+	}
 }
 
-IVisitorResult* CSintacticValidationVisitor::Visit(CSumExp *exp) {
+void CSintacticValidationVisitor::Visit(CSumExp &exp) {
 
-	bool validationStatus = true;
-	if (exp->getIndexName() == "error_name" || exp->getExpression() == 0)
-	{
-		validationStatus = false;
+	if (exp.getExpression() == NULL) {
+		return this->setError("Missed expression for sum\n");
 	}
-	return new CSintacticVisitorResults(validationStatus);
+	if (exp.getIndexName() == BAD_ID)
+	{
+		return this->setError("Wrong or empty index name for sum\n");
+	}
+	if (this->visibleIds.find(exp.getIndexName()) != this->visibleIds.end()) {
+		return this->setError("Index name of sum overlappes the upper variable\n");
+	}
+
+	this->visibleIds.insert(exp.getIndexName());
+	exp.getExpression()->Accept(*this);
+	this->visibleIds.erase(exp.getIndexName());
+}
+
+bool CSintacticValidationVisitor::getValidationStatus() const
+{
+	return this->isValidated;
+}
+
+void CSintacticValidationVisitor::setVisibleIds(const std::set<std::string> &visibleIds)
+{
+	this->visibleIds = visibleIds;
+}
+
+void CSintacticValidationVisitor::setError(const std::string &errorText)
+{
+	this->isValidated = false;
+	this->validationError = errorText;
+}
+
+std::string CSintacticValidationVisitor::getError() const 
+{
+	return this->validationError;
 }
