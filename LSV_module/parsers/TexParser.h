@@ -34,7 +34,6 @@ class CTexParser: public IParser {
 		if (op < 0)
 			return 4; // op == -'+' || op == -'-'
 		return
-			op == 's' ? 0 :
 			op == '+' || op == '-' ? 1 :
 			op == '*' || op == '/' || op == '%' ? 2 :
 			op == '^' ? 3 :
@@ -70,14 +69,7 @@ class CTexParser: public IParser {
 			std::shared_ptr<IExpression> r = expr_stack.top();  expr_stack.pop();
 			std::shared_ptr<IExpression> l = expr_stack.top();  expr_stack.pop();
 			LSVUtils::TOperation t_op = get_op[op];
-			if (t_op == LSVUtils::TOperation::SUM) {
-				std::shared_ptr<CSumExp> sum_exp = std::static_pointer_cast<CSumExp>(l);
-				sum_exp->setExpression(r);
-				expr_stack.push(std::static_pointer_cast<IExpression>(sum_exp));
-			}
-			else {
-				expr_stack.push(std::static_pointer_cast<IExpression>(std::make_shared<COpExp>(l, r, t_op)));
-			}
+			expr_stack.push(std::static_pointer_cast<IExpression>(std::make_shared<COpExp>(l, r, t_op)));
 		}
 	}
 	
@@ -124,7 +116,6 @@ class CTexParser: public IParser {
 				else if (operand[0] == '\\') {
 					if (operand == "\\sum") {
 						parseSum(expr_stack, str, ++i);
-						op_stack.push('s');
 					}
 					else if (operand == "\\frac") {
 						expr_stack.push(parseFrac(expr_stack, str, ++i));
@@ -152,22 +143,27 @@ class CTexParser: public IParser {
 
 	void parseSum(std::stack<std::shared_ptr<IExpression>> &expr_stack, std::string &str, size_t &ind) {
 
-		std::regex sum_exp("_\\{[_[:alnum:]][_[:alnum:][:digit:]]*=[[:digit:]]+\\}\\^\\{[[:digit:]]+\\}.*");
+		std::regex sum_exp("_\\{[_[:alnum:]][_[:alnum:][:digit:]]*=[[:digit:]]+\\}\\^\\{[[:digit:]]+\\}\\(.*\\).*");
 		//std::regex sum_exp("\\sum_.*");
 		std::string substr = str.substr(ind);
 		if (!std::regex_match(substr, sum_exp)) {
-			errorMessage("\\sum must be followed by '_{...}^{...}'");
+			errorMessage("\\sum must be followed by '_{...}^{...}(...)'");
 		}
 
 		std::string sum_id;
 		ind += 2;
+
 		while (ind < str.length() && isalnum(str[ind])) {
 			sum_id += str[ind++];
-		}
-		
+		}		
+
 		ind++;
 
 		std::string sum_start_str;
+		if (ind < str.length() && str[ind] == '-') {
+			sum_start_str = "-";
+			ind++;
+		}
 		while (ind < str.length() && isalnum(str[ind])) {
 			sum_start_str += str[ind++];
 		}
@@ -175,6 +171,10 @@ class CTexParser: public IParser {
 		ind += 3;
 
 		std::string sum_end_str;
+		if (ind < str.length() && str[ind] == '-') {
+			sum_end_str = "-";
+			ind++;
+		}
 		while (ind < str.length() && isalnum(str[ind])) {
 			sum_end_str += str[ind++];
 		}
@@ -182,7 +182,30 @@ class CTexParser: public IParser {
 		int sum_start = std::stoi(sum_start_str);
 		int sum_end = std::stoi(sum_end_str);
 
-		expr_stack.push(std::static_pointer_cast<IExpression>(std::make_shared<CSumExp>(sum_id, sum_start, sum_end, nullptr)));
+		std::stack<char> st;
+		st.push('(');
+		ind += 2;
+
+		std::string expr("(");
+
+		while (ind < str.length() && !st.empty()) {
+			if (str[ind] == '(') {
+				st.push('(');
+			}
+			else if (str[ind] == ')') {
+				if (st.empty()) {
+					errorMessage("\\sum expr is invalid");
+				}
+				st.pop();
+			}
+			expr += str[ind++];
+		}
+		--ind;
+		
+		size_t start = 0;
+		std::shared_ptr<IExpression> i_expr = parseExpr(expr, start);
+
+		expr_stack.push(std::static_pointer_cast<IExpression>(std::make_shared<CSumExp>(sum_id, sum_start, sum_end, i_expr)));
 	}
 
 	std::shared_ptr<IExpression> parseFrac(std::stack<std::shared_ptr<IExpression>> &expr_stack, std::string &str, size_t &ind) {
@@ -226,7 +249,6 @@ public:
 		get_op['*'] = LSVUtils::TOperation::MULTIPLY;
 		get_op['/'] = LSVUtils::TOperation::DIVIDE;
 		get_op['^'] = LSVUtils::TOperation::POWER;
-		get_op['s'] = LSVUtils::TOperation::SUM;
 	}
 
 	std::string buildFromTree(std::shared_ptr<IExpression> expr) override;
