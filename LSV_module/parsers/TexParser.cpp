@@ -24,8 +24,11 @@ std::shared_ptr<IExpression> CTexParser::parseFromFile(const char *path) {
 	std::ifstream t(path);
 	std::string str;
 
-	str.assign((std::istreambuf_iterator<char>(t)),
-		std::istreambuf_iterator<char>());
+	std::string temp;
+	while (std::getline(t, temp)) {
+		str += temp;
+	}
+	t.close();
 
 	size_t start = 0;
 	cleanDelims(str);

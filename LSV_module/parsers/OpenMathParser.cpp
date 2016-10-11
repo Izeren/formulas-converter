@@ -3,7 +3,7 @@
 //private:
 void COpenMathParser::errorMessage(std::string &message) {
 
-	throw std::logic_error("CTexParser: Formula contains the error:\n" + message);
+	throw std::logic_error("COpenMathParser: Formula contains the error:\n" + message);
 
 }
 
@@ -24,10 +24,12 @@ std::shared_ptr<IExpression> COpenMathParser::parseFromFile(const char *path) {
 
 	std::ifstream t(path);
 	std::string str;
-
-	str.assign((std::istreambuf_iterator<char>(t)),
-		std::istreambuf_iterator<char>());
-
+	std::string temp;
+	while (std::getline(t, temp)) {
+		str += temp;
+	}
+	t.close();
+	
 	size_t start = 0;
 	cleanDelims(str);
 	return parseExpr(str, start);
