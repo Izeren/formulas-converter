@@ -7,4 +7,5 @@ void IExportVisitor::ClearVisitor()
 	this->lastVisited = 0;
 	this->priorities = std::stack<LSVUtils::TPriority>();
 	this->priorities.push(LSVUtils::TPriority::EMPTY_FORMULA);
+	this->depth = 0;
 }

@@ -17,6 +17,7 @@ protected:
 	std::string description;
 	std::stack<LSVUtils::TPriority> priorities;
 	int lastVisited;
+	int depth;
 
 private:
 	virtual void addAriphmeticOp(LSVUtils::TOperation operation, COpExp &exp) = 0;
