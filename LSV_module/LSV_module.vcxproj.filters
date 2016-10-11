@@ -117,5 +117,13 @@
     <Filter Include="pugixml">
       <UniqueIdentifier>{2bc5c249-7d37-41f0-8c51-f1840bf82d66}</UniqueIdentifier>
     </Filter>
+    <Filter Include="files">
+      <UniqueIdentifier>{6f6c8045-f780-406e-9e36-6258d1b9bec2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="format_files\expr.tex">
+      <Filter>files</Filter>
+    </None>
   </ItemGroup>
 </Project>
