@@ -12,15 +12,10 @@ int main()
 	CMathMLParser parser;
 
 	try {
-		std::shared_ptr<IExpression> operationTree = parser.parseFromFile("format_files/expr.mathml");
-		CSintacticValidationVisitor validationVisitor = CSintacticValidationVisitor();
-		std::set<std::string> visibleIds = {"x", "y"};
-		validationVisitor.setVisibleIds(visibleIds);
+		std::shared_ptr<IExpression> operationTree = parser.parseFromFile("format_files/expr.tex");
 		CPrintVisitor printVisitor = CPrintVisitor();
 		operationTree->Accept(printVisitor);
-		operationTree->Accept(validationVisitor);
 		std::cout << printVisitor.getDigraphDescription();
-		std::cout << validationVisitor.getValidationStatus() << " " << validationVisitor.getError() << "\n";
 
 		CExportTexVisitor exportVisitor = CExportTexVisitor();
 		operationTree->Accept(exportVisitor);

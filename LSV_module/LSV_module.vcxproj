@@ -115,6 +115,9 @@
     <ClInclude Include="visitors\IVisitor.h" />
     <ClInclude Include="visitors\MathMLBuildVisitor.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="format_files\expr.tex" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
