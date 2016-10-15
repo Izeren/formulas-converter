@@ -4,7 +4,7 @@
 #include <commctrl.h>
 
 const LPCWSTR CMatheditorWindow::class_name_ = L"MatheditorWindow";
-const int ToolbarSize = 42;
+//const int ToolbarSize = 42;
 
 CMatheditorWindow::CMatheditorWindow() : hWndMainWindow(0) {
 	editControl = CEditControl();
@@ -139,7 +139,7 @@ void CMatheditorWindow::createToolbar() {
 void CMatheditorWindow::Show(int cmdShow) {
 	ShowWindow(hWndMainWindow, cmdShow);
 	editControl.Show(cmdShow);
-	UpdateWindow(hWndMainWindow);
+	//UpdateWindow(hWndMainWindow); //зачем это?
 }
 
 void CMatheditorWindow::OnCreate() {
@@ -152,9 +152,17 @@ void CMatheditorWindow::OnNCCreate(HWND hWnd) {
 
 void CMatheditorWindow::OnSize()
 {
-	RECT rect;
-	::GetClientRect(hWndMainWindow, &rect);
-	SetWindowPos(editControl.GetHandle(), HWND_TOP, rect.left, rect.top + ToolbarSize, rect.right - rect.left, rect.bottom - rect.top, 0);
+	RECT editControlRect;
+	::GetClientRect(hWndMainWindow, &editControlRect);
+
+	RECT toolbarRect;
+	::GetClientRect(hWndToolbar, &toolbarRect);
+
+	int editControlTop = editControlRect.top + (toolbarRect.bottom - toolbarRect.top),
+		editControlWidth = editControlRect.right - editControlRect.left,
+		editControlHeight = editControlRect.bottom - editControlRect.top;
+	SetWindowPos(editControl.GetHandle(), HWND_TOP, editControlRect.left, editControlTop, editControlWidth, editControlHeight, 0);
+	
 	SendMessage(hWndToolbar, TB_AUTOSIZE, 0, 0);
 }
 
