@@ -66,5 +66,26 @@
     <Image Include="toolbar2.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Icons\plus.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="icons\minus.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="icons\multiply.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="icons\divide.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="icons\power.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="icons\summ.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="icons\equal.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

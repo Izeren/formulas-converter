@@ -6,13 +6,13 @@
 const LPCWSTR CMatheditorWindow::class_name_ = L"MatheditorWindow";
 const int ToolbarSize = 42;
 
-CMatheditorWindow::CMatheditorWindow() : handle_(0) {
+CMatheditorWindow::CMatheditorWindow() : hWndMainWindow(0) {
 	editControl = CEditControl();
 }
 
 CMatheditorWindow::~CMatheditorWindow() {
-	if (handle_) {
-		DestroyWindow(handle_);
+	if (hWndMainWindow) {
+		DestroyWindow(hWndMainWindow);
 	}
 }
 
@@ -28,7 +28,7 @@ bool CMatheditorWindow::RegisterClassW() {
 }
 
 bool CMatheditorWindow::Create() {
-	handle_ = CreateWindowEx(0, class_name_,
+	hWndMainWindow = CreateWindowEx(0, class_name_,
 		L"Matheditor",
 		WS_EX_OVERLAPPEDWINDOW | WS_SIZEBOX | WS_SYSMENU,
 		CW_USEDEFAULT,
@@ -40,83 +40,82 @@ bool CMatheditorWindow::Create() {
 		GetModuleHandle(NULL),
 		this
 );
-	if (handle_ == NULL) {
+	if (hWndMainWindow == NULL) {
 		return false;
 	}
-	//HWND hWndToolbar = CreateWindowEx(0, TOOLBARCLASSNAME, NULL, WS_CHILD | TBSTYLE_WRAPABLE, 0, 0, 0, 0, handle_, NULL, GetModuleHandle(NULL), NULL);
-	// Declare and initialize local constants.
-	const int ImageListID = 0;
-	const int numButtons = 4;
-	const int bitmapSize = 16;
 
-	const DWORD buttonStyles = BTNS_AUTOSIZE;
+	createToolbar();
 
-	// Create the toolbar.
-	HWND hWndToolbar = CreateWindowEx(0, TOOLBARCLASSNAME, NULL,
-		WS_CHILD | TBSTYLE_WRAPABLE, 0, 0, 0, 0,
-		handle_, NULL, GetModuleHandle(NULL), NULL);
-
-	if (hWndToolbar == NULL)
-		return NULL;
-
-	HIMAGELIST g_hImageList = NULL;
-
-	// Create the image list.
-	g_hImageList = ImageList_Create(bitmapSize, bitmapSize,   // Dimensions of individual bitmaps.
-		ILC_COLOR16 | ILC_MASK,   // Ensures transparent background.
-		numButtons, 0);
-
-	// Set the image list.
-	SendMessage(hWndToolbar, TB_SETIMAGELIST,
-		(WPARAM)ImageListID,
-		(LPARAM)g_hImageList);
-
-	// Load the button images.
-	SendMessage(hWndToolbar, TB_LOADIMAGES,
-		(WPARAM)IDB_STD_SMALL_COLOR,
-		(LPARAM)HINST_COMMCTRL);
-
-	// Initialize button info.
-	// IDM_NEW, IDM_OPEN, and IDM_SAVE are application-defined command constants.
-
-	TBBUTTON tbButtons[numButtons] =
-	{
-		{ MAKELONG(STD_FILENEW,  ImageListID), NULL,  TBSTATE_ENABLED, buttonStyles,{ 0 }, 0, (INT_PTR)L"New" },
-		{ MAKELONG(STD_FILEOPEN, ImageListID), NULL, TBSTATE_ENABLED, buttonStyles,{ 0 }, 0, (INT_PTR)L"Open" },
-		{ MAKELONG(STD_FILESAVE, ImageListID), NULL, TBSTATE_ENABLED,               buttonStyles,{ 0 }, 0, (INT_PTR)L"Save" },
-		{ 0, NULL, TBSTATE_ENABLED, 0,  buttonStyles,{ 0 }, 0, (INT_PTR)L"Divide" }
-	};
-
-	// Add buttons.
-	SendMessage(hWndToolbar, TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
-	SendMessage(hWndToolbar, TB_ADDBUTTONS, (WPARAM)numButtons, (LPARAM)&tbButtons);
-
-	// Resize the toolbar, and then show it.
-	SendMessage(hWndToolbar, TB_AUTOSIZE, 0, 0);
-	ShowWindow(hWndToolbar, TRUE);
-
-	return hWndToolbar;
 	return true;
 }
 
+void CMatheditorWindow::createToolbar() {
+
+	// Declare and initialize local constants.
+	const int bitmapSize = 16;
+
+	HINSTANCE hInstance = ::GetModuleHandle(0);
+
+	HWND hWndToolbar = CreateToolbarEx(hWndMainWindow, WS_CHILD | WS_VISIBLE | CCS_TOP, 1,
+		0, HINST_COMMCTRL, IDB_STD_SMALL_COLOR, NULL, 0, 0, 0, 0, 0, sizeof(TBBUTTON));
+
+	//Enable multiple image lists
+	SendMessage(hWndToolbar, CCM_SETVERSION, (WPARAM)5, 0);
+
+	//Add icons from default imagelist
+	TBBUTTON tbb_buildin[] = {
+		{ STD_FILENEW, ID_FILE_NEW, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, (INT_PTR)L"New" },
+		{ STD_FILEOPEN, ID_FILE_OPEN, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, (INT_PTR)L"Open" },
+		{ STD_FILESAVE, ID_FILE_SAVE, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, (INT_PTR)L"Save" },
+	};
+	SendMessage(hWndToolbar, (UINT)TB_ADDBUTTONS, _countof(tbb_buildin), (LPARAM)&tbb_buildin);
+
+	//Create custom imagelist
+	HIMAGELIST hImageList = ImageList_Create(bitmapSize, bitmapSize, ILC_COLOR16 | ILC_MASK, 0, 0);
+	ImageList_Add(hImageList, LoadBitmap(hInstance, MAKEINTRESOURCE(IDB_EQUAL)), NULL);
+	ImageList_Add(hImageList, LoadBitmap(hInstance, MAKEINTRESOURCE(IDB_PLUS)), NULL);
+	ImageList_Add(hImageList, LoadBitmap(hInstance, MAKEINTRESOURCE(IDB_MINUS)), NULL);
+	ImageList_Add(hImageList, LoadBitmap(hInstance, MAKEINTRESOURCE(IDB_MULTIPLY)), NULL);
+	ImageList_Add(hImageList, LoadBitmap(hInstance, MAKEINTRESOURCE(IDB_DIVIDE)), NULL);
+	ImageList_Add(hImageList, LoadBitmap(hInstance, MAKEINTRESOURCE(IDB_POWER)), NULL);
+	ImageList_Add(hImageList, LoadBitmap(hInstance, MAKEINTRESOURCE(IDB_SUMM)), NULL);
+	SendMessage(hWndToolbar, TB_SETIMAGELIST, (WPARAM)1, (LPARAM)hImageList);
+
+	TBBUTTON tbb[] =
+	{
+		{ MAKELONG(0, 1), ID_OPERATOR_EQUAL, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, (INT_PTR)L"Equal" },
+		{ MAKELONG(1, 1), ID_OPERATOR_PLUS, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, (INT_PTR)L"Plus" },
+		{ MAKELONG(2, 1), ID_OPERATOR_MINUS, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, (INT_PTR)L"Minus" },
+		{ MAKELONG(3, 1), ID_OPERATOR_MULTIPLY, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, (INT_PTR)L"Multi" },
+		{ MAKELONG(4, 1), ID_OPERATOR_DIVIDE, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, (INT_PTR)L"Divide" },
+		{ MAKELONG(5, 1), ID_OPERATOR_POWER, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, (INT_PTR)L"Power" },
+		{ MAKELONG(6, 1), ID_OPERATOR_SUMM, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, (INT_PTR)L"Summ" },
+	};
+
+	SendMessage(hWndToolbar, (UINT)TB_ADDBUTTONS, _countof(tbb), (LPARAM)&tbb);
+
+	SendMessage(hWndToolbar, TB_AUTOSIZE, 0, 0);
+	ShowWindow(hWndToolbar, TRUE);
+}
+
 void CMatheditorWindow::Show(int cmdShow) {
-	ShowWindow(handle_, cmdShow);
+	ShowWindow(hWndMainWindow, cmdShow);
 	editControl.Show(cmdShow);
-	UpdateWindow(handle_);
+	UpdateWindow(hWndMainWindow);
 }
 
 void CMatheditorWindow::OnCreate() {
-	editControl.Create(handle_);
+	editControl.Create(hWndMainWindow);
 }
 
 void CMatheditorWindow::OnNCCreate(HWND handle) {
-	handle_ = handle;
+	hWndMainWindow = handle;
 }
 
 void CMatheditorWindow::OnSize()
 {
 	RECT rect;
-	::GetClientRect(handle_, &rect);
+	::GetClientRect(hWndMainWindow, &rect);
 	SetWindowPos(editControl.GetHandle(), HWND_TOP, rect.left, rect.top + ToolbarSize, rect.right - rect.left, rect.bottom - rect.top, 0);
 }
 

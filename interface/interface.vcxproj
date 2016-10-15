@@ -164,6 +164,13 @@
     <ResourceCompile Include="interface.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="icons\divide.bmp" />
+    <Image Include="icons\equal.bmp" />
+    <Image Include="icons\minus.bmp" />
+    <Image Include="icons\multiply.bmp" />
+    <Image Include="Icons\plus.bmp" />
+    <Image Include="icons\power.bmp" />
+    <Image Include="icons\summ.bmp" />
     <Image Include="symbol_add.bmp" />
     <Image Include="toolbar1.bmp" />
     <Image Include="toolbar2.bmp" />

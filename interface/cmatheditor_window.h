@@ -21,10 +21,11 @@ protected:
 	void OnSize();
 private:
 	static const LPCWSTR class_name_;
-	HWND handle_;
+	HWND hWndMainWindow;
 
 	CEditControl editControl;
 
 	virtual LRESULT __stdcall localWindowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
 	static LRESULT __stdcall windowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
+	void createToolbar();
 };
