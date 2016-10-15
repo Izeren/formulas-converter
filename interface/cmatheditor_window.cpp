@@ -39,7 +39,7 @@ bool CMatheditorWindow::Create() {
 		NULL,
 		GetModuleHandle(NULL),
 		this
-);
+	);
 	if (hWndMainWindow == NULL) {
 		return false;
 	}
@@ -146,16 +146,14 @@ void CMatheditorWindow::OnDestroy() {
     PostQuitMessage(0);
 }
 
-LRESULT _stdcall CMatheditorWindow::localWindowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam) {
+LRESULT _stdcall CMatheditorWindow::localWindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message) {
 	case WM_DESTROY:
 		OnDestroy();
 		break;
 	case WM_NOTIFY:
-		switch (((NMHDR *)lParam)->code)
-		{
+		switch (((NMHDR *)lParam)->code) {
 		case NM_CLICK:
-		{ 
 			NMLINK* pNMLink = (NMLINK*)lParam;
 			LITEM iItem = pNMLink->item;
 			// Custom OutputDebugString
@@ -165,18 +163,79 @@ LRESULT _stdcall CMatheditorWindow::localWindowProc(HWND handle, UINT message, W
 			}
 			break;
 		}
-		}
-	break;
+		break;
 	case WM_CREATE:
 		OnCreate();
-		return DefWindowProc(handle, message, wParam, lParam);
+		return DefWindowProc(hwnd, message, wParam, lParam);
 	case WM_SIZE:
 		OnSize();
-		return DefWindowProc(handle, message, wParam, lParam);
+		return DefWindowProc(hwnd, message, wParam, lParam);
+	case WM_COMMAND:
+		OnCommand(hwnd, message, wParam, lParam);
+		return DefWindowProc(hwnd, message, wParam, lParam);
 	default:
-		return DefWindowProc(handle, message, wParam, lParam);
+		return DefWindowProc(hwnd, message, wParam, lParam);
 	}
 	return 0;
 }
+
+void CMatheditorWindow::OnCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	if (HIWORD(wParam) == 0) {
+		switch (LOWORD(wParam)) {
+		case ID_FILE_NEW:
+			newFile();
+			break;
+		case ID_FILE_EXIT:
+			SendMessage(hWnd, WM_CLOSE, wParam, lParam);
+			break;
+		case ID_FILE_SAVE:
+			saveFile();
+			break;
+		case ID_FILE_OPEN:
+			loadFile();
+			break;
+		case ID_OPERATOR_EQUAL:
+			break;
+		case ID_OPERATOR_PLUS:
+			break;
+		case ID_OPERATOR_MINUS:
+			break;
+		case ID_OPERATOR_MULTIPLY:
+			break;
+		case ID_OPERATOR_DIVIDE:
+			break;
+		case ID_OPERATOR_POWER:
+			break;
+		case ID_OPERATOR_SUMM:
+			break;
+		default:
+			break;
+		}
+	}
+	else {
+		switch (HIWORD(wParam)) {
+		case EN_CHANGE:
+			break;
+		case EN_UPDATE:
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+void CMatheditorWindow::newFile() {
+
+}
+
+void CMatheditorWindow::saveFile() {
+
+}
+
+void CMatheditorWindow::loadFile() {
+
+}
+
 
 

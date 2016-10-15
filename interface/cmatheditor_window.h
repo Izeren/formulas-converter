@@ -19,6 +19,8 @@ protected:
 	void OnNCCreate(HWND handle);
 	void OnCreate();
 	void OnSize();
+	void OnCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+
 private:
 	static const LPCWSTR class_name_;
 	HWND hWndMainWindow;
@@ -28,4 +30,8 @@ private:
 	virtual LRESULT __stdcall localWindowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
 	static LRESULT __stdcall windowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
 	void createToolbar();
+
+	void newFile();
+	void saveFile();
+	void loadFile();
 };
