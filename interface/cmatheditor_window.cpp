@@ -17,14 +17,15 @@ CMatheditorWindow::~CMatheditorWindow() {
 }
 
 bool CMatheditorWindow::RegisterClassW() {
-	WNDCLASSEX wnd_class = { };
-	wnd_class.cbSize = sizeof(WNDCLASSEX);
-	wnd_class.style = CS_HREDRAW | CS_VREDRAW;
-	wnd_class.lpfnWndProc = windowProc;
-	wnd_class.hInstance = GetModuleHandle(NULL);
-	wnd_class.lpszClassName = class_name_;
-	wnd_class.hCursor = ::LoadCursor(GetModuleHandle(0), IDC_ARROW);
-	return RegisterClassEx(&wnd_class);
+	WNDCLASSEX windowClass = { };
+	windowClass.cbSize = sizeof(WNDCLASSEX);
+	windowClass.style = CS_HREDRAW | CS_VREDRAW;
+	windowClass.lpfnWndProc = windowProc;
+	windowClass.hInstance = GetModuleHandle(NULL);
+	windowClass.lpszClassName = class_name_;
+	windowClass.hCursor = ::LoadCursor(GetModuleHandle(0), IDC_ARROW);
+	windowClass.lpszMenuName = MAKEINTRESOURCE(IDR_MENU1);
+	return RegisterClassEx(&windowClass);
 }
 
 bool CMatheditorWindow::Create() {
