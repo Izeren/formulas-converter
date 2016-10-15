@@ -24,12 +24,14 @@ protected:
 private:
 	static const LPCWSTR class_name_;
 	HWND hWndMainWindow;
+	HWND hWndToolbar;
 
 	CEditControl editControl;
 
 	virtual LRESULT __stdcall localWindowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
 	static LRESULT __stdcall windowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
 	void createToolbar();
+	HBITMAP loadTransparentBitmap(HINSTANCE hInstance, int resource);
 
 	void newFile();
 	void saveFile();
