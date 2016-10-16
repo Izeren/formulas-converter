@@ -45,4 +45,5 @@ private:
 	void clickEditControl();
 	void createEditControl();
 	void createEditControl(std::wstring text);
+	void deleteEditControl();
 };

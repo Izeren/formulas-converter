@@ -125,6 +125,7 @@ void CMatheditorWindow::createToolbar() {
 	ImageList_Add(hImageList, loadTransparentBitmap(hInstance, IDB_POWER), NULL);
 	ImageList_Add(hImageList, loadTransparentBitmap(hInstance, IDB_SUMM), NULL);
 	ImageList_Add(hImageList, loadTransparentBitmap(hInstance, IDB_EMPTY), NULL);
+	ImageList_Add(hImageList, loadTransparentBitmap(hInstance, IDB_DELETE), NULL);
 	SendMessage(hWndToolbar, TB_SETIMAGELIST, (WPARAM)1, (LPARAM)hImageList);
 
 	TBBUTTON tbb[] =
@@ -137,6 +138,7 @@ void CMatheditorWindow::createToolbar() {
 		{ MAKELONG(4, 1), ID_OPERATOR_DIVIDE, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, 0 },
 		{ MAKELONG(5, 1), ID_OPERATOR_POWER, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, 0 },
 		{ MAKELONG(6, 1), ID_OPERATOR_SUMM, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, 0 },
+		{ MAKELONG(8, 1), ID_OPERATOR_DELETE, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, 0 },
 	};
 
 	SendMessage(hWndToolbar, (UINT)TB_ADDBUTTONS, _countof(tbb), (LPARAM)&tbb);
@@ -243,19 +245,6 @@ LRESULT _stdcall CMatheditorWindow::localWindowProc(HWND hwnd, UINT message, WPA
 	case WM_DESTROY:
 		OnDestroy();
 		break;
-	//case WM_NOTIFY:
-	//	switch (((NMHDR *)lParam)->code) {
-	//	case NM_CLICK:
-	//		NMLINK* pNMLink = (NMLINK*)lParam;
-	//		LITEM iItem = pNMLink->item;
-	//		// Custom OutputDebugString
-	//		if (wParam)
-	//		{
-	//			int c;
-	//		}
-	//		break;
-	//	}
-	//	break;
 	case WM_CREATE:
 		OnCreate();
 		return DefWindowProc(hwnd, message, wParam, lParam);
@@ -310,6 +299,9 @@ void CMatheditorWindow::OnCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 			break;
 		case ID_OPERATOR_SUMM:
 			break;
+		case ID_OPERATOR_DELETE:
+			deleteEditControl();
+			break;
 		default:
 			break;
 		}
@@ -363,6 +355,33 @@ void CMatheditorWindow::createEditControl(std::wstring text)
 	createEditControl();
 	::SetWindowText(activeEditControl->GetHandle(), (LPWSTR)text.c_str());
 	//resizeCell(activeCell->getHandle());
+	InvalidateRect(hWndMainWindow, NULL, FALSE);
+}
+
+void CMatheditorWindow::deleteEditControl()
+{
+	if (activeEditControl != editControls.end()) {
+		HWND hwnd = activeEditControl->GetHandle();
+		//checkHandle(hwnd);
+		DestroyWindow(hwnd);
+		auto oldCell = activeEditControl;
+		auto nextCell = activeEditControl;
+		++nextCell;
+		activeEditControl = (nextCell != editControls.end()
+			? nextCell
+			: (activeEditControl != editControls.begin()
+				? --activeEditControl
+				: editControls.end()));
+		editControls.erase(oldCell);
+		editControlsHandles.erase(editControlsHandles.find(hwnd));
+		SendMessage(hWndMainWindow, WM_SIZE, 0, 0);
+		if (activeEditControl != editControls.end()) {
+			SetFocus(activeEditControl->GetHandle());
+		}
+	}
+	else {
+		MessageBox(hWndMainWindow, L"Выберите ячейку!", L"Не выбрана ячейка", MB_OK | MB_ICONWARNING);
+	}
 	InvalidateRect(hWndMainWindow, NULL, FALSE);
 }
 

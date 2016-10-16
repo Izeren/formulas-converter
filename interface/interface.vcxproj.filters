@@ -87,10 +87,10 @@
     <Image Include="icons\equal.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="icons\bitmap1.bmp">
+    <Image Include="icons\empty.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="icons\empty.bmp">
+    <Image Include="icons\delete.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
