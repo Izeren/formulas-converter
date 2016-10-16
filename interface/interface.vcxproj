@@ -164,7 +164,9 @@
     <ResourceCompile Include="interface.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="icons\bitmap1.bmp" />
     <Image Include="icons\divide.bmp" />
+    <Image Include="icons\empty.bmp" />
     <Image Include="icons\equal.bmp" />
     <Image Include="icons\minus.bmp" />
     <Image Include="icons\multiply.bmp" />

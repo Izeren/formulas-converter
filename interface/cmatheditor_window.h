@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include "resource.h"
 #include "CEditControl.h"
+#include <list>
 
 class CMatheditorWindow {
 public:
@@ -26,7 +27,9 @@ private:
 	HWND hWndMainWindow;
 	HWND hWndToolbar;
 
-	CEditControl editControl;
+	std::list<CEditControl> editControls;
+	std::list<CEditControl>::iterator activeEditControl;
+	//CEditControl editControl;
 
 	virtual LRESULT __stdcall localWindowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
 	static LRESULT __stdcall windowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
@@ -36,4 +39,6 @@ private:
 	void newFile();
 	void saveFile();
 	void loadFile();
+
+	void createEditControl();
 };

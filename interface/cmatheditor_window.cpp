@@ -4,10 +4,17 @@
 #include <commctrl.h>
 
 const LPCWSTR CMatheditorWindow::class_name_ = L"MatheditorWindow";
-//const int ToolbarSize = 42;
+const COLORREF COLOUR_MAIN_WINDOW = RGB(200, 200, 200);
 
-CMatheditorWindow::CMatheditorWindow() : hWndMainWindow(0) {
-	editControl = CEditControl();
+const int SIZE_BETWEEN_CONTROLS = 10;
+const int CONTROL_WIDTH = 20;
+
+
+CMatheditorWindow::CMatheditorWindow() 
+	: hWndMainWindow(0) {
+	editControls.resize(0);
+	activeEditControl = editControls.end();
+	//editControl = CEditControl();
 }
 
 CMatheditorWindow::~CMatheditorWindow() {
@@ -117,10 +124,12 @@ void CMatheditorWindow::createToolbar() {
 	ImageList_Add(hImageList, loadTransparentBitmap(hInstance, IDB_DIVIDE), NULL);
 	ImageList_Add(hImageList, loadTransparentBitmap(hInstance, IDB_POWER), NULL);
 	ImageList_Add(hImageList, loadTransparentBitmap(hInstance, IDB_SUMM), NULL);
+	ImageList_Add(hImageList, loadTransparentBitmap(hInstance, IDB_EMPTY), NULL);
 	SendMessage(hWndToolbar, TB_SETIMAGELIST, (WPARAM)1, (LPARAM)hImageList);
 
 	TBBUTTON tbb[] =
 	{
+		{ MAKELONG(7, 1), ID_OPERATOR_EMPTY, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, 0 },
 		{ MAKELONG(0, 1), ID_OPERATOR_EQUAL, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, 0 },
 		{ MAKELONG(1, 1), ID_OPERATOR_PLUS, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, 0 },
 		{ MAKELONG(2, 1), ID_OPERATOR_MINUS, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, 0 },
@@ -138,12 +147,13 @@ void CMatheditorWindow::createToolbar() {
 
 void CMatheditorWindow::Show(int cmdShow) {
 	ShowWindow(hWndMainWindow, cmdShow);
-	editControl.Show(cmdShow);
+	//editControl.Show(cmdShow);
 	//UpdateWindow(hWndMainWindow); //зачем это?
 }
 
 void CMatheditorWindow::OnCreate() {
-	editControl.Create(hWndMainWindow);
+	createEditControl();
+	//editControl.Create(hWndMainWindow);
 }
 
 void CMatheditorWindow::OnNCCreate(HWND hWnd) {
@@ -152,16 +162,39 @@ void CMatheditorWindow::OnNCCreate(HWND hWnd) {
 
 void CMatheditorWindow::OnSize()
 {
-	RECT editControlRect;
-	::GetClientRect(hWndMainWindow, &editControlRect);
+	InvalidateRect(hWndMainWindow, NULL, FALSE);
+
+	PAINTSTRUCT paintStruct;
+	HBRUSH brush;
+	brush = CreateSolidBrush(COLOUR_MAIN_WINDOW);
+	::BeginPaint(hWndMainWindow, &paintStruct);
+	::FillRect(paintStruct.hdc, &paintStruct.rcPaint, brush);
+	::EndPaint(hWndMainWindow, &paintStruct);
+
+
+	RECT mainRect;
+	::GetClientRect(hWndMainWindow, &mainRect);
 
 	RECT toolbarRect;
 	::GetClientRect(hWndToolbar, &toolbarRect);
 
-	int editControlTop = editControlRect.top + (toolbarRect.bottom - toolbarRect.top),
-		editControlWidth = editControlRect.right - editControlRect.left,
-		editControlHeight = editControlRect.bottom - editControlRect.top;
-	SetWindowPos(editControl.GetHandle(), HWND_TOP, editControlRect.left, editControlTop, editControlWidth, editControlHeight, 0);
+	int currentTop = mainRect.top + (toolbarRect.bottom - toolbarRect.top) + SIZE_BETWEEN_CONTROLS;
+	int currentLeft = mainRect.left + SIZE_BETWEEN_CONTROLS;
+	for (auto window = editControls.begin(); window != editControls.end(); ++window) {
+		::SetWindowPos(window->GetHandle(), HWND_TOP, currentLeft, currentTop, window->GetWidth(), window->GetHeight(), 0);
+		currentLeft += SIZE_BETWEEN_CONTROLS + window->GetWidth();
+	}
+
+	//RECT editControlRect;
+	//::GetClientRect(hWndMainWindow, &editControlRect);
+
+	//RECT toolbarRect;
+	//::GetClientRect(hWndToolbar, &toolbarRect);
+
+	//int editControlTop = editControlRect.top + (toolbarRect.bottom - toolbarRect.top),
+	//	editControlWidth = editControlRect.right - editControlRect.left,
+	//	editControlHeight = editControlRect.bottom - editControlRect.top;
+	//SetWindowPos(editControl.GetHandle(), HWND_TOP, editControlRect.left, editControlTop, editControlWidth, editControlHeight, 0);
 	
 	SendMessage(hWndToolbar, TB_AUTOSIZE, 0, 0);
 }
@@ -243,6 +276,9 @@ void CMatheditorWindow::OnCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 		case ID_FILE_OPEN:
 			loadFile();
 			break;
+		case ID_OPERATOR_EMPTY:
+			createEditControl();
+			break;
 		case ID_OPERATOR_EQUAL:
 			break;
 		case ID_OPERATOR_PLUS:
@@ -283,6 +319,13 @@ void CMatheditorWindow::saveFile() {
 
 void CMatheditorWindow::loadFile() {
 
+}
+
+void CMatheditorWindow::createEditControl() {
+	activeEditControl = editControls.emplace(
+		activeEditControl == editControls.end() ? editControls.end() : ++activeEditControl, CEditControl());
+	activeEditControl->Create(hWndMainWindow);
+	SendMessage(hWndMainWindow, WM_SIZE, 0, 0);
 }
 
 

@@ -9,6 +9,8 @@ public:
 	bool Create(HWND parentHandle);
 	void Show(int cmdShow);
 	HWND GetHandle();
+	int GetHeight();
+	int GetWidth();
 
 private:
 	HWND handle;

@@ -87,5 +87,11 @@
     <Image Include="icons\equal.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="icons\bitmap1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="icons\empty.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
