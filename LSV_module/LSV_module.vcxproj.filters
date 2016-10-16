@@ -23,9 +23,6 @@
     <ClCompile Include="visitors\CSintacticValidationVisitor.cpp">
       <Filter>visitors</Filter>
     </ClCompile>
-    <ClCompile Include="expression_tree\Expression.cpp">
-      <Filter>expression_tree</Filter>
-    </ClCompile>
     <ClCompile Include="pugixml\pugixml.cpp">
       <Filter>pugixml</Filter>
     </ClCompile>
@@ -43,6 +40,9 @@
     </ClCompile>
     <ClCompile Include="visitors\IExportVisitor.cpp">
       <Filter>visitors</Filter>
+    </ClCompile>
+    <ClCompile Include="expression_tree\Expression.cpp">
+      <Filter>expression_tree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -94,6 +94,9 @@
     <ClInclude Include="visitors\IExportVisitor.h">
       <Filter>visitors</Filter>
     </ClInclude>
+    <ClInclude Include="parsers\Parser.h">
+      <Filter>parsers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="converters">
@@ -114,5 +117,13 @@
     <Filter Include="pugixml">
       <UniqueIdentifier>{2bc5c249-7d37-41f0-8c51-f1840bf82d66}</UniqueIdentifier>
     </Filter>
+    <Filter Include="files">
+      <UniqueIdentifier>{6f6c8045-f780-406e-9e36-6258d1b9bec2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="format_files\expr.tex">
+      <Filter>files</Filter>
+    </None>
   </ItemGroup>
 </Project>

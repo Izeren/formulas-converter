@@ -54,8 +54,8 @@ void CPrintVisitor::Visit(CSumExp &exp)
 		std::to_string(++this->lastVisited),
 		std::string("Summation by: ") +
 		exp.getIndexName() +
-		"\nfrom: " + std::to_string(exp.getStartId()) +
-		"\nto: " + std::to_string(exp.getFinishId())
+		"from: " + std::to_string(exp.getStartId()) +
+		"to: " + std::to_string(exp.getFinishId())
 		);
 	this->addEdge(this->lastVisited, expressionId);
 }
