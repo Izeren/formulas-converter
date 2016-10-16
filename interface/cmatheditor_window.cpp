@@ -199,6 +199,17 @@ void CMatheditorWindow::OnSize()
 	SendMessage(hWndToolbar, TB_AUTOSIZE, 0, 0);
 }
 
+LRESULT CMatheditorWindow::OnCtlColorEdit(WPARAM wParam, LPARAM lParam)
+{
+	HDC hdc = reinterpret_cast<HDC>(wParam);
+	HBRUSH hbr = 0;
+	if (lParam == reinterpret_cast<long>(GetFocus())) {
+		hbr = CreateSolidBrush(RGB(255, 255, 0));
+		SetBkColor(hdc, RGB(255, 255, 0));
+	}
+	return reinterpret_cast<LRESULT>(hbr);
+}
+
 LRESULT _stdcall CMatheditorWindow::windowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message) {
 	case WM_NCCREATE: {
@@ -232,19 +243,19 @@ LRESULT _stdcall CMatheditorWindow::localWindowProc(HWND hwnd, UINT message, WPA
 	case WM_DESTROY:
 		OnDestroy();
 		break;
-	case WM_NOTIFY:
-		switch (((NMHDR *)lParam)->code) {
-		case NM_CLICK:
-			NMLINK* pNMLink = (NMLINK*)lParam;
-			LITEM iItem = pNMLink->item;
-			// Custom OutputDebugString
-			if (wParam)
-			{
-				int c;
-			}
-			break;
-		}
-		break;
+	//case WM_NOTIFY:
+	//	switch (((NMHDR *)lParam)->code) {
+	//	case NM_CLICK:
+	//		NMLINK* pNMLink = (NMLINK*)lParam;
+	//		LITEM iItem = pNMLink->item;
+	//		// Custom OutputDebugString
+	//		if (wParam)
+	//		{
+	//			int c;
+	//		}
+	//		break;
+	//	}
+	//	break;
 	case WM_CREATE:
 		OnCreate();
 		return DefWindowProc(hwnd, message, wParam, lParam);
@@ -254,6 +265,8 @@ LRESULT _stdcall CMatheditorWindow::localWindowProc(HWND hwnd, UINT message, WPA
 	case WM_COMMAND:
 		OnCommand(hwnd, message, wParam, lParam);
 		return DefWindowProc(hwnd, message, wParam, lParam);
+	case WM_CTLCOLOREDIT:
+		return OnCtlColorEdit(wParam, lParam);
 	default:
 		return DefWindowProc(hwnd, message, wParam, lParam);
 	}
@@ -280,12 +293,16 @@ void CMatheditorWindow::OnCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 			createEditControl();
 			break;
 		case ID_OPERATOR_EQUAL:
+			createEditControl(L"=");
 			break;
 		case ID_OPERATOR_PLUS:
+			createEditControl(L"+");
 			break;
 		case ID_OPERATOR_MINUS:
+			createEditControl(L"-");
 			break;
 		case ID_OPERATOR_MULTIPLY:
+			createEditControl(L"*");
 			break;
 		case ID_OPERATOR_DIVIDE:
 			break;
@@ -302,6 +319,9 @@ void CMatheditorWindow::OnCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 		case EN_CHANGE:
 			break;
 		case EN_UPDATE:
+			break;
+		case EN_SETFOCUS:
+			clickEditControl();
 			break;
 		default:
 			break;
@@ -321,12 +341,29 @@ void CMatheditorWindow::loadFile() {
 
 }
 
+void CMatheditorWindow::clickEditControl(){
+	HWND handle = ::GetFocus();
+	auto editControl = editControlsHandles.find(handle);
+	if (editControl != editControlsHandles.end()) {
+		activeEditControl = editControl->second;
+	}
+	InvalidateRect(hWndMainWindow, NULL, FALSE);
+}
+
 void CMatheditorWindow::createEditControl() {
 	activeEditControl = editControls.emplace(
 		activeEditControl == editControls.end() ? editControls.end() : ++activeEditControl, CEditControl());
 	activeEditControl->Create(hWndMainWindow);
+	editControlsHandles.insert(std::make_pair(activeEditControl->GetHandle(), activeEditControl));
 	SendMessage(hWndMainWindow, WM_SIZE, 0, 0);
 }
 
+void CMatheditorWindow::createEditControl(std::wstring text)
+{
+	createEditControl();
+	::SetWindowText(activeEditControl->GetHandle(), (LPWSTR)text.c_str());
+	//resizeCell(activeCell->getHandle());
+	InvalidateRect(hWndMainWindow, NULL, FALSE);
+}
 
 

@@ -4,6 +4,7 @@
 #include "resource.h"
 #include "CEditControl.h"
 #include <list>
+#include <map>
 
 class CMatheditorWindow {
 public:
@@ -21,6 +22,7 @@ protected:
 	void OnCreate();
 	void OnSize();
 	void OnCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	LRESULT OnCtlColorEdit(WPARAM wParam, LPARAM lParam);
 
 private:
 	static const LPCWSTR class_name_;
@@ -29,7 +31,7 @@ private:
 
 	std::list<CEditControl> editControls;
 	std::list<CEditControl>::iterator activeEditControl;
-	//CEditControl editControl;
+	std::map<HWND, std::list<CEditControl>::iterator> editControlsHandles;
 
 	virtual LRESULT __stdcall localWindowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
 	static LRESULT __stdcall windowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
@@ -40,5 +42,7 @@ private:
 	void saveFile();
 	void loadFile();
 
+	void clickEditControl();
 	void createEditControl();
+	void createEditControl(std::wstring text);
 };
