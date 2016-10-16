@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Toolbar Icons">
+      <UniqueIdentifier>{154d2770-0f70-495b-b6b4-714a876db128}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -66,32 +69,32 @@
     <Image Include="toolbar2.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Icons\plus.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="icons\minus.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="icons\multiply.bmp">
-      <Filter>Resource Files</Filter>
+    <Image Include="icons\delete.bmp">
+      <Filter>Toolbar Icons</Filter>
     </Image>
     <Image Include="icons\divide.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="icons\power.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="icons\summ.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="icons\equal.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Toolbar Icons</Filter>
     </Image>
     <Image Include="icons\empty.bmp">
-      <Filter>Resource Files</Filter>
+      <Filter>Toolbar Icons</Filter>
     </Image>
-    <Image Include="icons\delete.bmp">
-      <Filter>Resource Files</Filter>
+    <Image Include="icons\equal.bmp">
+      <Filter>Toolbar Icons</Filter>
+    </Image>
+    <Image Include="icons\minus.bmp">
+      <Filter>Toolbar Icons</Filter>
+    </Image>
+    <Image Include="icons\multiply.bmp">
+      <Filter>Toolbar Icons</Filter>
+    </Image>
+    <Image Include="Icons\plus.bmp">
+      <Filter>Toolbar Icons</Filter>
+    </Image>
+    <Image Include="icons\power.bmp">
+      <Filter>Toolbar Icons</Filter>
+    </Image>
+    <Image Include="icons\summ.bmp">
+      <Filter>Toolbar Icons</Filter>
     </Image>
   </ItemGroup>
 </Project>
