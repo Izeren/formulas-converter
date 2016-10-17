@@ -29,21 +29,6 @@ int main()
 		validator.setVisibleIds(ids);
 		operationTree->Accept(validator);
 		std::cout << validator.getValidationStatus() << "\n";
-		/*
-		std::ofstream outML("format_files/a_mathml.txt");
-		outML << converter.convert("format_files/a.txt", LSVUtils::TEX, LSVUtils::MATHML);
-		outML.close();
-
-		std::ofstream outOpenMath("format_files/a_om.txt");
-		outOpenMath << converter.convert("format_files/a_mathml.txt", LSVUtils::MATHML, LSVUtils::OPENMATH);
-		outOpenMath.close();
-
-		std::ofstream outTex("format_files/a_tex.txt");
-		outTex << converter.convert("format_files/a_om.txt", LSVUtils::OPENMATH, LSVUtils::TEX);
-		outTex.close();
-		*/
-
-
 
 		
 	} catch (std::exception &ex) {
