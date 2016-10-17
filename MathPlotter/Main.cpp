@@ -4,6 +4,9 @@
 
 int WINAPI wWinMain(HINSTANCE instance, HINSTANCE prevInstance, LPWSTR commandLine, int cmdShow)
 {
+    UNREFERENCED_PARAMETER( instance );
+    UNREFERENCED_PARAMETER( prevInstance );
+    UNREFERENCED_PARAMETER( commandLine );
 	if (!CPlotterWindow::RegisterClass()) {
 		return -1;
 	}

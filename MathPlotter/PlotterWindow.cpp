@@ -73,20 +73,23 @@ bool CPlotterWindow::drawExtremumPoints(HDC targetDC, std::vector<POINT> points)
 {
 	HPEN pen = CreatePen(PS_SOLID, 2, colorRed);
 	SelectObject(targetDC, pen);
-	for (int i = 0; i < points.size(); i++)
-		Ellipse(targetDC, points[i].x - 5, points[i].y - 5, points[i].x + 5, points[i].y + 5);
+    for( int i = 0; i < static_cast<int>(points.size()); i++ ) {
+        Ellipse( targetDC, points[i].x - 5, points[i].y - 5, points[i].x + 5, points[i].y + 5 );
+    }
 	DeleteObject(pen);
 	return true;
 }
 
-CPlotterWindow::pointType CPlotterWindow::checkOnExtremum(int pixelX)
+CPlotterWindow::PointType CPlotterWindow::checkOnExtremum(int pixelX)
 {
 	RECT clientRect;
 	::GetClientRect(handle, &clientRect);
 	int currentWidth = clientRect.right - clientRect.left;
-	int currentHeight = clientRect.bottom - clientRect.top;
+    // TODO: use currentHeight
+	//int currentHeight = clientRect.bottom - clientRect.top;
 	double stepX = (xRange.end - xRange.begin) / currentWidth;
-	double stepY = (yRange.end - yRange.begin) / currentHeight;
+    // TODO: use stepY
+    //double stepY = (yRange.end - yRange.begin) / currentHeight;
 
 	//Предыдущая точка
 	double prevX = xRange.begin + stepX * (pixelX - 1);
@@ -138,7 +141,7 @@ void CPlotterWindow::drawFunction( HDC targetDC )
 			points.push_back({ pixelX, (int)pixelY });
 	}
 
-	for (int i = 0; i < points.size() - 1; i++)
+	for (int i = 0; i < static_cast<int>(points.size()) - 1; i++)
 		drawLine(targetDC, points[i].x, points[i].y, points[i + 1].x, points[i + 1].y, colorBlue, PS_SOLID, lineWidth);
 
 	drawExtremumPoints(targetDC, maximums);
@@ -173,27 +176,27 @@ void CPlotterWindow::drawCoordSystem( HDC targetDC )
 
 	//рисуем сетку, подписываем числа
 	for ( int i = 0; i * stepY < currentHeight; ++i ) {
-		double coord = i * stepY;
+		int coord = static_cast<int>(std::round(i * stepY));
 		if( i % 5 != 0 ){
-			drawLine( targetDC, 0, coord, currentWidth, coord, colorSilver, PS_DASH, 0.5 );
+			drawLine( targetDC, 0, coord, currentWidth, coord, colorSilver, PS_DASH, 1 );
 		}
 		else {
-			drawLine( targetDC, 0, coord, currentWidth, coord, colorGray, PS_DASH, 1 );
+			drawLine( targetDC, 0, coord, currentWidth, coord, colorGray, PS_DASH, 2 );
 			//TODO 4 надо заменить на длину числа
 			TextOut( targetDC, currentWidth / 2 + 1, coord, std::to_wstring( yRange.end - i).c_str(), 4);
 		}
 	}
 
 	for ( int i = 0; i * stepX < currentWidth; ++i ) {
-		double coord = i * stepX;
+		int coord = static_cast<int>(std::round(i * stepX));
 		if ( i % 5 != 0 ) {
-			drawLine( targetDC, coord, 0, coord, currentHeight, colorSilver, PS_DASH, 0.5 );
+			drawLine( targetDC, coord, 0, coord, currentHeight, colorSilver, PS_DASH, 1 );
 		}
 		else {
 			if( yRange.begin + i == 0 ){
 				continue;
 			}
-			drawLine(targetDC, coord, 0, coord, currentHeight, colorSilver, PS_DASH, 1);
+			drawLine(targetDC, coord, 0, coord, currentHeight, colorSilver, PS_DASH, 2);
 			TextOut(targetDC, coord, currentHeight / 2 + 1, std::to_wstring(xRange.begin + i).c_str(), 4);
 		}
 	}
