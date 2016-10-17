@@ -4,6 +4,10 @@
 #include <vector>
 #include <utility>
 
+// сейчас используется только для тестирования работы EvalVisitor
+#include "visitors\CEvalVisitor.h"
+#include "expression_tree\Expression.h"
+
 //пока что это пробная версия без настроек взаимодействия между редактором и плоттером
 
 struct Range

@@ -117,9 +117,9 @@ public:
 
 	bool setIndexName(const std::string &indexName);
 	std::string getIndexName() const;
-	void setStartId(int startId);
+	void setStartId(int _startId);
 	int getStartId() const;
-	void setFinishId(int finishId);
+	void setFinishId(int _finishId);
 	int getFinishId() const;
 	bool setExpression(std::shared_ptr<IExpression> pointer);
 	std::shared_ptr<IExpression> getExpression() const;

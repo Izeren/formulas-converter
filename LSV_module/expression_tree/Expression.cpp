@@ -29,12 +29,12 @@ void CIdExp::Accept(IVisitor &visitor)
 	visitor.Visit(*this);
 }
 
-bool CIdExp::setName(const std::string &name)
+bool CIdExp::setName(const std::string &_name)
 {
 	bool isValidName = false;
-	if (LSVUtils::checkIdName(name))
+	if (LSVUtils::checkIdName(_name))
 	{
-		this->name = name;
+		name = _name;
 		isValidName = true;
 	}
 	return isValidName;
@@ -93,19 +93,19 @@ void CNumExp::Accept(IVisitor &visitor)
 	visitor.Visit(*this);
 }
 
-bool CNumExp::setValue(const std::string &value)
+bool CNumExp::setValue(const std::string &_value)
 {
 	bool isValidValue = false;
-	if (LSVUtils::checkDouble(value)) {
-		this->value = atof(value.c_str());
+	if (LSVUtils::checkDouble(_value)) {
+		this->value = atof(_value.c_str());
 		isValidValue = true;
 	}
 	return isValidValue;
 }
 
-void CNumExp::setValue(double value)
+void CNumExp::setValue(double _value)
 {
-	this->value = value;
+	value = _value;
 }
 
 double CNumExp::getValue() const
@@ -173,9 +173,9 @@ std::shared_ptr<IExpression> COpExp::getSecondOperand() const
 	return this->secondOperand;
 }
 
-void COpExp::setOperation(LSVUtils::TOperation operation)
+void COpExp::setOperation(LSVUtils::TOperation _operation)
 {
-	this->operation = operation;
+	operation = _operation;
 }
 
 LSVUtils::TOperation COpExp::getOperation() const
@@ -219,11 +219,11 @@ void CSumExp::Accept(IVisitor &visitor)
 	visitor.Visit(*this);
 }
 
-bool CSumExp::setIndexName(const std::string &indexName)
+bool CSumExp::setIndexName(const std::string &_indexName)
 {
 	bool isValidName = false;
-	if (LSVUtils::checkIdName(indexName)) {
-		this->indexName = indexName;
+	if (LSVUtils::checkIdName(_indexName)) {
+		indexName = _indexName;
 		isValidName = true;
 	}
 	return isValidName;
@@ -234,9 +234,9 @@ std::string CSumExp::getIndexName() const
 	return this->indexName;
 }
 
-void CSumExp::setStartId(int startId)
+void CSumExp::setStartId(int _startId)
 {
-	this->startId = startId;
+	startId = _startId;
 }
 
 int CSumExp::getStartId() const
@@ -244,9 +244,9 @@ int CSumExp::getStartId() const
 	return this->startId;
 }
 
-void CSumExp::setFinishId(int finishId)
+void CSumExp::setFinishId(int _finishId)
 {
-	this->finishId = finishId;
+	finishId = _finishId;
 }
 
 int CSumExp::getFinishId() const
