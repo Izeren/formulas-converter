@@ -46,7 +46,7 @@ private:
 	static const COLORREF colorBlack = RGB(0, 0, 0);
 	static const COLORREF colorSilver = RGB(192, 192, 192);
 	static const COLORREF colorGray = RGB(140, 140, 140);
-	static enum pointType {MAXIMUM, MINIMUM, NONE};
+	enum PointType {MAXIMUM, MINIMUM, NONE};
 	//размеры рисуемого диапазона
 	Range xRange;
 	Range yRange;
@@ -63,7 +63,7 @@ private:
 	// -1 - точка локального минимума
 	// 0 - не экстремум
 	//1 - точка локального максимума
-	pointType checkOnExtremum(int pixelX);
+	PointType checkOnExtremum(int pixelX);
 	bool drawExtremumPoints(HDC targetDC, std::vector<POINT> points);
 	
 	static LRESULT __stdcall windowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
