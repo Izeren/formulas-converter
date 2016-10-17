@@ -81,6 +81,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="visitors\CEvalVisitor.cpp" />
     <ClCompile Include="converters\Converter.cpp" />
     <ClCompile Include="expression_tree\Expression.cpp" />
     <ClCompile Include="main.cpp" />
@@ -97,6 +98,7 @@
     <ClCompile Include="visitors\IExportVisitor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="visitors\CEvalVisitor.h" />
     <ClInclude Include="converters\Converter.h" />
     <ClInclude Include="expression_tree\Expression.h" />
     <ClInclude Include="parsers\MathMLParser.h" />
