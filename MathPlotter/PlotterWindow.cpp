@@ -67,7 +67,24 @@ void CPlotterWindow::OnCreate()
 
 double CPlotterWindow::simpleFunc( double x )
 {
-    return sin( x );
+    //временно положим сюда тесты EvalVisitor вместо sin
+    //return sin( x );
+    std::shared_ptr<CIdExp> xExp = std::make_shared<CIdExp>(CIdExp("x"));
+    std::shared_ptr<CNumExp> sqrExp = std::make_shared<CNumExp>( CNumExp( 2 ) );
+    std::shared_ptr<COpExp> powerExp = std::make_shared<COpExp>( COpExp( xExp, sqrExp, LSVUtils::TOperation::POWER ) );
+    std::shared_ptr<CNumExp> addExp = std::make_shared<CNumExp>( CNumExp( 1 ) );
+    std::shared_ptr<COpExp> root = std::make_shared<COpExp>( COpExp( powerExp, addExp, LSVUtils::TOperation::MINUS ) );
+
+    std::unordered_map<std::string, double> idExpValues( { { "x", x } } );
+    CEvalVisitor visitor(idExpValues);
+    root->Accept( visitor );
+
+    bool success = !visitor.isEvalFailed();
+    double result = 0.0;
+    if( success ) {
+        result = visitor.getValue();
+    }
+    return result;
 }
 
 bool CPlotterWindow::drawExtremumPoints( HDC targetDC, std::vector<POINT> points )
