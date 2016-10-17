@@ -349,6 +349,7 @@ void CMatheditorWindow::createEditControl() {
 	activeEditControl = editControls.emplace(
 		activeEditControl == editControls.end() ? editControls.end() : ++activeEditControl, CEditControl());
 	activeEditControl->Create(hWndMainWindow);
+	activeEditControl->SetFont(activeEditControl->GetHandle());
 	editControlsHandles.insert(std::make_pair(activeEditControl->GetHandle(), activeEditControl));
 	SendMessage(hWndMainWindow, WM_SIZE, 0, 0);
 }
@@ -359,6 +360,7 @@ void CMatheditorWindow::createEditControl(std::wstring text)
 	::SetWindowText(activeEditControl->GetHandle(), (LPWSTR)text.c_str());
 	//resizeCell(activeCell->getHandle());
 	activeEditControl->SetCountSymbols(text.size());
+	activeEditControl->SetFont(activeEditControl->GetHandle());
 	InvalidateRect(hWndMainWindow, NULL, FALSE);
 }
 

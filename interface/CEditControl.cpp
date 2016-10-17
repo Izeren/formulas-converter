@@ -4,6 +4,7 @@
 const int MIN_HEIGHT_DEFAULT = 16;
 const int MIN_WIDTH_DEFAULT = 30;
 const int MIN_SIZE_SYMBOL = 8;
+const int SIZE_FONT = 14;
 
 CEditControl::CEditControl()
 {
@@ -71,4 +72,17 @@ std::wstring CEditControl::GetText() const {
 	text.resize(length);
 	::GetWindowText(handle, (LPWSTR)text.c_str(), length);
 	return text;
+}
+
+void CEditControl::SetFont(HWND handleEditControl) {
+	HFONT font = (HFONT)::SendMessage(handleEditControl, WM_GETFONT, 0, 0);
+	if (!font) {
+		font = (HFONT)::GetStockObject(SYSTEM_FIXED_FONT);
+	}
+	LOGFONT logfont;
+	::GetObject(font, sizeof(LOGFONT), &logfont);
+	logfont.lfHeight = SIZE_FONT;
+	DeleteObject(font);
+	font = ::CreateFontIndirect(&logfont);
+	::SendMessage(handleEditControl, WM_SETFONT, (WPARAM)font, true);
 }

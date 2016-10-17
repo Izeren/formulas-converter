@@ -17,6 +17,7 @@ public:
 	void SetCountSymbols(int countSymbols);
 	int GetCountSymbols() const;
 	std::wstring GetText() const;
+	void SetFont(HWND handleEditControl);
 
 private:
 	HWND handle;
