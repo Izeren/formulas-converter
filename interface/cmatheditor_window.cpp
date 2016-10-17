@@ -255,8 +255,6 @@ LRESULT _stdcall CMatheditorWindow::localWindowProc(HWND hwnd, UINT message, WPA
 		OnCommand(hwnd, message, wParam, lParam);
 		return DefWindowProc(hwnd, message, wParam, lParam);
 	case WM_CTLCOLOREDIT: {
-		std::wstring text = activeEditControl->GetText();
-		activeEditControl->SetCountSymbols(text.length());
 		return OnCtlColorEdit(wParam, lParam);
 	}
 	default:
@@ -313,8 +311,12 @@ void CMatheditorWindow::OnCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 		switch (HIWORD(wParam)) {
 		case EN_CHANGE:
 			break;
-		case EN_UPDATE:
+		case EN_UPDATE: {
+			std::wstring text = activeEditControl->GetText();
+			activeEditControl->SetCountSymbols(text.length());
+			SendMessage(hWndMainWindow, WM_SIZE, 0, 0);
 			break;
+		}
 		case EN_SETFOCUS:
 			clickEditControl();
 			break;
