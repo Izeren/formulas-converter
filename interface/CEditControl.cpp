@@ -54,11 +54,11 @@ void CEditControl::SetWidth(int width) {
 }
 
 void CEditControl::SetCountSymbols(int countSymbols) {
-	//if (countSymbols >= 0) {
+	if (countSymbols >= 0) {
 		this->countSymbols = countSymbols;
 		SetWidth(this->countSymbols * MIN_SIZE_SYMBOL);
 		SetWindowPos(handle, HWND_TOP, 0, 0, width, height, SWP_NOMOVE);
-//	}
+	}
 }
 
 int CEditControl::GetCountSymbols() const {
@@ -85,4 +85,24 @@ void CEditControl::SetFont(HWND handleEditControl) {
 	DeleteObject(font);
 	font = ::CreateFontIndirect(&logfont);
 	::SendMessage(handleEditControl, WM_SETFONT, (WPARAM)font, true);
+}
+
+int CEditControl::PositionWhiteSpace() {
+	std::wstring text = GetText();
+	size_t position = text.find(' ');
+	if (position == -1) {
+		position = text.find('\t');
+	}
+	return position;
+}
+
+std::pair<std::wstring, std::wstring> CEditControl::ParseTextByWhiteSpace(size_t positionWhiteSpace) {
+	std::wstring text = GetText();
+	if (positionWhiteSpace == -1) {
+		return std::make_pair(text, L"");
+	}
+	else {
+		return std::make_pair(text.substr(0, positionWhiteSpace), text.substr(positionWhiteSpace + 1));
+	}
+
 }

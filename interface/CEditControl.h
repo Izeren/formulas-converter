@@ -1,6 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include <string>
+#include <utility>
 
 class CEditControl {
 public:
@@ -18,6 +19,8 @@ public:
 	int GetCountSymbols() const;
 	std::wstring GetText() const;
 	void SetFont(HWND handleEditControl);
+	int PositionWhiteSpace();
+	std::pair<std::wstring, std::wstring> ParseTextByWhiteSpace(size_t positionWhiteSpace);
 
 private:
 	HWND handle;

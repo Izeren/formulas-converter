@@ -5,6 +5,7 @@
 #include "CEditControl.h"
 #include <list>
 #include <map>
+#include <utility>
 
 class CMatheditorWindow {
 public:
