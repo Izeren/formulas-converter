@@ -355,6 +355,7 @@ void CMatheditorWindow::createEditControl(std::wstring text)
 	createEditControl();
 	::SetWindowText(activeEditControl->GetHandle(), (LPWSTR)text.c_str());
 	//resizeCell(activeCell->getHandle());
+	activeEditControl->SetCountSymbols(text.size());
 	InvalidateRect(hWndMainWindow, NULL, FALSE);
 }
 

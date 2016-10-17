@@ -9,9 +9,15 @@ public:
 	bool Create(HWND parentHandle);
 	void Show(int cmdShow);
 	HWND GetHandle();
-	int GetHeight();
-	int GetWidth();
+	int GetHeight() const;
+	int GetWidth() const;
+	void SetHeight(int height);
+	void SetWidth(int width);
+	void SetCountSymbols(int countSymbols);
 
 private:
 	HWND handle;
+	int height;
+	int width;
+	int countSymbols;
 };
