@@ -2,7 +2,8 @@
 #include "resource.h"
 
 const int MIN_HEIGHT_DEFAULT = 16;
-const int MIN_WIDTH_DEFAULT = 10;
+const int MIN_WIDTH_DEFAULT = 30;
+const int MIN_SIZE_SYMBOL = 8;
 
 CEditControl::CEditControl()
 {
@@ -36,7 +37,7 @@ int CEditControl::GetHeight() const {
 }
 
 int CEditControl::GetWidth() const {
-	return height;
+	return width;
 }
 
 void CEditControl::SetHeight(int height) {
@@ -52,9 +53,22 @@ void CEditControl::SetWidth(int width) {
 }
 
 void CEditControl::SetCountSymbols(int countSymbols) {
-	if (countSymbols >= this->countSymbols) {
+	//if (countSymbols >= 0) {
 		this->countSymbols = countSymbols;
-		SetWidth(this->countSymbols * MIN_WIDTH_DEFAULT);
+		SetWidth(this->countSymbols * MIN_SIZE_SYMBOL);
 		SetWindowPos(handle, HWND_TOP, 0, 0, width, height, SWP_NOMOVE);
-	}
+//	}
+}
+
+int CEditControl::GetCountSymbols() const {
+	return countSymbols;
+}
+
+std::wstring CEditControl::GetText() const {
+	int length = SendMessage(handle, WM_GETTEXTLENGTH, 0, 0);
+	length++;
+	std::wstring text;
+	text.resize(length);
+	::GetWindowText(handle, (LPWSTR)text.c_str(), length);
+	return text;
 }

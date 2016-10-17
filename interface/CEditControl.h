@@ -1,5 +1,6 @@
 #pragma once
 #include <Windows.h>
+#include <string>
 
 class CEditControl {
 public:
@@ -14,6 +15,8 @@ public:
 	void SetHeight(int height);
 	void SetWidth(int width);
 	void SetCountSymbols(int countSymbols);
+	int GetCountSymbols() const;
+	std::wstring GetText() const;
 
 private:
 	HWND handle;

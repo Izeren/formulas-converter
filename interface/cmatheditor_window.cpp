@@ -254,8 +254,11 @@ LRESULT _stdcall CMatheditorWindow::localWindowProc(HWND hwnd, UINT message, WPA
 	case WM_COMMAND:
 		OnCommand(hwnd, message, wParam, lParam);
 		return DefWindowProc(hwnd, message, wParam, lParam);
-	case WM_CTLCOLOREDIT:
+	case WM_CTLCOLOREDIT: {
+		std::wstring text = activeEditControl->GetText();
+		activeEditControl->SetCountSymbols(text.length());
 		return OnCtlColorEdit(wParam, lParam);
+	}
 	default:
 		return DefWindowProc(hwnd, message, wParam, lParam);
 	}
