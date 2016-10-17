@@ -18,19 +18,19 @@ int main()
 	try {
 
 		Converter converter;
-		COpenMathParser parser;
-		std::shared_ptr<IExpression> operationTree = parser.parseFromFile("format_files/test1.openmath");
-		CPrintVisitor printVisitor;
-		operationTree->Accept(printVisitor);
-		std::cout << printVisitor.getDigraphDescription() << "\n";
 
-		std::set<std::string> ids = { "x" };
-		CSintacticValidationVisitor validator;
-		validator.setVisibleIds(ids);
-		operationTree->Accept(validator);
-		std::cout << validator.getValidationStatus() << "\n";
-
+		std::ofstream out_mathml("format_files/out_mathml");
+		out_mathml << converter.convert("format_files/test1.tex", LSVUtils::TEX, LSVUtils::MATHML);
+		out_mathml.close();
 		
+		std::ofstream out_openmath("format_files/out_openmath");
+		out_openmath << converter.convert("format_files/out_mathml", LSVUtils::MATHML, LSVUtils::OPENMATH);
+		out_openmath.close();
+
+		std::ofstream out_tex("format_files/out_tex");
+		out_tex << converter.convert("format_files/out_openmath", LSVUtils::OPENMATH, LSVUtils::TEX);
+		out_tex.close();
+
 	} catch (std::exception &ex) {
 		std::cout << ex.what() << std::endl;
 	}

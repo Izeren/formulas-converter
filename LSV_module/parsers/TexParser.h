@@ -106,7 +106,7 @@ class CTexParser: public IParser {
 			else {
 
 				std::string operand;
-				while (i < str.length() && (isalnum(str[i]) || str[i] == '\\')) {
+				while (i < str.length() && (isalnum(str[i]) || str[i] == '.' || str[i] == '\\')) {
 					operand += str[i++];
 				}
 				--i;

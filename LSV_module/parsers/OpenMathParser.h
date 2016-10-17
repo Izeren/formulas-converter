@@ -108,7 +108,7 @@ class COpenMathParser: public IParser {
 			} else {
 
 				std::string operand;
-				while (i < str.length() && isalnum(str[i])) {
+				while (i < str.length() && (isalnum(str[i]) || str[i] == '.')) {
 					operand += str[i++];
 				}
 				--i;

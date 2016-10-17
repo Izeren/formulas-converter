@@ -295,11 +295,11 @@ class CMathMLParser: public IParser {
 		pugi::xml_node end_range = start_range.next_sibling();
 		pugi::xml_node range_end_val = end_range.first_child();
 
-		if (!nameEqual(range_end_val, "mn")) {
+		if (!nameEqual(end_range, "mn")) {
 			errorMessage("Sum expression node must contain end value");
 		}
 
-		std::string range_end_val_str = std::string(range_end_val.first_child().value());
+		std::string range_end_val_str = std::string(range_end_val.value());
 		if (!LSVUtils::checkDouble(range_end_val_str)) {
 			errorMessage("Sum expression node contains illegal end value");
 		}

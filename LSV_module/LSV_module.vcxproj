@@ -84,7 +84,6 @@
     <ClCompile Include="converters\Converter.cpp" />
     <ClCompile Include="expression_tree\Expression.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MathMLBuildVisitor.cpp" />
     <ClCompile Include="parsers\MathMLParser.cpp" />
     <ClCompile Include="parsers\OpenMathParser.cpp" />
     <ClCompile Include="parsers\TexParser.cpp" />
@@ -114,7 +113,6 @@
     <ClInclude Include="visitors\CSintacticValdationVisitor.h" />
     <ClInclude Include="visitors\IExportVisitor.h" />
     <ClInclude Include="visitors\IVisitor.h" />
-    <ClInclude Include="visitors\MathMLBuildVisitor.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="format_files\expr.tex" />
