@@ -314,8 +314,15 @@ void CMatheditorWindow::OnCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 		case EN_UPDATE: {
 			std::wstring text = activeEditControl->GetText();
 			size_t positionWhiteSpace = activeEditControl->PositionWhiteSpace();
-			
-			activeEditControl->SetCountSymbols(text.length());
+			std::pair<std::wstring, std::wstring> textTokens;
+			if (positionWhiteSpace != -1) {
+				textTokens = activeEditControl->ParseTextByWhiteSpace(positionWhiteSpace);
+				::SetWindowText(activeEditControl->GetHandle(), (LPWSTR)textTokens.first.c_str());
+				createEditControl(textTokens.second);
+			}
+			else {
+				activeEditControl->SetCountSymbols(text.length());
+			}
 			SendMessage(hWndMainWindow, WM_SIZE, 0, 0);
 			break;
 		}
