@@ -1,4 +1,4 @@
-#include "NodeVisualisation.h"
+п»ї#include "NodeVisualisation.h"
 
 const unsigned int NodeVisualisation::operationPlus = 0;
 const unsigned int NodeVisualisation::operationMinus = 1;
@@ -23,7 +23,7 @@ NodeVisualisation::NodeVisualisation(const NodeVisualisation* nodeParent, const 
 
 NodeVisualisation::~NodeVisualisation()
 {
-	//Разрушение edit'а
+	//Р Р°Р·СЂСѓС€РµРЅРёРµ edit'Р°
 }
 
 bool NodeVisualisation::getOrientation() const
@@ -70,19 +70,19 @@ bool NodeVisualisation::createChildrens(unsigned int operationType)
 		case operationPower:
 		{
 			//leftChild.edit = edit.getText();
-			//Изменить edit
+			//РР·РјРµРЅРёС‚СЊ edit
 			break;
 		}
 		case operationSum:
 		{
 			leftChild.get()->createChildrens(operationSumParameters);
 			//rightChild.edit = edit.getText();
-			//Изенить edit
+			//РР·РµРЅРёС‚СЊ edit
 			break;
 		}
 		case operationSumParameters:
 		{
-			//Удалить edit
+			//РЈРґР°Р»РёС‚СЊ edit
 			break;
 		}
 		default:
@@ -121,7 +121,7 @@ bool NodeVisualisation::changeOneChildren(bool isLeft, NodeVisualisation* node =
 		return false;
 	}*/
 
-	//nodeMutable.reset(); //Оно удалит только себя или же и поддерево? Надо проверить...
+	//nodeMutable.reset(); //РћРЅРѕ СѓРґР°Р»РёС‚ С‚РѕР»СЊРєРѕ СЃРµР±СЏ РёР»Рё Р¶Рµ Рё РїРѕРґРґРµСЂРµРІРѕ? РќР°РґРѕ РїСЂРѕРІРµСЂРёС‚СЊ...
 	if( isLeft ) {
 		if( node == nullptr ) {
 			leftChild = std::shared_ptr<NodeVisualisation>(new NodeVisualisation(this, operationValue, isLeft));

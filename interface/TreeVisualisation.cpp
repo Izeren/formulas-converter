@@ -1,4 +1,4 @@
-#include "TreeVisualisation.h"
+﻿#include "TreeVisualisation.h"
 
 TreeVisualisation::TreeVisualisation(HWND parentHandle) : mainWindow(parentHandle)
 {
