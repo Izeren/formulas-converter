@@ -1,14 +1,17 @@
 #pragma once
+
 #include <Windows.h>
 
-class CEditControl {
+class CEditControl
+{
 public:
+
 	CEditControl();
 	~CEditControl();
 
 	bool Create(HWND parentHandle);
 	void Show(int cmdShow);
-	HWND GetHandle();
+	HWND GetHandle() const;
 	int GetHeight() const;
 	int GetWidth() const;
 	void SetHeight(int height);
@@ -16,8 +19,11 @@ public:
 	void SetCountSymbols(int countSymbols);
 
 private:
+
 	HWND handle;
 	int height;
 	int width;
 	int countSymbols;
+	int leftMargin;
+	int upperMargin;
 };
