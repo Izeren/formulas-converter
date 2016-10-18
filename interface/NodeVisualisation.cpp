@@ -60,9 +60,9 @@ bool NodeVisualisation::createChildrens(unsigned int operationType)
 	{
 		case operationAssign:
 		{
-			//leftChild.edit = 'f(x)';
 			break;
 		}
+		// Здесь нет ошибки, эти операции идентичны.
 		case operationPlus:
 		case operationMinus:
 		case operationMultiply:

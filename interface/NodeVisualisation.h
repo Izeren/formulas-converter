@@ -19,11 +19,14 @@ public:
 	std::shared_ptr<NodeVisualisation> getParentNode() const;
 	
 	bool createChildrens(unsigned int operationValue);
+	// Рекурсивная очистка ячеек
 	void resetNodes();
+	// Замена одного из поддеревьев.
 	bool changeOneChildren(bool isLeft, NodeVisualisation* node = nullptr);
 
 	HWND getHandle() const;
 
+	// Тип операции в узле.
 	const static unsigned int operationPlus;
 	const static unsigned int operationMinus;
 	const static unsigned int operationMultiply;

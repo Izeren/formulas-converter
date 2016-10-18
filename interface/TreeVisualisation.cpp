@@ -4,7 +4,7 @@ TreeVisualisation::TreeVisualisation(HWND parentHandle) : mainWindow(parentHandl
 {
 	head = std::shared_ptr<NodeVisualisation>(new NodeVisualisation(mainWindow, nullptr, NodeVisualisation::operationAssign, true));
 	head->createChildrens(NodeVisualisation::operationAssign);
-	activeNode = head->getRightNode().get();
+	activeNode = head->getLeftNode().get();
 }
 
 TreeVisualisation::~TreeVisualisation()
