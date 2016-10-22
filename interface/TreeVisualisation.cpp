@@ -26,7 +26,7 @@ void TreeVisualisation::createChildrens(NodeType operationType)
 	}
 
 	activeNode = activeNode->getLeftNode().get();
-	if( operationType == NodeVisualisation::operationSum ) {
+	if( operationType == Summ ) {
 		activeNode = activeNode->getLeftNode().get();
 	}
 }
@@ -40,11 +40,11 @@ void TreeVisualisation::deleteNode()
 		//edit.text = '';
 		return;
 	}
-	if( activeNode->getTypeOfOperation() != NodeVisualisation::operationValue ) {
+	if( activeNode->getTypeOfOperation() != Value ) {
 		return;
 	}
 
-	if( activeNode->getParentNode()->getTypeOfOperation() == NodeVisualisation::operationSum ) {
+	if( activeNode->getParentNode()->getTypeOfOperation() == Summ ) {
 		if( !(activeNode->getOrientation()) ) {
 			activeNode = activeNode->getParentNode().get();
 			bool isLeft = activeNode->getOrientation();
@@ -59,7 +59,7 @@ void TreeVisualisation::deleteNode()
 		return;
 	}
 
-	if( activeNode->getParentNode()->getTypeOfOperation() == NodeVisualisation::operationSumParameters ) {
+	if( activeNode->getParentNode()->getTypeOfOperation() == SummParametres ) {
 		activeNode = activeNode->getParentNode()->getParentNode().get();
 		activeNode->getLeftNode()->resetNodes();
 		activeNode->getLeftNode().reset();
