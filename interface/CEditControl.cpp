@@ -31,17 +31,17 @@ void CEditControl::Show(int cmdShow)
 	ShowWindow(handle, cmdShow);
 }
 
-HWND CEditControl::GetHandle() const
+HWND CEditControl::GetHandle()
 {
 	return handle;
 }
 
-int CEditControl::GetHeight() const
+int CEditControl::GetHeight()
 {
 	return height;
 }
 
-int CEditControl::GetWidth() const
+int CEditControl::GetWidth()
 {
 	return height;
 }

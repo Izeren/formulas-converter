@@ -1,19 +1,25 @@
 ﻿#include "TreeVisualisation.h"
 
+TreeVisualisation::TreeVisualisation() 
+{
+}
+
 TreeVisualisation::TreeVisualisation(HWND parentHandle) : mainWindow(parentHandle)
 {
-	head = std::shared_ptr<NodeVisualisation>(new NodeVisualisation(mainWindow, nullptr, NodeVisualisation::operationAssign, true));
-	head->createChildrens(NodeVisualisation::operationAssign);
+	head = std::shared_ptr<NodeVisualisation>(new NodeVisualisation(nullptr, Assign, true, 0));
+	head->createChildrens(Assign);
 	activeNode = head->getLeftNode().get();
 }
 
 TreeVisualisation::~TreeVisualisation()
 {
-	head->resetNodes();
-	head.reset();
+	if (head != nullptr) {
+		head->resetNodes();
+		head.reset();
+	}
 }
 
-void TreeVisualisation::createChildrens(unsigned int operationType)
+void TreeVisualisation::createChildrens(NodeType operationType)
 {
 	if( !(activeNode->createChildrens(operationType)) ) {
 		return;
@@ -38,7 +44,7 @@ void TreeVisualisation::deleteNode()
 		return;
 	}
 
-	if( activeNode->getParentNode()->getTypeOfOperation == NodeVisualisation::operationSum ) {
+	if( activeNode->getParentNode()->getTypeOfOperation() == NodeVisualisation::operationSum ) {
 		if( !(activeNode->getOrientation()) ) {
 			activeNode = activeNode->getParentNode().get();
 			bool isLeft = activeNode->getOrientation();
@@ -48,12 +54,12 @@ void TreeVisualisation::deleteNode()
 			} else {
 				activeNode->getRightNode()->resetNodes();
 			}
-			activeNode->changeOneChildren(isLeft);
+			activeNode->changeOneChildren(isLeft, nullptr);
 		}
 		return;
 	}
 
-	if( activeNode->getParentNode()->getTypeOfOperation == NodeVisualisation::operationSumParameters ) {
+	if( activeNode->getParentNode()->getTypeOfOperation() == NodeVisualisation::operationSumParameters ) {
 		activeNode = activeNode->getParentNode()->getParentNode().get();
 		activeNode->getLeftNode()->resetNodes();
 		activeNode->getLeftNode().reset();

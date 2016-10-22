@@ -11,9 +11,9 @@ public:
 
 	bool Create(HWND parentHandle);
 	void Show(int cmdShow);
-	HWND GetHandle() const;
-	int GetHeight() const;
-	int GetWidth() const;
+	HWND GetHandle();
+	int GetHeight();
+	int GetWidth();
 	void SetHeight(int height);
 	void SetWidth(int width);
 	void SetCountSymbols(int countSymbols);

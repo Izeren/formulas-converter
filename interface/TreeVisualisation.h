@@ -9,6 +9,7 @@ class TreeVisualisation
 {
 public:
 
+	TreeVisualisation();
 	TreeVisualisation(HWND parentHandle);
 	~TreeVisualisation();
 
@@ -17,7 +18,7 @@ public:
 	* по бокам от него возникают две ячейки. Если операция была вызвана из какой-то ячейки, то данный блок заполняется в левую
 	* (в случае суммы -- под знак суммы).
 	*/
-	void createChildrens(unsigned int operationType);
+	void createChildrens(NodeType operationType);
 
 	/*
 	* Удаление узлов. В случае, когда другой блок не пустой, он переносится на место операции
@@ -28,7 +29,7 @@ public:
 private:
 
 	HWND mainWindow;
-	std::shared_ptr<NodeVisualisation> head;
+	std::shared_ptr<NodeVisualisation> head = nullptr;
 	NodeVisualisation* activeNode;
 };
 

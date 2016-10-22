@@ -5,6 +5,7 @@
 #include "CEditControl.h"
 #include <list>
 #include <map>
+#include "TreeVisualisation.h"
 
 class CMatheditorWindow {
 public:
@@ -32,6 +33,8 @@ private:
 	std::list<CEditControl> editControls;
 	std::list<CEditControl>::iterator activeEditControl;
 	std::map<HWND, std::list<CEditControl>::iterator> editControlsHandles;
+
+	TreeVisualisation* editControlsTree;
 
 	virtual LRESULT __stdcall localWindowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
 	static LRESULT __stdcall windowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);

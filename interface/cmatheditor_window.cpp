@@ -54,6 +54,8 @@ bool CMatheditorWindow::Create() {
 
 	createToolbar();
 
+	editControlsTree = new TreeVisualisation(hWndMainWindow);
+
 	return true;
 }
 
@@ -180,24 +182,13 @@ void CMatheditorWindow::OnSize()
 	RECT toolbarRect;
 	::GetClientRect(hWndToolbar, &toolbarRect);
 
-	int currentTop = mainRect.top + (toolbarRect.bottom - toolbarRect.top) + SIZE_BETWEEN_CONTROLS;
-	int currentLeft = mainRect.left + SIZE_BETWEEN_CONTROLS;
-	for (auto window = editControls.begin(); window != editControls.end(); ++window) {
-		::SetWindowPos(window->GetHandle(), HWND_TOP, currentLeft, currentTop, window->GetWidth(), window->GetHeight(), 0);
-		currentLeft += SIZE_BETWEEN_CONTROLS + window->GetWidth();
-	}
+	//int currentTop = mainRect.top + (toolbarRect.bottom - toolbarRect.top) + SIZE_BETWEEN_CONTROLS;
+	//int currentLeft = mainRect.left + SIZE_BETWEEN_CONTROLS;
+	//for (auto window = editControls.begin(); window != editControls.end(); ++window) {
+	//	::SetWindowPos(window->GetHandle(), HWND_TOP, currentLeft, currentTop, window->GetWidth(), window->GetHeight(), 0);
+	//	currentLeft += SIZE_BETWEEN_CONTROLS + window->GetWidth();
+	//}
 
-	//RECT editControlRect;
-	//::GetClientRect(hWndMainWindow, &editControlRect);
-
-	//RECT toolbarRect;
-	//::GetClientRect(hWndToolbar, &toolbarRect);
-
-	//int editControlTop = editControlRect.top + (toolbarRect.bottom - toolbarRect.top),
-	//	editControlWidth = editControlRect.right - editControlRect.left,
-	//	editControlHeight = editControlRect.bottom - editControlRect.top;
-	//SetWindowPos(editControl.GetHandle(), HWND_TOP, editControlRect.left, editControlTop, editControlWidth, editControlHeight, 0);
-	
 	SendMessage(hWndToolbar, TB_AUTOSIZE, 0, 0);
 }
 
