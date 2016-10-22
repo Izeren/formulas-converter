@@ -6,7 +6,7 @@ TreeVisualisation::TreeVisualisation()
 
 TreeVisualisation::TreeVisualisation(HWND parentHandle) : mainWindow(parentHandle)
 {
-	head = std::shared_ptr<NodeVisualisation>(new NodeVisualisation(nullptr, Assign, true, 0));
+	head = std::shared_ptr<NodeVisualisation>(new NodeVisualisation(nullptr, Assign, true, parentHandle));
 	head->createChildrens(Assign);
 	activeNode = head->getLeftNode().get();
 }
@@ -92,4 +92,8 @@ void TreeVisualisation::deleteNode()
 	else {
 		activeNode = activeNode->getRightNode().get();
 	}
+}
+
+void TreeVisualisation::paint(int top_margin, int left_margin) {
+	head->paintTree(top_margin, left_margin);
 }

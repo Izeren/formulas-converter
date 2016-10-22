@@ -34,7 +34,7 @@ private:
 	std::list<CEditControl>::iterator activeEditControl;
 	std::map<HWND, std::list<CEditControl>::iterator> editControlsHandles;
 
-	TreeVisualisation* editControlsTree;
+	TreeVisualisation* editControlsTree = nullptr;
 
 	virtual LRESULT __stdcall localWindowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
 	static LRESULT __stdcall windowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);

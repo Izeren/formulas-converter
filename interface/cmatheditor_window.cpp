@@ -182,6 +182,12 @@ void CMatheditorWindow::OnSize()
 	RECT toolbarRect;
 	::GetClientRect(hWndToolbar, &toolbarRect);
 
+	int currentTop = mainRect.top + (toolbarRect.bottom - toolbarRect.top) + SIZE_BETWEEN_CONTROLS;
+	int currentLeft = mainRect.left + SIZE_BETWEEN_CONTROLS;
+	if (editControlsTree) {
+		editControlsTree->paint(currentTop, currentLeft);
+	}
+
 	//int currentTop = mainRect.top + (toolbarRect.bottom - toolbarRect.top) + SIZE_BETWEEN_CONTROLS;
 	//int currentLeft = mainRect.left + SIZE_BETWEEN_CONTROLS;
 	//for (auto window = editControls.begin(); window != editControls.end(); ++window) {

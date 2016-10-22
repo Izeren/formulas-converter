@@ -26,6 +26,8 @@ public:
 	*/
 	void deleteNode();
 
+	void paint(int top_margin, int left_margin);
+
 private:
 
 	HWND mainWindow;
