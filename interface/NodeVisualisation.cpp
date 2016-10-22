@@ -1,23 +1,44 @@
 ﻿#include "NodeVisualisation.h"
 
-const unsigned int NodeVisualisation::operationPlus = 0;
-const unsigned int NodeVisualisation::operationMinus = 1;
-const unsigned int NodeVisualisation::operationMultiply = 2;
-const unsigned int NodeVisualisation::operationSum = 3;
-const unsigned int NodeVisualisation::operationFrac = 4;
-const unsigned int NodeVisualisation::operationPower = 5;
-const unsigned int NodeVisualisation::operationSumParameters = 6;
-const unsigned int NodeVisualisation::operationValue = 7;
-const unsigned int NodeVisualisation::operationAssign = 8;
+const int SIZE_BETWEEN_CONTROLS = 10;
 
-NodeVisualisation::NodeVisualisation(const NodeVisualisation* nodeParent, const unsigned int operationType,
-	const bool isLeftChild, const HWND parentHandle = 0)
-	: mainWindow(nodeParent->getHandle()), parent(nodeParent), leftChild(nullptr), rightChild(nullptr),
-		typeOfOperation(operationType), orientationIsLeft(isLeftChild)
+NodeVisualisation::NodeVisualisation(NodeVisualisation* _nodeParent, NodeType _nodeType,
+	bool isLeftChild, HWND _hWndParentWindow)
+	: parent(_nodeParent), leftChild(nullptr), rightChild(nullptr),
+		nodeType(_nodeType), orientationIsLeft(isLeftChild), hWndParentWindow(_hWndParentWindow)
 {
-	value.Create(mainWindow);
-	if( nodeParent == nullptr ) {
-		parent == nullptr;
+	editControl = CEditControl();
+	editControl.Create(hWndParentWindow);
+	processNodeType();
+}
+
+void NodeVisualisation::processNodeType()
+{
+	switch (nodeType)
+	{
+	case Assign:
+		::SetWindowText(editControl.GetHandle(), (LPWSTR)L"=");
+		break;
+	case Plus:
+		::SetWindowText(editControl.GetHandle(), (LPWSTR)L"+");
+		break;
+	case Minus:
+		::SetWindowText(editControl.GetHandle(), (LPWSTR)L"-");
+		break;
+	case Multiply:
+		::SetWindowText(editControl.GetHandle(), (LPWSTR)L"*");
+		break;
+	case Divide:
+		::SetWindowText(editControl.GetHandle(), (LPWSTR)L"/");
+		break;
+	case Power:
+		::SetWindowText(editControl.GetHandle(), (LPWSTR)L"^");
+		break;
+	case Summ:
+		::SetWindowText(editControl.GetHandle(), (LPWSTR)L"summ");
+		break;
+	default:
+		break;
 	}
 }
 
@@ -26,61 +47,61 @@ NodeVisualisation::~NodeVisualisation()
 	//Разрушение edit'а
 }
 
-bool NodeVisualisation::getOrientation() const
+bool NodeVisualisation::getOrientation()
 {
 	return orientationIsLeft;
 }
 
-std::shared_ptr<NodeVisualisation> NodeVisualisation::getLeftNode() const
+std::shared_ptr<NodeVisualisation> NodeVisualisation::getLeftNode()
 {
 	return leftChild;
 }
 
-std::shared_ptr<NodeVisualisation> NodeVisualisation::getRightNode() const
+std::shared_ptr<NodeVisualisation> NodeVisualisation::getRightNode()
 {
 	return rightChild;
 }
 
-std::shared_ptr<NodeVisualisation> NodeVisualisation::getParentNode() const
+std::shared_ptr<NodeVisualisation> NodeVisualisation::getParentNode()
 {
 	return parent;
 }
 
-unsigned int NodeVisualisation::getTypeOfOperation() const
+unsigned int NodeVisualisation::getTypeOfOperation()
 {
-	return typeOfOperation;
+	return nodeType;
 }
 
-bool NodeVisualisation::createChildrens(unsigned int operationType)
+bool NodeVisualisation::createChildrens(NodeType operationType)
 {
-	leftChild = std::shared_ptr<NodeVisualisation>(new NodeVisualisation(this, operationValue, true));
-	rightChild = std::shared_ptr<NodeVisualisation>(new NodeVisualisation(this, operationValue, false));
+	leftChild = std::shared_ptr<NodeVisualisation>(new NodeVisualisation(this, Value, true, hWndParentWindow));
+	rightChild = std::shared_ptr<NodeVisualisation>(new NodeVisualisation(this, Value, false, hWndParentWindow));
 
 	switch( operationType )
 	{
-		case operationAssign:
+		case Assign:
 		{
 			break;
 		}
 		// Здесь нет ошибки, эти операции идентичны.
-		case operationPlus:
-		case operationMinus:
-		case operationMultiply:
-		case operationFrac:
-		case operationPower:
+		case Plus:
+		case Minus:
+		case Multiply:
+		case Divide:
+		case Power:
 		{
 			//leftChild.edit = edit.getText();
 			//Изменить edit
 			break;
 		}
-		case operationSum:
+		case Summ:
 		{
-			leftChild.get()->createChildrens(operationSumParameters);
+			leftChild.get()->createChildrens(SummParametres);
 			//rightChild.edit = edit.getText();
 			//Изенить edit
 			break;
 		}
-		case operationSumParameters:
+		case SummParametres:
 		{
 			//Удалить edit
 			break;
@@ -93,7 +114,7 @@ bool NodeVisualisation::createChildrens(unsigned int operationType)
 		}
 	}
 
-	typeOfOperation = operationType;
+	nodeType = operationType;
 	return true;
 }
 
@@ -113,7 +134,7 @@ void NodeVisualisation::resetNodes()
 	}
 }
 
-bool NodeVisualisation::changeOneChildren(bool isLeft, NodeVisualisation* node = nullptr)
+bool NodeVisualisation::changeOneChildren(bool isLeft, NodeVisualisation* node)
 {
 	//std::shared_ptr<NodeVisualisation> nodeImmutable = (isLeft) ? rightChild : leftChild;
 	std::shared_ptr<NodeVisualisation> nodeMutable = (!isLeft) ? rightChild : leftChild;
@@ -124,21 +145,43 @@ bool NodeVisualisation::changeOneChildren(bool isLeft, NodeVisualisation* node =
 	//nodeMutable.reset(); //Оно удалит только себя или же и поддерево? Надо проверить...
 	if( isLeft ) {
 		if( node == nullptr ) {
-			leftChild = std::shared_ptr<NodeVisualisation>(new NodeVisualisation(this, operationValue, isLeft));
+			leftChild = std::shared_ptr<NodeVisualisation>(new NodeVisualisation(this, Value, isLeft, hWndParentWindow));
 		} else {
 			leftChild = std::shared_ptr<NodeVisualisation>(node);
 		}
 	} else {
 		if( node == nullptr ) {
-			rightChild = std::shared_ptr<NodeVisualisation>(new NodeVisualisation(this, operationValue, isLeft));
+			rightChild = std::shared_ptr<NodeVisualisation>(new NodeVisualisation(this, Value, isLeft, hWndParentWindow));
 		}
 		else {
 			rightChild = std::shared_ptr<NodeVisualisation>(node);
 		}
 	}
+
+	// Should be checked
+	return true;
 }
 
-HWND NodeVisualisation::getHandle() const
+HWND NodeVisualisation::getHandle()
 {
-	return value.GetHandle();
+	return editControl.GetHandle();
+}
+
+int NodeVisualisation::paint(int top_margin, int left_margin)
+{
+	::SetWindowPos(editControl.GetHandle(), HWND_TOP, left_margin, top_margin, editControl.GetWidth(), editControl.GetHeight(), 0);
+	left_margin += SIZE_BETWEEN_CONTROLS + editControl.GetWidth();
+	return left_margin;
+}
+
+int NodeVisualisation::paintTree(int top_margin, int left_margin)
+{
+	if (leftChild) {
+		left_margin = leftChild->paintTree(top_margin, left_margin);
+	}
+	left_margin = this->paint(top_margin, left_margin);
+	if (rightChild) {
+		left_margin = rightChild->paintTree(top_margin, left_margin);
+	}
+	return left_margin;
 }

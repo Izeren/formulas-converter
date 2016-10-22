@@ -5,49 +5,56 @@
 
 #include "CEditControl.h"
 
+enum NodeType {
+	Value,
+	Assign,
+	Plus,
+	Minus,
+	Multiply,
+	Divide,
+	Power,
+	Summ,
+	SummParametres
+};
+
 class NodeVisualisation
 {
 public:
 
-	NodeVisualisation(const NodeVisualisation* nodeParent, const unsigned int type, const bool isLeftChild, HWND parentWindow = 0);
+	NodeVisualisation(NodeVisualisation* _nodeParent, NodeType _nodeType, bool isLeftChild, HWND _hWndParentWindow);
 	~NodeVisualisation();
 
-	bool getOrientation() const; // left == true, rigth == false
-	unsigned int getTypeOfOperation() const;
-	std::shared_ptr<NodeVisualisation> getLeftNode() const;
-	std::shared_ptr<NodeVisualisation> getRightNode() const;
-	std::shared_ptr<NodeVisualisation> getParentNode() const;
+	bool getOrientation(); // left == true, rigth == false
+	unsigned int getTypeOfOperation();
+	std::shared_ptr<NodeVisualisation> getLeftNode();
+	std::shared_ptr<NodeVisualisation> getRightNode();
+	std::shared_ptr<NodeVisualisation> getParentNode();
 	
-	bool createChildrens(unsigned int operationValue);
+	bool createChildrens(NodeType operationValue);
 	// Рекурсивная очистка ячеек
 	void resetNodes();
 	// Замена одного из поддеревьев.
-	bool changeOneChildren(bool isLeft, NodeVisualisation* node = nullptr);
+	bool changeOneChildren(bool isLeft, NodeVisualisation* node);
 
-	HWND getHandle() const;
+	HWND getHandle();
 
-	// Тип операции в узле.
-	const static unsigned int operationPlus;
-	const static unsigned int operationMinus;
-	const static unsigned int operationMultiply;
-	const static unsigned int operationSum;
-	const static unsigned int operationFrac;
-	const static unsigned int operationPower;
-	const static unsigned int operationSumParameters;
-	const static unsigned int operationValue;
-	const static unsigned int operationAssign;
+	// В дальнейшем нужно не принимать параметры смещения сверху и слева, а заранее предпосчитывать их
+	int paint(int top_margin, int left_margin);
+	int paintTree(int top_margin, int left_margin);
 
 private:
 
 	NodeVisualisation() = delete;
 
-	unsigned int typeOfOperation;
+	NodeType nodeType;
 	bool orientationIsLeft;
 	std::shared_ptr<NodeVisualisation> parent;
 	std::shared_ptr<NodeVisualisation> leftChild;
 	std::shared_ptr<NodeVisualisation> rightChild;
 
-	HWND mainWindow;
-	CEditControl value;
+	HWND hWndParentWindow;
+	CEditControl editControl;
+
+	void processNodeType();
 };
 
