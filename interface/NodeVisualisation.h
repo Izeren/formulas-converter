@@ -33,7 +33,7 @@ enum Positioning
 	Bottom,
 	UpRight,
 	NotExist,
-	IsNotKnown
+	PositioningError
 };
 
 class NodeVisualisation
@@ -59,8 +59,8 @@ public:
 	NodeType getNodeType();
 
 	// В дальнейшем нужно не принимать параметры смещения сверху и слева, а заранее предпосчитывать их
-	int paint(int top_margin, int left_margin);
-	int paintTree(int top_margin, int left_margin);
+	void paint(int top_margin, int left_margin);
+	void paintTree(int top_margin, int left_margin);
 	CRect determineRectsByNearestParent(CRect neighbour_rect, Positioning positioning);
 	CRect determineRectsByLeftChild(CRect left_rect, Positioning positioning);
 	CRect changeRectsByRightChild(CRect right_rect, Positioning positioning);
@@ -84,9 +84,8 @@ private:
 	CEditControl editControl;
 
 	void processNodeType();
-	// определить, в какую сторону относительно родителя сдвинут эдит-контрол
+	// определить местоположение ребенка относительно родителя
 	Positioning determinePositioning(NodeVisualisation* node, bool isLeftChild);
-	Positioning determinePositioningMy();
 
 	void offsetTree(CPoint offset);
 	void makeOffset(CPoint offset);

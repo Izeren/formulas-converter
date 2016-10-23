@@ -173,23 +173,26 @@ NodeType NodeVisualisation::getNodeType()
 	return nodeType;
 }
 
-int NodeVisualisation::paint(int top_margin, int left_margin)
+void NodeVisualisation::paint(int top_margin, int left_margin)
 {
-	::SetWindowPos(editControl.GetHandle(), HWND_TOP, left_margin, top_margin, editControl.GetWidth(), editControl.GetHeight(), 0);
-	left_margin += SIZE_BETWEEN_CONTROLS + editControl.GetWidth();
-	return left_margin;
+	::SetWindowPos(
+		editControl.GetHandle(), 
+		HWND_TOP, 
+		left_margin + editControl.GetRect().left, 
+		top_margin + editControl.GetRect().top,
+		editControl.GetWidth(), 
+		editControl.GetHeight(), 0);
 }
 
-int NodeVisualisation::paintTree(int top_margin, int left_margin)
+void NodeVisualisation::paintTree(int top_margin, int left_margin)
 {
 	if (leftChild) {
-		left_margin = leftChild->paintTree(top_margin, left_margin);
+		leftChild->paintTree(top_margin, left_margin);
 	}
-	left_margin = this->paint(top_margin, left_margin);
+	this->paint(top_margin, left_margin);
 	if (rightChild) {
-		left_margin = rightChild->paintTree(top_margin, left_margin);
+		rightChild->paintTree(top_margin, left_margin);
 	}
-	return left_margin;
 }
 
 CRect NodeVisualisation::determineRectsByNearestParent(CRect neighbour_rect, Positioning pos_against_neighbour)
@@ -290,9 +293,9 @@ CRect NodeVisualisation::changeRectsByRightChild(CRect right_rect, Positioning p
 CRect NodeVisualisation::determineCoordinatesTree(CRect parent_rect, Positioning pos_against_parent)
 {
 	// расположение левого ребенка относительно узла
-	Positioning pos_left_child = determinePositioning(leftChild.get(), true);
+	Positioning pos_left_child = determinePositioning(this, true);
 	// расположение правого ребенка относительно узла
-	Positioning pos_right_child = determinePositioning(rightChild.get(), true);
+	Positioning pos_right_child = determinePositioning(this, false);
 
 	// Речь везде идет о прямоугольниках вокруг поддерева
 	CRect left_rect = EMPTY_RECT,
@@ -348,9 +351,11 @@ NodeVisualisation* NodeVisualisation::findNode(HWND hEditControl)
 Positioning NodeVisualisation::determinePositioning(NodeVisualisation* node, bool isLeftChild)
 {
 	if (!node) {
-		return NotExist;
+		return PositioningError;
 	}
 	switch (node->getNodeType()) {
+	case Value:
+		return NotExist;
 	case Assign:
 	case Plus:
 	case Minus:
@@ -386,9 +391,5 @@ Positioning NodeVisualisation::determinePositioning(NodeVisualisation* node, boo
 	default:
 		break;
 	}
-	return IsNotKnown;
-}
-
-Positioning NodeVisualisation::determinePositioningMy() {
-	return determinePositioning(parent.get(), isLeftChild);
+	return PositioningError;
 }
