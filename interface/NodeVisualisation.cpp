@@ -67,6 +67,16 @@ std::shared_ptr<NodeVisualisation> NodeVisualisation::getParentNode()
 	return parent;
 }
 
+
+std::shared_ptr<NodeVisualisation> NodeVisualisation::getNode(bool isLeftChild)
+{
+	if (isLeftChild) {
+		return getLeftNode();
+	} else {
+		return getRightNode();
+	}
+}
+
 unsigned int NodeVisualisation::getTypeOfOperation()
 {
 	return nodeType;
@@ -222,11 +232,12 @@ CRect NodeVisualisation::determineRectsByLeftChild(CRect left_rect, Positioning 
 	editControl.SetDefaultRect();
 	switch (pos_left) {
 	case Left:
-		editControl.moveLeftAgainstRect(left_rect);
+		editControl.moveLeftCentringHeightAgainstRect(left_rect);
 		editControl.offsetInnerRect( POINT{ SIZE_BETWEEN_CONTROLS, 0 } );
 		break;
 	case Up:
 		editControl.moveDownAgainstRect(left_rect);
+		// для знака деления
 		editControl.copyRectWidthIfLarger(left_rect);
 		editControl.offsetInnerRect( POINT{ 0, SIZE_BETWEEN_CONTROLS } );
 		break;
@@ -238,26 +249,38 @@ CRect NodeVisualisation::determineRectsByLeftChild(CRect left_rect, Positioning 
 	return editControl.GetRectAroundSubtree();
 }
 
-void NodeVisualisation::offsetTree(CPoint offset) {
+void NodeVisualisation::offsetTreeDown(CPoint offset) {
 	editControl.offsetBothRects(offset);
 	if (leftChild) {
-		leftChild->offsetTree(offset);
+		leftChild->offsetTreeDown(offset);
 	}
 	if (rightChild) {
-		rightChild->offsetTree(offset);
+		rightChild->offsetTreeDown(offset);
 	}
+}
+
+void NodeVisualisation::offsetTreeUp(CPoint offset, Positioning pos_stop) {
+	if (parent == nullptr || parent->determinePositioning(isLeftChild) == pos_stop) {
+		return;
+	}
+	parent->editControl.offsetBothRects(offset);
+	NodeVisualisation* other_child = parent->getNode(!isLeftChild).get();
+	if (other_child) {
+		other_child->offsetTreeDown(offset);
+	}
+	parent->offsetTreeUp(offset, pos_stop);
 }
 
 void NodeVisualisation::makeOffset(bool is_right_offset, CPoint offset) {
 	if (is_right_offset) {
 		if (rightChild) {
-			rightChild->offsetTree(offset);
+			rightChild->offsetTreeDown(offset);
 		}
 	}
 	else {
 		editControl.offsetBothRects(offset);
 		if (leftChild) {
-			leftChild->offsetTree(offset);
+			leftChild->offsetTreeDown(offset);
 		}
 	}
 }
@@ -266,11 +289,15 @@ CRect NodeVisualisation::changeRectsByRightChild(CRect right_rect, Positioning p
 {
 	switch (pos_right) {
 	case Right: {
+		// определяем высоту правого и левого ребенка, центрируем
 		int this_height = editControl.GetRectAroundSubtree().Height();
 		int right_height = right_rect.Height();
 		int offset_down = (right_height - this_height) / 2;
 		if (offset_down > 0) {
 			makeOffset(false, POINT{ 0, offset_down });
+		}
+		else if (offset_down < 0) {
+			makeOffset(true, POINT{ 0, -offset_down });
 		}
 		break;
 	}
@@ -278,10 +305,14 @@ CRect NodeVisualisation::changeRectsByRightChild(CRect right_rect, Positioning p
 		int offset_down = right_rect.Height();
 		if (offset_down > 0) {
 			makeOffset(false, POINT{ 0, offset_down });
+			// нужно подумать над тем, что делать с операцией power, ибо сначала нужно все сместить,
+			// а потом центрировать не учитывая степень
+			//offsetTreeUp(POINT{ 0, offset_down }, Bottom);
 		}
 		break;
 	}
 	case Bottom: {
+		// определяем ширину правого и левого ребенка, центрируем
 		int this_width = editControl.GetRectAroundSubtree().Width();
 		int right_width = right_rect.Width();
 		int offset_right = (right_width - this_width) / 2;
@@ -404,4 +435,8 @@ Positioning NodeVisualisation::determinePositioning(NodeVisualisation* node, boo
 		break;
 	}
 	return PositioningError;
+}
+
+Positioning NodeVisualisation::determinePositioning(bool isLeftChild) {
+	return determinePositioning(this, isLeftChild);
 }

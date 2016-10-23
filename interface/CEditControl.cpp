@@ -106,6 +106,12 @@ void CEditControl::SetRectAroundSubtree(CRect rectAroundSubtree_)
 }
 
 void CEditControl::moveLeftAgainstRect(CRect neighbour_rect) {
+	//int top = neighbour_rect.top + (neighbour_rect.Height() - GetHeight()) / 2;
+	//rect = CRect(POINT{ neighbour_rect.right, top }, SIZE{ GetWidth(), GetHeight() });
+	rect = CRect(POINT{ neighbour_rect.right, neighbour_rect.top }, SIZE{ GetWidth(), GetHeight() });
+}
+
+void CEditControl::moveLeftCentringHeightAgainstRect(CRect neighbour_rect) {
 	int top = neighbour_rect.top + (neighbour_rect.Height() - GetHeight()) / 2;
 	rect = CRect(POINT{ neighbour_rect.right, top }, SIZE{ GetWidth(), GetHeight() });
 }

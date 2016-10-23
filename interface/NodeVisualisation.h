@@ -48,6 +48,7 @@ public:
 	std::shared_ptr<NodeVisualisation> getLeftNode();
 	std::shared_ptr<NodeVisualisation> getRightNode();
 	std::shared_ptr<NodeVisualisation> getParentNode();
+	std::shared_ptr<NodeVisualisation> getNode(bool isLeftChild);
 	
 	bool createChildrens(NodeType operationValue);
 	// Рекурсивная очистка ячеек
@@ -61,9 +62,19 @@ public:
 	// В дальнейшем нужно не принимать параметры смещения сверху и слева, а заранее предпосчитывать их
 	void paint(int top_margin, int left_margin);
 	void paintTree(int top_margin, int left_margin);
-	CRect determineRectsByNearestParent(CRect neighbour_rect, Positioning positioning);
-	CRect determineRectsByLeftChild(CRect left_rect, Positioning positioning);
-	CRect changeRectsByRightChild(CRect right_rect, Positioning positioning);
+	// Определяем положение узла у которого нет детей. 
+	// neighbour_rect - местоположение ближайшего узла, находящегося левее по дереву и являющегося листом (они будут нарисованы рядом)
+	// pos_against_neighbour - расположение данного узла относительно neighbour_rect
+	CRect determineRectsByNearestParent(CRect neighbour_rect, Positioning pos_against_neighbour);
+	// Определяем положение узла у которого уже разобрались с левым ребенком. 
+	// left_rect - местоположение левого ребенка
+	// pos_left - расположение left_rect относительно данного узла
+	CRect determineRectsByLeftChild(CRect left_rect, Positioning pos_left);
+	// Возвращаемся из правого ребенка, смещаем узлы, центрируя друг относительно друга 
+	// right_rect - местоположение правого ребенка
+	// pos_right - расположение right_rect относительно данного узла
+	CRect changeRectsByRightChild(CRect right_rect, Positioning pos_right);
+	// Определить местоположение всех узлов поддерева
 	CRect determineCoordinatesTree(CRect parent_rect, Positioning pos_against_parent);
 
 	void setFocus();
@@ -84,12 +95,18 @@ private:
 	CEditControl editControl;
 
 	void processNodeType();
-	// определить местоположение ребенка относительно родителя
+	// определить местоположение ребенка узла относительно родителя
 	Positioning determinePositioning(NodeVisualisation* node, bool isLeftChild);
+	// определить местоположение ребенка этой вершины относительно родителя
+	Positioning determinePositioning(bool isLeftChild);
 
-	void offsetTree(CPoint offset);
-	// если isRightOffset = true, то смещается правое поддерево, 
-	// иначе текущий узел и левое поддерево
+	// смещаем местоположение всех узлов поддерева на offset
+	void offsetTreeDown(CPoint offset);
+	// смещаем данный узел на offset
+	// если is_right_offset = true, то смещается правое поддерево, иначе текущий узел и левое поддерево
 	void makeOffset(bool is_right_offset, CPoint offset);
+	// смещаем все узлы дерева над нами
+	// пока не встретим узел, относительно которого текущий узел будет расположен как pos_stop
+	void offsetTreeUp(CPoint offset, Positioning pos_stop);
 };
 

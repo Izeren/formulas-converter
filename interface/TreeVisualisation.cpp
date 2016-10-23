@@ -8,8 +8,8 @@ TreeVisualisation::TreeVisualisation(HWND parentHandle) : mainWindow(parentHandl
 {
 	head = std::shared_ptr<NodeVisualisation>(new NodeVisualisation(nullptr, Value, true, parentHandle));
 	//вернуть - убрано для debug'a
-	//head->createChildrens(Assign);
-	head->createChildrens(Divide);
+	head->createChildrens(Assign);
+	//head->createChildrens(Divide);
 	activeNode = head->getLeftNode().get();
 	activeNode->setFocus();
 }
