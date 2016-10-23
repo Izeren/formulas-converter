@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Windows.h>
+#include "atltypes.h"
 
 class CEditControl
 {
@@ -18,6 +19,11 @@ public:
 	void SetWidth(int width);
 	void SetCountSymbols(int countSymbols);
 
+	CRect GetRect();
+	void SetRect(CRect rect_);
+	CRect GetRectAroundSubtree();
+	void SetRectAroundSubtree(CRect rect_);
+
 private:
 
 	HWND handle;
@@ -26,4 +32,7 @@ private:
 	int countSymbols;
 	int leftMargin;
 	int upperMargin;
+
+	CRect rect;
+	CRect rectAroundSubtree;
 };

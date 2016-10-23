@@ -97,6 +97,7 @@ void TreeVisualisation::deleteNode()
 }
 
 void TreeVisualisation::paint(int top_margin, int left_margin) {
+	head->determineCoordinatesTree(EMPTY_RECT, NotExist);
 	head->paintTree(top_margin, left_margin);
 }
 

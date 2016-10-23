@@ -3,9 +3,9 @@
 const int SIZE_BETWEEN_CONTROLS = 10;
 
 NodeVisualisation::NodeVisualisation(NodeVisualisation* _nodeParent, NodeType _nodeType,
-	bool isLeftChild, HWND _hWndParentWindow)
+	bool _isLeftChild, HWND _hWndParentWindow)
 	: parent(_nodeParent), leftChild(nullptr), rightChild(nullptr),
-		nodeType(_nodeType), orientationIsLeft(isLeftChild), hWndParentWindow(_hWndParentWindow)
+		nodeType(_nodeType), isLeftChild(_isLeftChild), hWndParentWindow(_hWndParentWindow)
 {
 	editControl = CEditControl();
 	editControl.Create(hWndParentWindow);
@@ -49,7 +49,7 @@ NodeVisualisation::~NodeVisualisation()
 
 bool NodeVisualisation::getOrientation()
 {
-	return orientationIsLeft;
+	return isLeftChild;
 }
 
 std::shared_ptr<NodeVisualisation> NodeVisualisation::getLeftNode()
@@ -168,6 +168,11 @@ HWND NodeVisualisation::getHandle()
 	return editControl.GetHandle();
 }
 
+NodeType NodeVisualisation::getNodeType()
+{
+	return nodeType;
+}
+
 int NodeVisualisation::paint(int top_margin, int left_margin)
 {
 	::SetWindowPos(editControl.GetHandle(), HWND_TOP, left_margin, top_margin, editControl.GetWidth(), editControl.GetHeight(), 0);
@@ -186,6 +191,49 @@ int NodeVisualisation::paintTree(int top_margin, int left_margin)
 	}
 	return left_margin;
 }
+
+
+CRect NodeVisualisation::determineRectsByLeftChild(CRect neighbour_rect, Positioning positioning)
+{
+	editControl.SetDefaultRect();
+	editControl.SetDefaultRectAroundSubtree();
+	if (positioning == NotExist) {
+		return editControl.GetRectAroundSubtree();
+	} else {
+	
+	}
+	return EMPTY_RECT;
+}
+
+CRect NodeVisualisation::changeRectsByRightChild(CRect neighbour_rect, Positioning positioning)
+{
+	return EMPTY_RECT;
+}
+
+CRect NodeVisualisation::determineCoordinatesTree(CRect parent_rect, Positioning pos_against_parent)
+{
+	// расположение левого ребенка относительно узла
+	Positioning pos_left_child = determinePositioning(leftChild.get(), true);
+	// расположение правого ребенка относительно узла
+	Positioning pos_right_child = determinePositioning(rightChild.get(), true);
+
+	// Речь везде идет о прямоугольниках вокруг поддерева
+	CRect left_rect = EMPTY_RECT,
+		right_rect = EMPTY_RECT,
+		my_rect = EMPTY_RECT;
+
+	if (leftChild) {
+		// Например, если pos_against_parent == Bottom, то надо смещать вниз относительно родителя
+		left_rect = leftChild->determineCoordinatesTree(parent_rect, pos_against_parent);
+	}
+	my_rect = determineRectsByLeftChild(left_rect, pos_left_child);
+	if (rightChild) {
+		right_rect = rightChild->determineCoordinatesTree(my_rect, pos_right_child);
+	}
+	my_rect = changeRectsByRightChild(right_rect, pos_right_child);
+	return my_rect;
+}
+
 
 void NodeVisualisation::setFocus()
 {
@@ -215,4 +263,52 @@ NodeVisualisation* NodeVisualisation::findNode(HWND hEditControl)
 	}
 
 	return nullptr;
+}
+
+Positioning NodeVisualisation::determinePositioning(NodeVisualisation* node, bool isLeftChild)
+{
+	if (!node) {
+		return NotExist;
+	}
+	switch (node->getNodeType()) {
+	case Assign:
+	case Plus:
+	case Minus:
+	case Multiply:
+		if (isLeftChild) {
+			return Left;
+		} else {
+			return Right;
+		}
+		break;
+	case Divide:
+		if (isLeftChild) {
+			return Up;
+		}
+		else {
+			return Bottom;
+		}
+		break;
+	case Power:
+		if (isLeftChild) {
+			return Left;
+		}
+		else {
+			return UpRight;
+		}
+		break;
+	case Summ:
+		// TODO
+		break;
+	case SummParametres:
+		// TODO
+		break;
+	default:
+		break;
+	}
+	return IsNotKnown;
+}
+
+Positioning NodeVisualisation::determinePositioningMy() {
+	return determinePositioning(parent.get(), isLeftChild);
 }

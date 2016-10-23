@@ -27,12 +27,6 @@
     <ClCompile Include="CEditControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FracControl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CRect.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="NodeVisualisation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -50,13 +44,7 @@
     <ClInclude Include="CEditControl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FracControl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IChild.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CRect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NodeVisualisation.h">

@@ -13,6 +13,8 @@ CEditControl::CEditControl()
 	handle = 0;
 	leftMargin = SIZE_MARGIN_DEFAULT;
 	upperMargin = -SIZE_MARGIN_DEFAULT;
+	rect = CRect(0, 0, 0, 0);
+	rectAroundSubtree = CRect(0, 0, 0, 0);
 }
 
 CEditControl::~CEditControl()
@@ -67,4 +69,24 @@ void CEditControl::SetCountSymbols(int countSymbols)
 		SetWidth(this->countSymbols * MIN_WIDTH_DEFAULT);
 		SetWindowPos(handle, HWND_TOP, 0, 0, width, height, SWP_NOMOVE);
 	}
+}
+
+CRect CEditControl::GetRect()
+{
+	return rect;
+}
+
+void CEditControl::SetRect(CRect rect_)
+{
+	rect = rect_;
+}
+
+CRect CEditControl::GetRectAroundSubtree()
+{
+	return rectAroundSubtree;
+}
+
+void CEditControl::SetRectAroundSubtree(CRect rectAroundSubtree_)
+{
+	rectAroundSubtree = rectAroundSubtree_;
 }
