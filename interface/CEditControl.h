@@ -20,9 +20,17 @@ public:
 	void SetCountSymbols(int countSymbols);
 
 	CRect GetRect();
+	void SetDefaultRect();
 	void SetRect(CRect rect_);
 	CRect GetRectAroundSubtree();
+	void SetDefaultRectAroundSubtree();
 	void SetRectAroundSubtree(CRect rect_);
+
+	void moveLeftAgainstRect(CRect neighbour_rect);
+	void moveDownAgainstRect(CRect neighbour_rect);
+	void offsetInnerRect(CPoint offset);
+	void unionSubtreeRect(CRect rect_around_child);
+	void oofsetBothRe
 
 private:
 

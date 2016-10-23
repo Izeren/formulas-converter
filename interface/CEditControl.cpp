@@ -76,6 +76,11 @@ CRect CEditControl::GetRect()
 	return rect;
 }
 
+void CEditControl::SetDefaultRect()
+{
+	rect = CRect(0, 0, GetWidth(), GetHeight());
+}
+
 void CEditControl::SetRect(CRect rect_)
 {
 	rect = rect_;
@@ -86,7 +91,30 @@ CRect CEditControl::GetRectAroundSubtree()
 	return rectAroundSubtree;
 }
 
+void CEditControl::SetDefaultRectAroundSubtree()
+{
+	rectAroundSubtree = rect;
+}
+
 void CEditControl::SetRectAroundSubtree(CRect rectAroundSubtree_)
 {
 	rectAroundSubtree = rectAroundSubtree_;
+}
+
+void  CEditControl::moveLeftAgainstRect(CRect neighbour_rect) {
+	int top = neighbour_rect.top + (neighbour_rect.Height() - GetHeight()) / 2;
+	rect = CRect(POINT{ neighbour_rect.right, top }, SIZE{ GetWidth(), GetHeight() });
+}
+
+void  CEditControl::moveDownAgainstRect(CRect neighbour_rect) {
+	int left = neighbour_rect.left + (neighbour_rect.Width() - GetWidth()) / 2;
+	rect = CRect(POINT{ left, neighbour_rect.bottom }, SIZE{ GetWidth(), GetHeight() });
+}
+
+void CEditControl::offsetInnerRect(CPoint offset) {
+	rect.OffsetRect(offset);
+}
+
+void CEditControl::unionSubtreeRect(CRect rect_around_child) {
+	rectAroundSubtree.UnionRect(rectAroundSubtree, rect_around_child);
 }

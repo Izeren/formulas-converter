@@ -192,21 +192,70 @@ int NodeVisualisation::paintTree(int top_margin, int left_margin)
 	return left_margin;
 }
 
-
-CRect NodeVisualisation::determineRectsByLeftChild(CRect neighbour_rect, Positioning positioning)
+CRect NodeVisualisation::determineRectsByNearestParent(CRect neighbour_rect, Positioning pos_against_neighbour)
 {
 	editControl.SetDefaultRect();
-	editControl.SetDefaultRectAroundSubtree();
-	if (positioning == NotExist) {
-		return editControl.GetRectAroundSubtree();
-	} else {
-	
+	switch (pos_against_neighbour) {
+	case NotExist:
+		break;
+	case Right:
+	case UpRight:
+		editControl.moveLeftAgainstRect(neighbour_rect);
+		editControl.offsetInnerRect(POINT{ SIZE_BETWEEN_CONTROLS, 0 });
+		break;
+	case Bottom:
+		editControl.moveDownAgainstRect(neighbour_rect);
+		editControl.offsetInnerRect(POINT{ 0, SIZE_BETWEEN_CONTROLS });
+		break;
+	default:
+		break;
 	}
-	return EMPTY_RECT;
+	editControl.SetDefaultRectAroundSubtree();
+	return editControl.GetRectAroundSubtree();
 }
 
-CRect NodeVisualisation::changeRectsByRightChild(CRect neighbour_rect, Positioning positioning)
+CRect NodeVisualisation::determineRectsByLeftChild(CRect left_rect, Positioning pos_left)
 {
+	editControl.SetDefaultRect();
+	switch (pos_left) {
+	case Left:
+		editControl.moveLeftAgainstRect(left_rect);
+		editControl.offsetInnerRect( POINT{ SIZE_BETWEEN_CONTROLS, 0 } );
+		break;
+	case Up:
+		editControl.moveDownAgainstRect(left_rect);
+		editControl.offsetInnerRect( POINT{ 0, SIZE_BETWEEN_CONTROLS } );
+		break;
+	default:
+		break;
+	}
+	editControl.SetDefaultRectAroundSubtree();
+	editControl.unionSubtreeRect(left_rect);
+	return editControl.GetRectAroundSubtree();
+}
+
+CRect NodeVisualisation::changeRectsByRightChild(CRect right_rect, Positioning pos_right)
+{
+	switch (pos_right) {
+	case Right:
+		int this_height = editControl.GetRectAroundSubtree().Height();
+		int right_height = right_rect.Height();
+		int offset_down = (right_height - this_height) / 2;
+		if (offset_down > 0) {
+
+		}
+		break;
+	case UpRight:
+		editControl.moveLeftAgainstRect(neighbour_rect);
+		editControl.offsetInnerRect(POINT{ SIZE_BETWEEN_CONTROLS, 0 });
+		break;
+	case Bottom:
+		editControl.moveDownAgainstRect(neighbour_rect);
+		editControl.offsetInnerRect(POINT{ 0, SIZE_BETWEEN_CONTROLS });
+		break;
+	default:
+		break;
+	}
 	return EMPTY_RECT;
 }
 
@@ -225,8 +274,11 @@ CRect NodeVisualisation::determineCoordinatesTree(CRect parent_rect, Positioning
 	if (leftChild) {
 		// Например, если pos_against_parent == Bottom, то надо смещать вниз относительно родителя
 		left_rect = leftChild->determineCoordinatesTree(parent_rect, pos_against_parent);
+		my_rect = determineRectsByLeftChild(left_rect, pos_left_child);
 	}
-	my_rect = determineRectsByLeftChild(left_rect, pos_left_child);
+	else {
+		my_rect = determineRectsByNearestParent(parent_rect, pos_against_parent);
+	}
 	if (rightChild) {
 		right_rect = rightChild->determineCoordinatesTree(my_rect, pos_right_child);
 	}

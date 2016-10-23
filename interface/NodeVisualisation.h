@@ -61,8 +61,9 @@ public:
 	// В дальнейшем нужно не принимать параметры смещения сверху и слева, а заранее предпосчитывать их
 	int paint(int top_margin, int left_margin);
 	int paintTree(int top_margin, int left_margin);
-	CRect determineRectsByLeftChild(CRect neighbour_rect, Positioning positioning);
-	CRect changeRectsByRightChild(CRect neighbour_rect, Positioning positioning);
+	CRect determineRectsByNearestParent(CRect neighbour_rect, Positioning positioning);
+	CRect determineRectsByLeftChild(CRect left_rect, Positioning positioning);
+	CRect changeRectsByRightChild(CRect right_rect, Positioning positioning);
 	CRect determineCoordinatesTree(CRect parent_rect, Positioning pos_against_parent);
 
 	void setFocus();
