@@ -30,7 +30,8 @@ public:
 	void moveDownAgainstRect(CRect neighbour_rect);
 	void offsetInnerRect(CPoint offset);
 	void unionSubtreeRect(CRect rect_around_child);
-	void offsetBothRects(CPoint offset);
+	void offsetBothRects(CPoint offset); 
+	void copyRectWidthIfLarger(CRect neighbour_rect);
 
 private:
 

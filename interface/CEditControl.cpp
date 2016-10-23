@@ -45,7 +45,7 @@ int CEditControl::GetHeight()
 
 int CEditControl::GetWidth()
 {
-	return height;
+	return width;
 }
 
 void CEditControl::SetHeight(int height)
@@ -66,7 +66,8 @@ void CEditControl::SetCountSymbols(int countSymbols)
 {
 	if( countSymbols >= this->countSymbols ) {
 		this->countSymbols = countSymbols;
-		SetWidth(this->countSymbols * MIN_WIDTH_DEFAULT);
+		// TODO: вернуть
+		//SetWidth(this->countSymbols * MIN_WIDTH_DEFAULT);
 		SetWindowPos(handle, HWND_TOP, 0, 0, width, height, SWP_NOMOVE);
 	}
 }
@@ -78,7 +79,10 @@ CRect CEditControl::GetRect()
 
 void CEditControl::SetDefaultRect()
 {
-	rect = CRect(0, 0, GetWidth(), GetHeight());
+	// should be corrected
+	// ширина должна определяться по количеству символов
+	//rect = CRect(0, 0, GetWidth(), GetHeight());
+	rect = CRect(0, 0, MIN_WIDTH_DEFAULT, MIN_HEIGHT_DEFAULT);
 }
 
 void CEditControl::SetRect(CRect rect_)
@@ -101,14 +105,22 @@ void CEditControl::SetRectAroundSubtree(CRect rectAroundSubtree_)
 	rectAroundSubtree = rectAroundSubtree_;
 }
 
-void  CEditControl::moveLeftAgainstRect(CRect neighbour_rect) {
+void CEditControl::moveLeftAgainstRect(CRect neighbour_rect) {
 	int top = neighbour_rect.top + (neighbour_rect.Height() - GetHeight()) / 2;
 	rect = CRect(POINT{ neighbour_rect.right, top }, SIZE{ GetWidth(), GetHeight() });
 }
 
-void  CEditControl::moveDownAgainstRect(CRect neighbour_rect) {
-	int left = neighbour_rect.left + (neighbour_rect.Width() - GetWidth()) / 2;
-	rect = CRect(POINT{ left, neighbour_rect.bottom }, SIZE{ GetWidth(), GetHeight() });
+void CEditControl::moveDownAgainstRect(CRect neighbour_rect) {
+	//int left = neighbour_rect.left + (neighbour_rect.Width() - GetWidth()) / 2;
+	//rect = CRect(POINT{ left, neighbour_rect.bottom }, SIZE{ GetWidth(), GetHeight() });
+	rect = CRect(POINT{ neighbour_rect.left, neighbour_rect.bottom }, SIZE{ GetWidth(), GetHeight() });
+}
+
+void CEditControl::copyRectWidthIfLarger(CRect neighbour_rect) {
+	if (neighbour_rect.Width() > GetWidth()) {
+		SetWidth(neighbour_rect.Width());
+		rect = CRect(POINT{ neighbour_rect.left, rect.top }, SIZE{ GetWidth(), GetHeight() });
+	}
 }
 
 void CEditControl::offsetInnerRect(CPoint offset) {

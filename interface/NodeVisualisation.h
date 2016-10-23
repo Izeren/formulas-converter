@@ -88,6 +88,8 @@ private:
 	Positioning determinePositioning(NodeVisualisation* node, bool isLeftChild);
 
 	void offsetTree(CPoint offset);
-	void makeOffset(CPoint offset);
+	// если isRightOffset = true, то смещается правое поддерево, 
+	// иначе текущий узел и левое поддерево
+	void makeOffset(bool is_right_offset, CPoint offset);
 };
 

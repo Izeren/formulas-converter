@@ -227,6 +227,7 @@ CRect NodeVisualisation::determineRectsByLeftChild(CRect left_rect, Positioning 
 		break;
 	case Up:
 		editControl.moveDownAgainstRect(left_rect);
+		editControl.copyRectWidthIfLarger(left_rect);
 		editControl.offsetInnerRect( POINT{ 0, SIZE_BETWEEN_CONTROLS } );
 		break;
 	default:
@@ -247,10 +248,17 @@ void NodeVisualisation::offsetTree(CPoint offset) {
 	}
 }
 
-void NodeVisualisation::makeOffset(CPoint offset) {
-	editControl.offsetBothRects(offset);
-	if (leftChild) {
-		leftChild->offsetTree(offset);
+void NodeVisualisation::makeOffset(bool is_right_offset, CPoint offset) {
+	if (is_right_offset) {
+		if (rightChild) {
+			rightChild->offsetTree(offset);
+		}
+	}
+	else {
+		editControl.offsetBothRects(offset);
+		if (leftChild) {
+			leftChild->offsetTree(offset);
+		}
 	}
 }
 
@@ -262,14 +270,14 @@ CRect NodeVisualisation::changeRectsByRightChild(CRect right_rect, Positioning p
 		int right_height = right_rect.Height();
 		int offset_down = (right_height - this_height) / 2;
 		if (offset_down > 0) {
-			makeOffset(POINT{ 0, offset_down });
+			makeOffset(false, POINT{ 0, offset_down });
 		}
 		break;
 	}
 	case UpRight: {
 		int offset_down = right_rect.Height();
 		if (offset_down > 0) {
-			makeOffset(POINT{ 0, offset_down });
+			makeOffset(false, POINT{ 0, offset_down });
 		}
 		break;
 	}
@@ -278,7 +286,11 @@ CRect NodeVisualisation::changeRectsByRightChild(CRect right_rect, Positioning p
 		int right_width = right_rect.Width();
 		int offset_right = (right_width - this_width) / 2;
 		if (offset_right > 0) {
-			makeOffset(POINT{ offset_right, 0 });
+			makeOffset(false, POINT{ offset_right, 0 });
+			editControl.copyRectWidthIfLarger(right_rect);
+		} 
+		else if (offset_right < 0) {
+			makeOffset(true, POINT{ -offset_right, 0 });
 		}
 		break;
 	}
