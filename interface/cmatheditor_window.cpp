@@ -54,6 +54,8 @@ bool CMatheditorWindow::Create() {
 
 	createToolbar();
 
+	editControlsTree = new TreeVisualisation(hWndMainWindow);
+
 	return true;
 }
 
@@ -154,7 +156,7 @@ void CMatheditorWindow::Show(int cmdShow) {
 }
 
 void CMatheditorWindow::OnCreate() {
-	createEditControl();
+	//createEditControl();
 	//editControl.Create(hWndMainWindow);
 }
 
@@ -182,22 +184,17 @@ void CMatheditorWindow::OnSize()
 
 	int currentTop = mainRect.top + (toolbarRect.bottom - toolbarRect.top) + SIZE_BETWEEN_CONTROLS;
 	int currentLeft = mainRect.left + SIZE_BETWEEN_CONTROLS;
-	for (auto window = editControls.begin(); window != editControls.end(); ++window) {
-		::SetWindowPos(window->GetHandle(), HWND_TOP, currentLeft, currentTop, window->GetWidth(), window->GetHeight(), 0);
-		currentLeft += SIZE_BETWEEN_CONTROLS + window->GetWidth();
+	if (editControlsTree) {
+		editControlsTree->paint(currentTop, currentLeft);
 	}
 
-	//RECT editControlRect;
-	//::GetClientRect(hWndMainWindow, &editControlRect);
+	//int currentTop = mainRect.top + (toolbarRect.bottom - toolbarRect.top) + SIZE_BETWEEN_CONTROLS;
+	//int currentLeft = mainRect.left + SIZE_BETWEEN_CONTROLS;
+	//for (auto window = editControls.begin(); window != editControls.end(); ++window) {
+	//	::SetWindowPos(window->GetHandle(), HWND_TOP, currentLeft, currentTop, window->GetWidth(), window->GetHeight(), 0);
+	//	currentLeft += SIZE_BETWEEN_CONTROLS + window->GetWidth();
+	//}
 
-	//RECT toolbarRect;
-	//::GetClientRect(hWndToolbar, &toolbarRect);
-
-	//int editControlTop = editControlRect.top + (toolbarRect.bottom - toolbarRect.top),
-	//	editControlWidth = editControlRect.right - editControlRect.left,
-	//	editControlHeight = editControlRect.bottom - editControlRect.top;
-	//SetWindowPos(editControl.GetHandle(), HWND_TOP, editControlRect.left, editControlTop, editControlWidth, editControlHeight, 0);
-	
 	SendMessage(hWndToolbar, TB_AUTOSIZE, 0, 0);
 }
 
@@ -280,25 +277,28 @@ void CMatheditorWindow::OnCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 			loadFile();
 			break;
 		case ID_OPERATOR_EMPTY:
-			createEditControl();
+			createEditControl(Value);
 			break;
 		case ID_OPERATOR_EQUAL:
-			createEditControl(L"=");
+			createEditControl(Assign);
 			break;
 		case ID_OPERATOR_PLUS:
-			createEditControl(L"+");
+			createEditControl(Plus);
 			break;
 		case ID_OPERATOR_MINUS:
-			createEditControl(L"-");
+			createEditControl(Minus);
 			break;
 		case ID_OPERATOR_MULTIPLY:
-			createEditControl(L"*");
+			createEditControl(Multiply);
 			break;
 		case ID_OPERATOR_DIVIDE:
+			createEditControl(Divide);
 			break;
 		case ID_OPERATOR_POWER:
+			createEditControl(Power);
 			break;
 		case ID_OPERATOR_SUMM:
+			createEditControl(Summ);
 			break;
 		case ID_OPERATOR_DELETE:
 			deleteEditControl();
@@ -347,32 +347,19 @@ void CMatheditorWindow::loadFile() {
 
 }
 
-void CMatheditorWindow::clickEditControl(){
+void CMatheditorWindow::clickEditControl() {
 	HWND handle = ::GetFocus();
-	auto editControl = editControlsHandles.find(handle);
-	if (editControl != editControlsHandles.end()) {
-		activeEditControl = editControl->second;
+	if (editControlsTree)
+	{
+		editControlsTree->changeActiveNode(handle);
 	}
 	InvalidateRect(hWndMainWindow, NULL, FALSE);
 }
 
-void CMatheditorWindow::createEditControl() {
-	activeEditControl = editControls.emplace(
-		activeEditControl == editControls.end() ? editControls.end() : ++activeEditControl, CEditControl());
-	activeEditControl->Create(hWndMainWindow);
-	activeEditControl->SetFont(activeEditControl->GetHandle());
-	editControlsHandles.insert(std::make_pair(activeEditControl->GetHandle(), activeEditControl));
-	SendMessage(hWndMainWindow, WM_SIZE, 0, 0);
-}
-
-void CMatheditorWindow::createEditControl(std::wstring text)
+void CMatheditorWindow::createEditControl(NodeType nodeType) 
 {
-	createEditControl();
-	::SetWindowText(activeEditControl->GetHandle(), (LPWSTR)text.c_str());
-	//resizeCell(activeCell->getHandle());
-	activeEditControl->SetCountSymbols(text.size());
-	activeEditControl->SetFont(activeEditControl->GetHandle());
-	InvalidateRect(hWndMainWindow, NULL, FALSE);
+	editControlsTree->createChildrens(nodeType);
+	SendMessage(hWndMainWindow, WM_SIZE, 0, 0);
 }
 
 void CMatheditorWindow::deleteEditControl()
