@@ -335,11 +335,20 @@ void CMatheditorWindow::loadFile() {
 
 }
 
-void CMatheditorWindow::clickEditControl(){
+//void CMatheditorWindow::clickEditControl(){
+//	HWND handle = ::GetFocus();
+//	auto editControl = editControlsHandles.find(handle);
+//	if (editControl != editControlsHandles.end()) {
+//		activeEditControl = editControl->second;
+//	}
+//	InvalidateRect(hWndMainWindow, NULL, FALSE);
+//}
+
+void CMatheditorWindow::clickEditControl() {
 	HWND handle = ::GetFocus();
-	auto editControl = editControlsHandles.find(handle);
-	if (editControl != editControlsHandles.end()) {
-		activeEditControl = editControl->second;
+	if (editControlsTree)
+	{
+		editControlsTree->changeActiveNode(handle);
 	}
 	InvalidateRect(hWndMainWindow, NULL, FALSE);
 }

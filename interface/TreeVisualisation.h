@@ -28,6 +28,8 @@ public:
 
 	void paint(int top_margin, int left_margin);
 
+	void changeActiveNode(HWND hEditControl);
+
 private:
 
 	HWND mainWindow;

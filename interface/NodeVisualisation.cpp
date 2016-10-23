@@ -191,3 +191,28 @@ void NodeVisualisation::setFocus()
 {
 	::SetFocus(editControl.GetHandle());
 }
+
+NodeVisualisation* NodeVisualisation::findNode(HWND hEditControl)
+{
+	NodeVisualisation* found = nullptr;
+
+	if (editControl.GetHandle() == hEditControl) {
+		return this;
+	} 
+
+	if (leftChild) {
+		found = leftChild->findNode(hEditControl);
+		if (found) {
+			return found;
+		}
+	}
+
+	if (rightChild) {
+		found = rightChild->findNode(hEditControl);
+		if (found) {
+			return found;
+		}
+	}
+
+	return nullptr;
+}

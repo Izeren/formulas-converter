@@ -99,3 +99,13 @@ void TreeVisualisation::deleteNode()
 void TreeVisualisation::paint(int top_margin, int left_margin) {
 	head->paintTree(top_margin, left_margin);
 }
+
+
+void TreeVisualisation::changeActiveNode(HWND hEditControl)
+{
+	NodeVisualisation* found = head->findNode(hEditControl);
+	if (found) {
+		activeNode = found;
+		activeNode->setFocus();
+	}
+}

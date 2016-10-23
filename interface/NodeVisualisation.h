@@ -44,6 +44,8 @@ public:
 
 	void setFocus();
 
+	NodeVisualisation* findNode(HWND hEditControl);
+
 private:
 
 	NodeVisualisation() = delete;
