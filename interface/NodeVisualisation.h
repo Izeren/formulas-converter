@@ -87,5 +87,8 @@ private:
 	// определить, в какую сторону относительно родителя сдвинут эдит-контрол
 	Positioning determinePositioning(NodeVisualisation* node, bool isLeftChild);
 	Positioning determinePositioningMy();
+
+	void offsetTree(CPoint offset);
+	void makeOffset(CPoint offset);
 };
 

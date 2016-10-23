@@ -234,29 +234,57 @@ CRect NodeVisualisation::determineRectsByLeftChild(CRect left_rect, Positioning 
 	return editControl.GetRectAroundSubtree();
 }
 
+void NodeVisualisation::offsetTree(CPoint offset) {
+	editControl.offsetBothRects(offset);
+	if (leftChild) {
+		leftChild->offsetTree(offset);
+	}
+	if (rightChild) {
+		rightChild->offsetTree(offset);
+	}
+}
+
+void NodeVisualisation::makeOffset(CPoint offset) {
+	editControl.offsetBothRects(offset);
+	if (leftChild) {
+		leftChild->offsetTree(offset);
+	}
+}
+
 CRect NodeVisualisation::changeRectsByRightChild(CRect right_rect, Positioning pos_right)
 {
 	switch (pos_right) {
-	case Right:
+	case Right: {
 		int this_height = editControl.GetRectAroundSubtree().Height();
 		int right_height = right_rect.Height();
 		int offset_down = (right_height - this_height) / 2;
 		if (offset_down > 0) {
-
+			makeOffset(POINT{ 0, offset_down });
 		}
 		break;
-	case UpRight:
-		editControl.moveLeftAgainstRect(neighbour_rect);
-		editControl.offsetInnerRect(POINT{ SIZE_BETWEEN_CONTROLS, 0 });
-		break;
-	case Bottom:
-		editControl.moveDownAgainstRect(neighbour_rect);
-		editControl.offsetInnerRect(POINT{ 0, SIZE_BETWEEN_CONTROLS });
-		break;
-	default:
+	}
+	case UpRight: {
+		int offset_down = right_rect.Height();
+		if (offset_down > 0) {
+			makeOffset(POINT{ 0, offset_down });
+		}
 		break;
 	}
-	return EMPTY_RECT;
+	case Bottom: {
+		int this_width = editControl.GetRectAroundSubtree().Width();
+		int right_width = right_rect.Width();
+		int offset_right = (right_width - this_width) / 2;
+		if (offset_right > 0) {
+			makeOffset(POINT{ offset_right, 0 });
+		}
+		break;
+	}
+	default: {
+		break;
+	}
+	}
+	editControl.unionSubtreeRect(right_rect);
+	return editControl.GetRectAroundSubtree();
 }
 
 CRect NodeVisualisation::determineCoordinatesTree(CRect parent_rect, Positioning pos_against_parent)

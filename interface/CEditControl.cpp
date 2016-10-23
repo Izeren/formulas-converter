@@ -118,3 +118,8 @@ void CEditControl::offsetInnerRect(CPoint offset) {
 void CEditControl::unionSubtreeRect(CRect rect_around_child) {
 	rectAroundSubtree.UnionRect(rectAroundSubtree, rect_around_child);
 }
+
+void CEditControl::offsetBothRects(CPoint offset) {
+	rect.OffsetRect(offset);
+	rectAroundSubtree.OffsetRect(offset);
+}
