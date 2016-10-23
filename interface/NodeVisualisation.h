@@ -42,6 +42,8 @@ public:
 	int paint(int top_margin, int left_margin);
 	int paintTree(int top_margin, int left_margin);
 
+	void setFocus();
+
 private:
 
 	NodeVisualisation() = delete;

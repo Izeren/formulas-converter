@@ -9,6 +9,7 @@ TreeVisualisation::TreeVisualisation(HWND parentHandle) : mainWindow(parentHandl
 	head = std::shared_ptr<NodeVisualisation>(new NodeVisualisation(nullptr, Assign, true, parentHandle));
 	head->createChildrens(Assign);
 	activeNode = head->getLeftNode().get();
+	activeNode->setFocus();
 }
 
 TreeVisualisation::~TreeVisualisation()
@@ -29,6 +30,7 @@ void TreeVisualisation::createChildrens(NodeType operationType)
 	if( operationType == Summ ) {
 		activeNode = activeNode->getLeftNode().get();
 	}
+	activeNode->setFocus();
 }
 
 void TreeVisualisation::deleteNode()

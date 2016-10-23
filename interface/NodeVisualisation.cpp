@@ -186,3 +186,8 @@ int NodeVisualisation::paintTree(int top_margin, int left_margin)
 	}
 	return left_margin;
 }
+
+void NodeVisualisation::setFocus()
+{
+	::SetFocus(editControl.GetHandle());
+}
