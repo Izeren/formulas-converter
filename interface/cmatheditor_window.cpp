@@ -312,7 +312,7 @@ void CMatheditorWindow::OnCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 		case EN_CHANGE:
 			break;
 		case EN_UPDATE: {
-			std::wstring text = activeEditControl->GetText();
+			/*std::wstring text = activeEditControl->GetText();
 			size_t positionWhiteSpace = activeEditControl->PositionWhiteSpace();
 			std::pair<std::wstring, std::wstring> textTokens;
 			if (positionWhiteSpace != -1) {
@@ -324,7 +324,7 @@ void CMatheditorWindow::OnCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 				activeEditControl->SetCountSymbols(text.length());
 			}
 			SendMessage(hWndMainWindow, WM_SIZE, 0, 0);
-			break;
+			break;*/
 		}
 		case EN_SETFOCUS:
 			clickEditControl();
