@@ -115,6 +115,7 @@ bool NodeVisualisation::createChildrens(NodeType operationType)
 	}
 
 	nodeType = operationType;
+	processNodeType();
 	return true;
 }
 

@@ -156,7 +156,7 @@ void CMatheditorWindow::Show(int cmdShow) {
 }
 
 void CMatheditorWindow::OnCreate() {
-	createEditControl();
+	//createEditControl();
 	//editControl.Create(hWndMainWindow);
 }
 
@@ -276,19 +276,24 @@ void CMatheditorWindow::OnCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 			loadFile();
 			break;
 		case ID_OPERATOR_EMPTY:
-			createEditControl();
+			//createEditControl();
+			createEditControl(Value);
 			break;
 		case ID_OPERATOR_EQUAL:
-			createEditControl(L"=");
+			//createEditControl(L"=");
+			createEditControl(Assign);
 			break;
 		case ID_OPERATOR_PLUS:
-			createEditControl(L"+");
+			//createEditControl(L"+");
+			createEditControl(Plus);
 			break;
 		case ID_OPERATOR_MINUS:
-			createEditControl(L"-");
+			//createEditControl(L"-");
+			createEditControl(Minus);
 			break;
 		case ID_OPERATOR_MULTIPLY:
-			createEditControl(L"*");
+			//createEditControl(L"*");
+			createEditControl(Multiply);
 			break;
 		case ID_OPERATOR_DIVIDE:
 			break;
@@ -339,21 +344,27 @@ void CMatheditorWindow::clickEditControl(){
 	InvalidateRect(hWndMainWindow, NULL, FALSE);
 }
 
-void CMatheditorWindow::createEditControl() {
-	activeEditControl = editControls.emplace(
-		activeEditControl == editControls.end() ? editControls.end() : ++activeEditControl, CEditControl());
-	activeEditControl->Create(hWndMainWindow);
-	editControlsHandles.insert(std::make_pair(activeEditControl->GetHandle(), activeEditControl));
-	SendMessage(hWndMainWindow, WM_SIZE, 0, 0);
-}
+//void CMatheditorWindow::createEditControl() {
+//	activeEditControl = editControls.emplace(
+//		activeEditControl == editControls.end() ? editControls.end() : ++activeEditControl, CEditControl());
+//	activeEditControl->Create(hWndMainWindow);
+//	editControlsHandles.insert(std::make_pair(activeEditControl->GetHandle(), activeEditControl));
+//	SendMessage(hWndMainWindow, WM_SIZE, 0, 0);
+//}
+//
+//void CMatheditorWindow::createEditControl(std::wstring text)
+//{
+//	createEditControl();
+//	::SetWindowText(activeEditControl->GetHandle(), (LPWSTR)text.c_str());
+//	//resizeCell(activeCell->getHandle());
+//	activeEditControl->SetCountSymbols(text.size());
+//	InvalidateRect(hWndMainWindow, NULL, FALSE);
+//}
 
-void CMatheditorWindow::createEditControl(std::wstring text)
+void CMatheditorWindow::createEditControl(NodeType nodeType) 
 {
-	createEditControl();
-	::SetWindowText(activeEditControl->GetHandle(), (LPWSTR)text.c_str());
-	//resizeCell(activeCell->getHandle());
-	activeEditControl->SetCountSymbols(text.size());
-	InvalidateRect(hWndMainWindow, NULL, FALSE);
+	editControlsTree->createChildrens(nodeType);
+	SendMessage(hWndMainWindow, WM_SIZE, 0, 0);
 }
 
 void CMatheditorWindow::deleteEditControl()

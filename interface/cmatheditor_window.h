@@ -46,7 +46,9 @@ private:
 	void loadFile();
 
 	void clickEditControl();
-	void createEditControl();
-	void createEditControl(std::wstring text);
+	//void createEditControl();
+	//void createEditControl(std::wstring text);
 	void deleteEditControl();
+
+	void createEditControl(NodeType nodeType);
 };
