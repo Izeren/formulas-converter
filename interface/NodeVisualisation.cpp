@@ -1,4 +1,5 @@
 ﻿#include "NodeVisualisation.h"
+#include "CEditControl.h"
 
 const int SIZE_BETWEEN_CONTROLS = 10;
 
@@ -10,6 +11,10 @@ NodeVisualisation::NodeVisualisation(NodeVisualisation* _nodeParent, NodeType _n
 	editControl = CEditControl();
 	editControl.Create(hWndParentWindow);
 	processNodeType();
+	if (isSpecialSymbol) {
+		setControlWidth(MIN_WIDTH_DEFAULT);
+		editControl.setIsSpecialSymbol(isSpecialSymbol);
+	}
 }
 
 void NodeVisualisation::processNodeType()
@@ -38,6 +43,7 @@ void NodeVisualisation::processNodeType()
 		::SetWindowText(editControl.GetHandle(), (LPWSTR)L"summ");
 		break;
 	default:
+		isSpecialSymbol = false;
 		break;
 	}
 }
@@ -100,8 +106,19 @@ bool NodeVisualisation::createChildrens(NodeType operationType)
 		case Divide:
 		case Power:
 		{
-			//leftChild.edit = edit.getText();
-			//Изменить edit
+			HWND leftChildHandle = leftChild->getEditControl().GetHandle();
+
+			HWND handle = editControl.GetHandle();
+			int length = SendMessage(handle, WM_GETTEXTLENGTH, 0, 0);
+			length++;
+			std::wstring text;
+			text.resize(length);
+			::GetWindowText(handle, (LPWSTR)text.c_str(), length);
+			//L"zopa";
+
+			leftChild->setControlWidth(text.length() * MIN_SIZE_SYMBOL);
+
+			::SetWindowText(leftChildHandle, (LPWSTR)text.c_str());
 			break;
 		}
 		case Summ:

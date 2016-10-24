@@ -4,6 +4,14 @@
 #include <string>
 #include "atltypes.h"
 
+
+const int MIN_HEIGHT_DEFAULT = 16;
+const int MIN_WIDTH_DEFAULT = 8;
+const int MIN_SIZE_SYMBOL = 8;
+const int SIZE_FONT = 14;
+const int COUNT_ADDITIONAL_SYMBOLS = 1;
+const int SIZE_MARGIN_DEFAULT = 5;
+
 class CEditControl
 {
 public:
@@ -47,6 +55,8 @@ public:
 	// если у neighbour_rect длина больше, чем у нас, то берем его координаты левой и правой точки
 	void copyRectWidthIfLarger(CRect neighbour_rect);
 
+	void setIsSpecialSymbol(bool);
+
 private:
 
 	HWND handle;
@@ -55,6 +65,7 @@ private:
 	int countSymbols;
 	int leftMargin;
 	int upperMargin;
+	bool isSpecialSymbol = false;
 
 	CRect rect;
 	CRect rectAroundSubtree;

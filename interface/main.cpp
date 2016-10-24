@@ -14,9 +14,14 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, LPWSTR, int nCmdShow) {
     notepad_window.Show(nCmdShow);
     
     MSG msg;
-    while( GetMessage(&msg, NULL, 0, 0) > 0 ) {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
+
+    while( GetMessage(&msg, NULL, 0, 0)) {
+		if (!TranslateAccelerator(notepad_window.GetHandle(), // handle to receiving window
+			notepad_window.GetHaccel(), // handle to active accelerator table
+			&msg)) {
+			::TranslateMessage(&msg);
+			::DispatchMessage(&msg);
+		}
     }
     return msg.wParam;
 }

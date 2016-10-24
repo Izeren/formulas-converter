@@ -2,13 +2,6 @@
 #include "resource.h"
 #include <string>
 
-const int MIN_HEIGHT_DEFAULT = 16;
-const int MIN_WIDTH_DEFAULT = 8;
-const int MIN_SIZE_SYMBOL = 8;
-const int SIZE_FONT = 14;
-const int COUNT_ADDITIONAL_SYMBOLS = 1;
-const int SIZE_MARGIN_DEFAULT = 5;
-
 CEditControl::CEditControl()
 {
 	height = MIN_HEIGHT_DEFAULT;
@@ -55,13 +48,13 @@ int CEditControl::GetWidth()
 
 void CEditControl::SetHeight(int height)
 {
-	if( height >= MIN_HEIGHT_DEFAULT ) {
+	if ( height >= MIN_HEIGHT_DEFAULT ) {
 		this->height = height;
 	}
 }
 
 void CEditControl::SetWidth(int width) {
-	if( width >= MIN_WIDTH_DEFAULT )
+	if ( width >= MIN_WIDTH_DEFAULT && !isSpecialSymbol )
 	{
 		this->width = width;
 	}
@@ -69,7 +62,7 @@ void CEditControl::SetWidth(int width) {
 
 void CEditControl::SetCountSymbols(int countSymbols)
 {
-	if( countSymbols >= this->countSymbols ) {
+	if ( countSymbols >= this->countSymbols && !isSpecialSymbol ) {
 		this->countSymbols = countSymbols;
 		SetWidth(this->countSymbols * MIN_SIZE_SYMBOL);
 		SetWindowPos(GetHandle(), HWND_TOP, 0, 0, width, height, SWP_NOMOVE);
@@ -180,4 +173,8 @@ void CEditControl::SetFont(HWND handleEditControl) {
 	DeleteObject(font);
 	font = ::CreateFontIndirect(&logfont);
 	::SendMessage(handleEditControl, WM_SETFONT, (WPARAM)font, true);
+}
+
+void CEditControl::setIsSpecialSymbol(bool isSpecialSymbol) {
+	this->isSpecialSymbol = isSpecialSymbol;
 }

@@ -90,6 +90,7 @@ private:
 
 	NodeType nodeType;
 	bool isLeftChild;
+	bool isSpecialSymbol = true;
 	std::shared_ptr<NodeVisualisation> parent;
 	std::shared_ptr<NodeVisualisation> leftChild;
 	std::shared_ptr<NodeVisualisation> rightChild;

@@ -17,6 +17,9 @@ public:
 	bool Create();
 	void Show(int cmdShow);
 
+	HACCEL GetHaccel() const;
+	HWND GetHandle() const;
+
 protected:
 	void OnDestroy();
 	void OnNCCreate(HWND handle);
@@ -44,6 +47,8 @@ private:
 	void newFile();
 	void saveFile();
 	void loadFile();
+
+	HACCEL haccel;
 
 	void clickEditControl();
 	//void createEditControl();
