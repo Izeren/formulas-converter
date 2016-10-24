@@ -32,6 +32,7 @@ public:
 
 	NodeVisualisation getActiveNode();
 
+	void setControlWidth(int);
 private:
 
 	HWND mainWindow;

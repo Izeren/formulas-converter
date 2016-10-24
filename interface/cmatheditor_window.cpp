@@ -32,7 +32,12 @@ bool CMatheditorWindow::RegisterClassW() {
 	windowClass.lpszClassName = class_name_;
 	windowClass.hCursor = ::LoadCursor(GetModuleHandle(0), IDC_ARROW);
 	windowClass.lpszMenuName = MAKEINTRESOURCE(IDR_MENU1);
-	return RegisterClassEx(&windowClass);
+	if (RegisterClassEx(&windowClass)) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 bool CMatheditorWindow::Create() {
@@ -315,6 +320,7 @@ void CMatheditorWindow::OnCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 			if (editControlsTree != NULL) {
 				CEditControl editControl = editControlsTree->getActiveNode().getEditControl();
 				editControl.deleteWhiteSpaces();
+				editControlsTree->setControlWidth(editControl.GetWidth());
 			}
 			SendMessage(hWndMainWindow, WM_SIZE, 0, 0);
 			break;

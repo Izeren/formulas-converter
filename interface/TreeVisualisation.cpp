@@ -27,7 +27,6 @@ void TreeVisualisation::createChildrens(NodeType operationType)
 	if( !(activeNode->createChildrens(operationType)) ) {
 		return;
 	}
-
 	activeNode = activeNode->getLeftNode().get();
 	if( operationType == Summ ) {
 		activeNode = activeNode->getLeftNode().get();
@@ -115,4 +114,8 @@ void TreeVisualisation::changeActiveNode(HWND hEditControl)
 
 NodeVisualisation TreeVisualisation::getActiveNode() {
 	return *(this->activeNode);
+}
+
+void TreeVisualisation::setControlWidth(int width) {
+	activeNode->setControlWidth(width);
 }

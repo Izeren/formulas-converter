@@ -444,3 +444,7 @@ Positioning NodeVisualisation::determinePositioning(bool isLeftChild) {
 CEditControl NodeVisualisation::getEditControl() const{
 	return editControl;
 }
+
+void NodeVisualisation::setControlWidth(int width) {
+	editControl.SetWidth(width);
+}

@@ -80,6 +80,7 @@ public:
 	CRect determineCoordinatesTree(CRect parent_rect, Positioning pos_against_parent);
 
 	void setFocus();
+	void setControlWidth(int);
 
 	NodeVisualisation* findNode(HWND hEditControl);
 

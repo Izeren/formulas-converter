@@ -3,16 +3,17 @@
 #include <string>
 
 const int MIN_HEIGHT_DEFAULT = 16;
-const int MIN_WIDTH_DEFAULT = 30;
+const int MIN_WIDTH_DEFAULT = 8;
 const int MIN_SIZE_SYMBOL = 8;
 const int SIZE_FONT = 14;
-
+const int COUNT_ADDITIONAL_SYMBOLS = 1;
 const int SIZE_MARGIN_DEFAULT = 5;
 
 CEditControl::CEditControl()
 {
 	height = MIN_HEIGHT_DEFAULT;
 	width = MIN_WIDTH_DEFAULT;
+	countSymbols = 0;
 	handle = 0;
 	leftMargin = SIZE_MARGIN_DEFAULT;
 	upperMargin = -SIZE_MARGIN_DEFAULT;
@@ -28,6 +29,7 @@ bool CEditControl::Create(HWND parentHandle) {
 	handle = CreateWindowEx(0, L"EDIT", 0, WS_CHILD | WS_VISIBLE | ES_CENTER ,
 		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, parentHandle, 0, GetModuleHandle(0), 0);
 	SetFocus(handle);
+	SetFont(handle);
 	return handle != 0;
 }
 
@@ -70,7 +72,7 @@ void CEditControl::SetCountSymbols(int countSymbols)
 	if( countSymbols >= this->countSymbols ) {
 		this->countSymbols = countSymbols;
 		SetWidth(this->countSymbols * MIN_SIZE_SYMBOL);
-		SetWindowPos(handle, HWND_TOP, 0, 0, width, height, SWP_NOMOVE);
+		SetWindowPos(GetHandle(), HWND_TOP, 0, 0, width, height, SWP_NOMOVE);
 	}
 }
 
@@ -150,8 +152,8 @@ void CEditControl::deleteWhiteSpaces() {
 	if (position != std::string::npos) {
 		text.replace(position, 1, L"");
 		::SetWindowText(handle, (LPWSTR)text.c_str());
-		this->SetCountSymbols(text.size());
 	}
+	this->SetCountSymbols(text.size() + COUNT_ADDITIONAL_SYMBOLS);
 }
 
 int CEditControl::GetCountSymbols() const {
@@ -165,4 +167,17 @@ std::wstring CEditControl::GetText() const {
 	text.resize(length);
 	::GetWindowText(handle, (LPWSTR)text.c_str(), length);
 	return text;
+}
+
+void CEditControl::SetFont(HWND handleEditControl) {
+	HFONT font = (HFONT)::SendMessage(handleEditControl, WM_GETFONT, 0, 0);
+	if (!font) {
+		font = (HFONT)::GetStockObject(SYSTEM_FIXED_FONT);
+	}
+	LOGFONT logfont;
+	::GetObject(font, sizeof(LOGFONT), &logfont);
+	logfont.lfHeight = SIZE_FONT;
+	DeleteObject(font);
+	font = ::CreateFontIndirect(&logfont);
+	::SendMessage(handleEditControl, WM_SETFONT, (WPARAM)font, true);
 }
