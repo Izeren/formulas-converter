@@ -1,16 +1,17 @@
 #include <Windows.h>
 
-#include "cmatheditor_window.h"
+#include "MainWindow.h"
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, LPWSTR, int nCmdShow) {
-    if( !CMatheditorWindow::RegisterClassW() ) {
+    if( !MainWindow::RegisterClass() ) {
         return -1;
     }
 
-    CMatheditorWindow notepad_window;
+	MainWindow notepad_window;
     if( !notepad_window.Create() ) {
         return -1;
     }
+	
     notepad_window.Show(nCmdShow);
     
     MSG msg;

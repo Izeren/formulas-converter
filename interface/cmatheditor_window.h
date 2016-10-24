@@ -6,6 +6,8 @@
 #include <list>
 #include <map>
 
+#include "TreeVisualisation.h"
+
 class CMatheditorWindow {
 public:
 	CMatheditorWindow();

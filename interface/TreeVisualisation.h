@@ -2,6 +2,7 @@
 
 #include <Windows.h>
 #include <memory>
+#include <list>
 
 #include "NodeVisualisation.h"
 
@@ -9,8 +10,10 @@ class TreeVisualisation
 {
 public:
 
-	TreeVisualisation(HWND parentHandle);
+	TreeVisualisation();
 	~TreeVisualisation();
+
+	void Create(HWND handle);
 
 	/*
 	* После создания двух листьев (в случае суммы -- один сразу раздваивается на части) знак операции показыается в неизменяемом edit control,
@@ -25,10 +28,14 @@ public:
 	*/
 	void deleteNode();
 
+	void showTree(int cmdShow);
+
 private:
 
 	HWND mainWindow;
 	std::shared_ptr<NodeVisualisation> head;
 	NodeVisualisation* activeNode;
+
+	std::list<NodeVisualisation*> leaves;
 };
 

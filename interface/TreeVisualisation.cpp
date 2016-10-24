@@ -1,16 +1,25 @@
 ﻿#include "TreeVisualisation.h"
 
-TreeVisualisation::TreeVisualisation(HWND parentHandle) : mainWindow(parentHandle)
+TreeVisualisation::TreeVisualisation()
 {
-	head = std::shared_ptr<NodeVisualisation>(new NodeVisualisation(mainWindow, nullptr, NodeVisualisation::operationAssign, true));
-	head->createChildrens(NodeVisualisation::operationAssign);
-	activeNode = head->getLeftNode().get();
+	mainWindow = nullptr;
 }
 
 TreeVisualisation::~TreeVisualisation()
 {
 	head->resetNodes();
 	head.reset();
+}
+
+void TreeVisualisation::Create(HWND handle)
+{
+	if( mainWindow == nullptr ) {
+		mainWindow = handle;
+
+		head = std::shared_ptr<NodeVisualisation>(new NodeVisualisation(nullptr, NodeVisualisation::operationAssign, true));
+		head->createChildrens(NodeVisualisation::operationAssign);
+		activeNode = head->getLeftNode().get();
+	}
 }
 
 void TreeVisualisation::createChildrens(unsigned int operationType)
@@ -38,7 +47,7 @@ void TreeVisualisation::deleteNode()
 		return;
 	}
 
-	if( activeNode->getParentNode()->getTypeOfOperation == NodeVisualisation::operationSum ) {
+	if( activeNode->getParentNode()->getTypeOfOperation() == NodeVisualisation::operationSum ) {
 		if( !(activeNode->getOrientation()) ) {
 			activeNode = activeNode->getParentNode().get();
 			bool isLeft = activeNode->getOrientation();
@@ -53,7 +62,7 @@ void TreeVisualisation::deleteNode()
 		return;
 	}
 
-	if( activeNode->getParentNode()->getTypeOfOperation == NodeVisualisation::operationSumParameters ) {
+	if( activeNode->getParentNode()->getTypeOfOperation() == NodeVisualisation::operationSumParameters ) {
 		activeNode = activeNode->getParentNode()->getParentNode().get();
 		activeNode->getLeftNode()->resetNodes();
 		activeNode->getLeftNode().reset();
@@ -85,5 +94,12 @@ void TreeVisualisation::deleteNode()
 	}
 	else {
 		activeNode = activeNode->getRightNode().get();
+	}
+}
+
+void TreeVisualisation::showTree(int cmdShow)
+{
+	for( std::list<NodeVisualisation*>::iterator leave = leaves.begin(); leave != leaves.end(); ++leave ) {
+		(*leave)->showEdit(cmdShow);
 	}
 }

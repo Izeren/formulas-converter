@@ -9,7 +9,7 @@ class NodeVisualisation
 {
 public:
 
-	NodeVisualisation(const NodeVisualisation* nodeParent, const unsigned int type, const bool isLeftChild, HWND parentWindow = 0);
+	NodeVisualisation(NodeVisualisation* nodeParent, const unsigned int type, const bool isLeftChild, HWND parentWindow = 0);
 	~NodeVisualisation();
 
 	bool getOrientation() const; // left == true, rigth == false
@@ -22,9 +22,10 @@ public:
 	// Рекурсивная очистка ячеек
 	void resetNodes();
 	// Замена одного из поддеревьев.
-	bool changeOneChildren(bool isLeft, NodeVisualisation* node = nullptr);
+	void changeOneChildren(bool isLeft, NodeVisualisation* node = nullptr);
 
 	HWND getHandle() const;
+	void showEdit(int cmdShow);
 
 	// Тип операции в узле.
 	const static unsigned int operationPlus;
@@ -48,6 +49,6 @@ private:
 	std::shared_ptr<NodeVisualisation> rightChild;
 
 	HWND mainWindow;
-	CEditControl value;
+	CEditControl cell;
 };
 

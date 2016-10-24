@@ -10,12 +10,12 @@ const unsigned int NodeVisualisation::operationSumParameters = 6;
 const unsigned int NodeVisualisation::operationValue = 7;
 const unsigned int NodeVisualisation::operationAssign = 8;
 
-NodeVisualisation::NodeVisualisation(const NodeVisualisation* nodeParent, const unsigned int operationType,
-	const bool isLeftChild, const HWND parentHandle = 0)
-	: mainWindow(nodeParent->getHandle()), parent(nodeParent), leftChild(nullptr), rightChild(nullptr),
+NodeVisualisation::NodeVisualisation(NodeVisualisation* nodeParent, const unsigned int operationType,
+	const bool isLeftChild, const HWND parentHandle)
+	: mainWindow(parentHandle), parent(nodeParent), leftChild(nullptr), rightChild(nullptr),
 		typeOfOperation(operationType), orientationIsLeft(isLeftChild)
 {
-	value.Create(mainWindow);
+	cell.Create(mainWindow);
 	if( nodeParent == nullptr ) {
 		parent == nullptr;
 	}
@@ -113,15 +113,14 @@ void NodeVisualisation::resetNodes()
 	}
 }
 
-bool NodeVisualisation::changeOneChildren(bool isLeft, NodeVisualisation* node = nullptr)
+void NodeVisualisation::changeOneChildren(bool isLeft, NodeVisualisation* node)
 {
-	//std::shared_ptr<NodeVisualisation> nodeImmutable = (isLeft) ? rightChild : leftChild;
 	std::shared_ptr<NodeVisualisation> nodeMutable = (!isLeft) ? rightChild : leftChild;
 	/*if( (nodeMutable->getLeftNode() != nullptr) && (nodeMutable->getLeftNode() != nullptr) ) {
 		return false;
 	}*/
 
-	//nodeMutable.reset(); //Оно удалит только себя или же и поддерево? Надо проверить...
+	//nodeMutable.reset(); // Оно удалит только себя или же и поддерево? Надо проверить...
 	if( isLeft ) {
 		if( node == nullptr ) {
 			leftChild = std::shared_ptr<NodeVisualisation>(new NodeVisualisation(this, operationValue, isLeft));
@@ -140,5 +139,10 @@ bool NodeVisualisation::changeOneChildren(bool isLeft, NodeVisualisation* node =
 
 HWND NodeVisualisation::getHandle() const
 {
-	return value.GetHandle();
+	return cell.GetHandle();
+}
+
+void NodeVisualisation::showEdit(int cmdShow)
+{
+	cell.Show(cmdShow);
 }

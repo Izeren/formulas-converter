@@ -151,6 +151,9 @@
     <ClCompile Include="CRect.cpp" />
     <ClCompile Include="FracControl.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="NodeVisualisation.cpp" />
+    <ClCompile Include="TreeVisualisation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CEditControl.h" />
@@ -158,7 +161,10 @@
     <ClInclude Include="CRect.h" />
     <ClInclude Include="FracControl.h" />
     <ClInclude Include="IChild.h" />
+    <ClInclude Include="MainWindow.h" />
+    <ClInclude Include="NodeVisualisation.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="TreeVisualisation.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="interface.rc" />

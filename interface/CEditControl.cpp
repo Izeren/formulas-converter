@@ -54,8 +54,7 @@ void CEditControl::SetHeight(int height)
 }
 
 void CEditControl::SetWidth(int width) {
-	if( width >= MIN_WIDTH_DEFAULT )
-	{
+	if( width >= MIN_WIDTH_DEFAULT ) {
 		this->width = width;
 	}
 }
