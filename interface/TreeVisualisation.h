@@ -30,6 +30,8 @@ public:
 
 	void changeActiveNode(HWND hEditControl);
 
+	NodeVisualisation getActiveNode();
+
 private:
 
 	HWND mainWindow;

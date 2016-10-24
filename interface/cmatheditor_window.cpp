@@ -312,19 +312,12 @@ void CMatheditorWindow::OnCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 		case EN_CHANGE:
 			break;
 		case EN_UPDATE: {
-			/*std::wstring text = activeEditControl->GetText();
-			size_t positionWhiteSpace = activeEditControl->PositionWhiteSpace();
-			std::pair<std::wstring, std::wstring> textTokens;
-			if (positionWhiteSpace != -1) {
-				textTokens = activeEditControl->ParseTextByWhiteSpace(positionWhiteSpace);
-				::SetWindowText(activeEditControl->GetHandle(), (LPWSTR)textTokens.first.c_str());
-				createEditControl(textTokens.second);
-			}
-			else {
-				activeEditControl->SetCountSymbols(text.length());
+			if (editControlsTree != NULL) {
+				CEditControl editControl = editControlsTree->getActiveNode().getEditControl();
+				editControl.deleteWhiteSpaces();
 			}
 			SendMessage(hWndMainWindow, WM_SIZE, 0, 0);
-			break;*/
+			break;
 		}
 		case EN_SETFOCUS:
 			clickEditControl();

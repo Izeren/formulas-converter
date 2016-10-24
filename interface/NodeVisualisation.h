@@ -59,6 +59,8 @@ public:
 	HWND getHandle();
 	NodeType getNodeType();
 
+	CEditControl getEditControl() const;
+
 	// В дальнейшем нужно не принимать параметры смещения сверху и слева, а заранее предпосчитывать их
 	void paint(int top_margin, int left_margin);
 	void paintTree(int top_margin, int left_margin);

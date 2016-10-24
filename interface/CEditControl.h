@@ -22,8 +22,7 @@ public:
 	int GetCountSymbols() const;
 	std::wstring GetText() const;
 	void SetFont(HWND handleEditControl);
-	int PositionWhiteSpace();
-	std::pair<std::wstring, std::wstring> ParseTextByWhiteSpace(size_t positionWhiteSpace);
+	void deleteWhiteSpaces();
 
 	CRect GetRect();
 	void SetDefaultRect();

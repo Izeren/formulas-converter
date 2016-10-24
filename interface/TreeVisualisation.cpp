@@ -112,3 +112,7 @@ void TreeVisualisation::changeActiveNode(HWND hEditControl)
 		activeNode->setFocus();
 	}
 }
+
+NodeVisualisation TreeVisualisation::getActiveNode() {
+	return *(this->activeNode);
+}

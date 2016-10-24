@@ -440,3 +440,7 @@ Positioning NodeVisualisation::determinePositioning(NodeVisualisation* node, boo
 Positioning NodeVisualisation::determinePositioning(bool isLeftChild) {
 	return determinePositioning(this, isLeftChild);
 }
+
+CEditControl NodeVisualisation::getEditControl() const{
+	return editControl;
+}
