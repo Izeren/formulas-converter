@@ -58,6 +58,11 @@ bool NodeVisualisation::getOrientation()
 	return isLeftChild;
 }
 
+void NodeVisualisation::setOrientation(bool isLeftChild_)
+{
+	isLeftChild = isLeftChild_;
+}
+
 std::shared_ptr<NodeVisualisation> NodeVisualisation::getLeftNode()
 {
 	return leftChild;
@@ -68,9 +73,14 @@ std::shared_ptr<NodeVisualisation> NodeVisualisation::getRightNode()
 	return rightChild;
 }
 
-std::shared_ptr<NodeVisualisation> NodeVisualisation::getParentNode()
+NodeVisualisation* NodeVisualisation::getParentNode()
 {
 	return parent;
+}
+
+void NodeVisualisation::setParentNode(NodeVisualisation* parent_new) 
+{
+	parent = parent_new;
 }
 
 
@@ -83,9 +93,25 @@ std::shared_ptr<NodeVisualisation> NodeVisualisation::getNode(bool isLeftChild)
 	}
 }
 
+
+void NodeVisualisation::setChild(bool isLeftChild, std::shared_ptr<NodeVisualisation> child)
+{
+	if (isLeftChild) {
+		leftChild = child;
+	} else {
+		rightChild = child;
+	}
+}
+
 unsigned int NodeVisualisation::getTypeOfOperation()
 {
 	return nodeType;
+}
+
+void NodeVisualisation::createChildren()
+{
+	leftChild = std::shared_ptr<NodeVisualisation>(new NodeVisualisation(this, Value, true, hWndParentWindow));
+	rightChild = std::shared_ptr<NodeVisualisation>(new NodeVisualisation(this, Value, false, hWndParentWindow));
 }
 
 bool NodeVisualisation::createChildrens(NodeType operationType)
@@ -114,7 +140,6 @@ bool NodeVisualisation::createChildrens(NodeType operationType)
 			std::wstring text;
 			text.resize(length);
 			::GetWindowText(handle, (LPWSTR)text.c_str(), length);
-			//L"zopa";
 
 			leftChild->setControlWidth(text.length() * MIN_SIZE_SYMBOL);
 
@@ -165,7 +190,7 @@ void NodeVisualisation::resetNodes()
 bool NodeVisualisation::changeOneChildren(bool isLeft, NodeVisualisation* node)
 {
 	//std::shared_ptr<NodeVisualisation> nodeImmutable = (isLeft) ? rightChild : leftChild;
-	std::shared_ptr<NodeVisualisation> nodeMutable = (!isLeft) ? rightChild : leftChild;
+	//std::shared_ptr<NodeVisualisation> nodeMutable = (!isLeft) ? rightChild : leftChild;
 	/*if( (nodeMutable->getLeftNode() != nullptr) && (nodeMutable->getLeftNode() != nullptr) ) {
 		return false;
 	}*/

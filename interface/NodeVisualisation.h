@@ -44,12 +44,16 @@ public:
 	~NodeVisualisation();
 
 	bool getOrientation(); // left == true, rigth == false
+	void setOrientation(bool isLeftChild_);
 	unsigned int getTypeOfOperation();
 	std::shared_ptr<NodeVisualisation> getLeftNode();
 	std::shared_ptr<NodeVisualisation> getRightNode();
-	std::shared_ptr<NodeVisualisation> getParentNode();
+	NodeVisualisation* getParentNode();
+	void setParentNode(NodeVisualisation*);
 	std::shared_ptr<NodeVisualisation> getNode(bool isLeftChild);
+	void setChild(bool isLeftChild, std::shared_ptr<NodeVisualisation> child);
 	
+	void createChildren();
 	bool createChildrens(NodeType operationValue);
 	// Рекурсивная очистка ячеек
 	void resetNodes();
@@ -91,7 +95,7 @@ private:
 	NodeType nodeType;
 	bool isLeftChild;
 	bool isSpecialSymbol = true;
-	std::shared_ptr<NodeVisualisation> parent;
+	NodeVisualisation* parent;
 	std::shared_ptr<NodeVisualisation> leftChild;
 	std::shared_ptr<NodeVisualisation> rightChild;
 

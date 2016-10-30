@@ -78,8 +78,8 @@ void CEditControl::SetDefaultRect()
 {
 	// should be corrected
 	// ширина должна определяться по количеству символов
-	//rect = CRect(0, 0, GetWidth(), GetHeight());
-	rect = CRect(0, 0, MIN_WIDTH_DEFAULT, MIN_HEIGHT_DEFAULT);
+	rect = CRect(0, 0, GetWidth(), GetHeight());
+	//rect = CRect(0, 0, MIN_WIDTH_DEFAULT, MIN_HEIGHT_DEFAULT);
 }
 
 void CEditControl::SetRect(CRect rect_)

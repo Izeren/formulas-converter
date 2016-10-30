@@ -24,13 +24,14 @@ TreeVisualisation::~TreeVisualisation()
 
 void TreeVisualisation::createChildrens(NodeType operationType)
 {
-	if( !(activeNode->createChildrens(operationType)) ) {
-		return;
-	}
-	activeNode = activeNode->getLeftNode().get();
-	if( operationType == Summ ) {
-		activeNode = activeNode->getLeftNode().get();
-	}
+	NodeVisualisation* parent_node = activeNode->getParentNode();
+	bool new_node_orientation = activeNode->getOrientation();
+	NodeVisualisation* new_node = new NodeVisualisation(parent_node, operationType, new_node_orientation, mainWindow);
+	activeNode->setOrientation(true);
+	activeNode->setParentNode(new_node);
+	new_node->setChild(true, parent_node->getNode(new_node_orientation));
+	new_node->changeOneChildren(false, new NodeVisualisation(new_node, Value, false, mainWindow));
+	parent_node->changeOneChildren(new_node_orientation, new_node);
 	activeNode->setFocus();
 }
 
@@ -49,9 +50,9 @@ void TreeVisualisation::deleteNode()
 
 	if( activeNode->getParentNode()->getTypeOfOperation() == Summ ) {
 		if( !(activeNode->getOrientation()) ) {
-			activeNode = activeNode->getParentNode().get();
+			activeNode = activeNode->getParentNode();
 			bool isLeft = activeNode->getOrientation();
-			activeNode = activeNode->getParentNode().get();
+			activeNode = activeNode->getParentNode();
 			if( isLeft ) {
 				activeNode->getLeftNode()->resetNodes();
 			} else {
@@ -63,12 +64,12 @@ void TreeVisualisation::deleteNode()
 	}
 
 	if( activeNode->getParentNode()->getTypeOfOperation() == SummParametres ) {
-		activeNode = activeNode->getParentNode()->getParentNode().get();
+		activeNode = activeNode->getParentNode()->getParentNode();
 		activeNode->getLeftNode()->resetNodes();
 		activeNode->getLeftNode().reset();
 		bool isLeft = activeNode->getOrientation();
 		NodeVisualisation* valueUnderSum = activeNode->getRightNode().get();
-		activeNode = activeNode->getParentNode().get();
+		activeNode = activeNode->getParentNode();
 		activeNode->changeOneChildren(isLeft, valueUnderSum);
 		if( isLeft ) {
 			activeNode = activeNode->getLeftNode().get();
@@ -80,14 +81,14 @@ void TreeVisualisation::deleteNode()
 
 	bool isLeft = activeNode->getOrientation();
 	NodeVisualisation* value;
-	activeNode = activeNode->getParentNode().get();
+	activeNode = activeNode->getParentNode();
 	if( !isLeft ) {
 		value = activeNode->getLeftNode().get();
 	} else {
 		value = activeNode->getRightNode().get();
 	}
 	isLeft = activeNode->getOrientation();
-	activeNode = activeNode->getParentNode().get();
+	activeNode = activeNode->getParentNode();
 	activeNode->changeOneChildren(isLeft, value);
 	if( isLeft ) {
 		activeNode = activeNode->getLeftNode().get();
