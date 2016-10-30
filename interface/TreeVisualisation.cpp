@@ -33,6 +33,12 @@ void TreeVisualisation::createChildrens(NodeType operationType)
 	new_node->changeOneChildren(false, new NodeVisualisation(new_node, Value, false, mainWindow));
 	parent_node->changeOneChildren(new_node_orientation, new_node);
 	activeNode->setFocus();
+
+	//if (!(activeNode->createChildrens(operationType))) {
+	//	return;
+	//}
+	//activeNode = activeNode->getLeftNode().get();
+	//activeNode->setFocus();
 }
 
 void TreeVisualisation::deleteNode()
