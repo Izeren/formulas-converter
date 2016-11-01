@@ -7,6 +7,9 @@
 #include <map>
 #include "TreeVisualisation.h"
 
+#include "../LSV_module/expression_tree/Expression.h"
+#include "../LSV_module/parsers/MathMLParser.h"
+
 class CMatheditorWindow {
 public:
 	CMatheditorWindow();
@@ -19,6 +22,8 @@ public:
 
 	HACCEL GetHaccel() const;
 	HWND GetHandle() const;
+
+	void loadFromLSVModule();
 
 protected:
 	void OnDestroy();
@@ -56,4 +61,6 @@ private:
 	void deleteEditControl();
 
 	void createEditControl(NodeType nodeType);
+
+	void recursiveTransformation(TreeVisualisation*& tree, std::shared_ptr<IExpression> expr);
 };

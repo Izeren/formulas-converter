@@ -1,4 +1,4 @@
-#pragma comment(lib, "comctl32.lib")
+﻿#pragma comment(lib, "comctl32.lib")
 #include "cmatheditor_window.h"
 #include <Windows.h>
 #include <commctrl.h>
@@ -18,9 +18,10 @@ CMatheditorWindow::CMatheditorWindow()
 }
 
 CMatheditorWindow::~CMatheditorWindow() {
-	if (hWndMainWindow) {
+	if( hWndMainWindow ) {
 		DestroyWindow(hWndMainWindow);
 	}
+	delete editControlsTree;
 }
 
 bool CMatheditorWindow::RegisterClassW() {
@@ -157,7 +158,7 @@ void CMatheditorWindow::createToolbar() {
 void CMatheditorWindow::Show(int cmdShow) {
 	ShowWindow(hWndMainWindow, cmdShow);
 	//editControl.Show(cmdShow);
-	//UpdateWindow(hWndMainWindow); //����� ���?
+	//UpdateWindow(hWndMainWindow); //зачем это?
 }
 
 void CMatheditorWindow::OnCreate() {
@@ -216,24 +217,24 @@ LRESULT CMatheditorWindow::OnCtlColorEdit(WPARAM wParam, LPARAM lParam)
 
 LRESULT _stdcall CMatheditorWindow::windowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message) {
-	case WM_NCCREATE: {
-		CREATESTRUCT* cs = (CREATESTRUCT*)lParam;
-		CMatheditorWindow* overlapped_window = (CMatheditorWindow*)cs->lpCreateParams;
-		SetLastError(0);
-		if (SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG)overlapped_window) == 0 &&
-			GetLastError() != 0) {
-			return FALSE;
+		case WM_NCCREATE: {
+			CREATESTRUCT* cs = (CREATESTRUCT*)lParam;
+			CMatheditorWindow* overlapped_window = (CMatheditorWindow*)cs->lpCreateParams;
+			SetLastError(0);
+			if (SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG)overlapped_window) == 0 &&
+				GetLastError() != 0) {
+				return FALSE;
+			}
+			overlapped_window->OnNCCreate(hWnd);
+			return TRUE;
 		}
-		overlapped_window->OnNCCreate(hWnd);
-		return TRUE;
-	}
-	default: {
-		CMatheditorWindow* overlapped_window = (CMatheditorWindow*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
-		if (overlapped_window) {
-			return overlapped_window->localWindowProc(hWnd, message, wParam, lParam);
+		default: {
+			CMatheditorWindow* overlapped_window = (CMatheditorWindow*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
+			if (overlapped_window) {
+				return overlapped_window->localWindowProc(hWnd, message, wParam, lParam);
+			}
+			return DefWindowProc(hWnd, message, wParam, lParam);
 		}
-		return DefWindowProc(hWnd, message, wParam, lParam);
-	}
 	}
 	return 0;
 }
@@ -398,7 +399,7 @@ void CMatheditorWindow::deleteEditControl()
 		}
 	}
 	else {
-		MessageBox(hWndMainWindow, L"�������� ������!", L"�� ������� ������", MB_OK | MB_ICONWARNING);
+		MessageBox(hWndMainWindow, L"Выберите ячейку!", L"Не выбрана ячейка", MB_OK | MB_ICONWARNING);
 	}
 	InvalidateRect(hWndMainWindow, NULL, FALSE);
 }
@@ -411,4 +412,93 @@ HACCEL CMatheditorWindow::GetHaccel() const
 HWND CMatheditorWindow::GetHandle() const
 {
 	return hWndMainWindow;
+}
+
+void CMatheditorWindow::loadFromLSVModule()
+{
+	TreeVisualisation* editControlsTreeFromLSVTree = new TreeVisualisation(hWndMainWindow);
+
+	// копия кода из main.cpp из папки LSV модуля
+
+	CMathMLParser parser;
+	std::shared_ptr<IExpression> operationTree = parser.parseFromFile("format_files/expr.mathml");
+	recursiveTransformation(editControlsTreeFromLSVTree, operationTree);
+
+	delete editControlsTree;
+	editControlsTree = editControlsTreeFromLSVTree;
+}
+
+void CMatheditorWindow::recursiveTransformation(TreeVisualisation*& tree, std::shared_ptr<IExpression> expr)
+{
+	
+	if( typeid(expr.get()) == typeid(COpExp) ) {
+		COpExp* operExpr = reinterpret_cast<COpExp*>(expr.get());
+		NodeType operation;
+		switch( operExpr->getOperation() )
+		{
+			case LSVUtils::PLUS:
+			{
+				operation = NodeType::Plus;
+				break;
+			}
+			case LSVUtils::MINUS:
+			{
+				operation = NodeType::Minus;
+				break;
+			}
+			case LSVUtils::MULTIPLY:
+			{
+				operation = NodeType::Multiply;
+				break;
+			}
+			case LSVUtils::DIVIDE:
+			case LSVUtils::FRAC:
+			{
+				operation = NodeType::Divide;
+				break;
+			}
+			case LSVUtils::POWER:
+			{
+				operation = NodeType::Power;
+				break;
+			}
+			case LSVUtils::SUM:
+			{
+				// Особый случай!!!
+				operation = NodeType::Summ;
+				break;
+			}
+			default:
+			{
+
+			}
+		}
+
+		tree->createChildrens(operation);
+		std::shared_ptr<IExpression> leftChild = (operExpr->getFirstOperand());
+		// уже
+		// tree->changeActiveNode(/*handle левого ребенка*/);
+		recursiveTransformation(tree, leftChild);
+		std::shared_ptr<IExpression> rightChild = (operExpr->getSecondOperand());
+		tree->changeActiveNode(tree->getActiveNode().getParentNode()->getRightNode()->getHandle());
+		recursiveTransformation(tree, rightChild);
+	}
+	if( typeid(expr.get()) == typeid(CIdExp) ) {
+		CIdExp* operExpr = reinterpret_cast<CIdExp*>(expr.get());
+
+		std::string text = std::to_string(operExpr->getValue());
+
+		::SetWindowText(tree->getActiveNode().getHandle(), (LPWSTR)text.c_str());
+	}
+	if (typeid(expr.get()) == typeid(CNumExp) ) {
+		CNumExp* operExpr = reinterpret_cast<CNumExp*>(expr.get());
+
+		std::string text = std::to_string(operExpr->getValue());
+
+		::SetWindowText(tree->getActiveNode().getHandle(), (LPWSTR)text.c_str());
+	}
+	if( typeid(expr.get()) == typeid(CSumExp) ) {
+		CSumExp* operExpr = reinterpret_cast<CSumExp*>(expr.get());
+		// Пока не до этого
+	}
 }
