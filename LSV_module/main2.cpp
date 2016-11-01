@@ -12,7 +12,7 @@ void testOpenMath(int numberOfTest);
 void testTex(int numberOfTest);
 void testMathML(int numberOfTest);
 
-int main()
+int main123123213()
 {
 
 	try {

@@ -7,8 +7,8 @@
 #include <map>
 #include "TreeVisualisation.h"
 
-#include "../LSV_module/expression_tree/Expression.h"
-#include "../LSV_module/parsers/MathMLParser.h"
+#include "./../LSV_module/expression_tree/Expression.h"
+#include "./../LSV_module/parsers/MathMLParser.h"
 
 class CMatheditorWindow {
 public:
@@ -42,7 +42,7 @@ private:
 	std::list<CEditControl>::iterator activeEditControl;
 	std::map<HWND, std::list<CEditControl>::iterator> editControlsHandles;
 
-	TreeVisualisation* editControlsTree = nullptr;
+	std::shared_ptr<TreeVisualisation*> editControlsTree = nullptr;
 
 	virtual LRESULT __stdcall localWindowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
 	static LRESULT __stdcall windowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
@@ -62,5 +62,5 @@ private:
 
 	void createEditControl(NodeType nodeType);
 
-	void recursiveTransformation(TreeVisualisation*& tree, std::shared_ptr<IExpression> expr);
+	void recursiveTransformation(TreeVisualisation* tree, std::shared_ptr<IExpression> expr);
 };

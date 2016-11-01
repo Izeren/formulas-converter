@@ -21,7 +21,6 @@ CMatheditorWindow::~CMatheditorWindow() {
 	if( hWndMainWindow ) {
 		DestroyWindow(hWndMainWindow);
 	}
-	delete editControlsTree;
 }
 
 bool CMatheditorWindow::RegisterClassW() {
@@ -60,7 +59,7 @@ bool CMatheditorWindow::Create() {
 
 	createToolbar();
 
-	editControlsTree = new TreeVisualisation(hWndMainWindow);
+	editControlsTree = std::shared_ptr<TreeVisualisation*>(new TreeVisualisation(hWndMainWindow));
 
 	return true;
 }
@@ -190,8 +189,8 @@ void CMatheditorWindow::OnSize()
 
 	int currentTop = mainRect.top + (toolbarRect.bottom - toolbarRect.top) + SIZE_BETWEEN_CONTROLS;
 	int currentLeft = mainRect.left + SIZE_BETWEEN_CONTROLS;
-	if (editControlsTree) {
-		editControlsTree->paint(currentTop, currentLeft);
+	if (editControlsTree.get()) {
+		(*editControlsTree.get())->paint(currentTop, currentLeft);
 	}
 
 	//int currentTop = mainRect.top + (toolbarRect.bottom - toolbarRect.top) + SIZE_BETWEEN_CONTROLS;
@@ -334,9 +333,9 @@ void CMatheditorWindow::OnCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 			break;
 		case EN_UPDATE: {
 			if (editControlsTree != NULL) {
-				CEditControl editControl = editControlsTree->getActiveNode().getEditControl();
+				CEditControl editControl = (*editControlsTree.get())->getActiveNode().getEditControl();
 				editControl.deleteWhiteSpaces();
-				editControlsTree->setControlWidth(editControl.GetWidth());
+				(*editControlsTree.get())->setControlWidth(editControl.GetWidth());
 			}
 			SendMessage(hWndMainWindow, WM_SIZE, 0, 0);
 			break;
@@ -364,16 +363,16 @@ void CMatheditorWindow::loadFile() {
 
 void CMatheditorWindow::clickEditControl() {
 	HWND handle = ::GetFocus();
-	if (editControlsTree)
+	if (editControlsTree.get())
 	{
-		editControlsTree->changeActiveNode(handle);
+		(*editControlsTree.get())->changeActiveNode(handle);
 	}
 	InvalidateRect(hWndMainWindow, NULL, FALSE);
 }
 
 void CMatheditorWindow::createEditControl(NodeType nodeType) 
 {
-	editControlsTree->createChildrens(nodeType);
+	(*editControlsTree.get())->createChildrens(nodeType);
 	SendMessage(hWndMainWindow, WM_SIZE, 0, 0);
 }
 
@@ -416,21 +415,19 @@ HWND CMatheditorWindow::GetHandle() const
 
 void CMatheditorWindow::loadFromLSVModule()
 {
-	TreeVisualisation* editControlsTreeFromLSVTree = new TreeVisualisation(hWndMainWindow);
+	std::shared_ptr<TreeVisualisation*> editControlsTreeFromLSVTree = std::shared_ptr<TreeVisualisation*>(new TreeVisualisation(hWndMainWindow));
 
 	// копия кода из main.cpp из папки LSV модуля
 
 	CMathMLParser parser;
 	std::shared_ptr<IExpression> operationTree = parser.parseFromFile("format_files/expr.mathml");
-	recursiveTransformation(editControlsTreeFromLSVTree, operationTree);
+	recursiveTransformation(*editControlsTreeFromLSVTree.get(), operationTree);
 
-	delete editControlsTree;
 	editControlsTree = editControlsTreeFromLSVTree;
 }
 
-void CMatheditorWindow::recursiveTransformation(TreeVisualisation*& tree, std::shared_ptr<IExpression> expr)
+void CMatheditorWindow::recursiveTransformation(TreeVisualisation* tree, std::shared_ptr<IExpression> expr)
 {
-	
 	if( typeid(expr.get()) == typeid(COpExp) ) {
 		COpExp* operExpr = reinterpret_cast<COpExp*>(expr.get());
 		NodeType operation;
@@ -477,7 +474,7 @@ void CMatheditorWindow::recursiveTransformation(TreeVisualisation*& tree, std::s
 		tree->createChildrens(operation);
 		std::shared_ptr<IExpression> leftChild = (operExpr->getFirstOperand());
 		// уже
-		// tree->changeActiveNode(/*handle левого ребенка*/);
+		// tree->changeActiveNode(/*handle левого ребенка);
 		recursiveTransformation(tree, leftChild);
 		std::shared_ptr<IExpression> rightChild = (operExpr->getSecondOperand());
 		tree->changeActiveNode(tree->getActiveNode().getParentNode()->getRightNode()->getHandle());
