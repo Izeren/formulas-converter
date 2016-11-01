@@ -5,8 +5,8 @@
 #include <utility>
 
 // сейчас используется только для тестирования работы EvalVisitor
-#include "visitors\CEvalVisitor.h"
-#include "expression_tree\Expression.h"
+#include <..\LSV_module\expression_tree\Expression.h>
+#include <..\LSV_module\visitors\CEvalVisitor.h>
 
 //пока что это пробная версия без настроек взаимодействия между редактором и плоттером
 
@@ -61,8 +61,9 @@ private:
 	void drawCoordSystem( HDC targetDC );
 	//главная процедура отрисовки функции
 	void drawFunction(HDC targetDC/*здесь будет указатель на структуру с функцией*/);
-	//пример простой функции
-	double simpleFunc( double x );
+	//пример простых функций
+    std::pair<bool, double> simpleFunc( double x );
+    std::pair<bool, double> simpleFunc2( double x );
 	//Проверят текущую точку на экстремум, возвращает
 	// -1 - точка локального минимума
 	// 0 - не экстремум

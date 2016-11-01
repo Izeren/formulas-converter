@@ -37,10 +37,10 @@ void CEvalVisitor::Visit( COpExp &exp )
         {
             if( secondOperand != 0 ) {
                 valueStack.push_back( firstOperand / secondOperand );
-                break;
             } else {
                 evalFailed = true;
             }
+            break;
         }
         case LSVUtils::TOperation::POWER:
         {
@@ -69,7 +69,7 @@ void CEvalVisitor::Visit( CSumExp &exp )
 {
     auto internalExp = exp.getExpression();
     double sum = 0;
-    for( int sumIndex = exp.getStartId(); sumIndex < exp.getFinishId(); ++sumIndex ) {
+    for( int sumIndex = exp.getStartId(); sumIndex <= exp.getFinishId(); ++sumIndex ) {
         idExpValues[exp.getIndexName()] = sumIndex;
         internalExp->Accept( *this );
         if( evalFailed ) {

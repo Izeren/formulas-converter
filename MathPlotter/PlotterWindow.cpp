@@ -65,10 +65,8 @@ void CPlotterWindow::OnNCCreate( HWND _handle )
 void CPlotterWindow::OnCreate()
 {}
 
-double CPlotterWindow::simpleFunc( double x )
+std::pair<bool, double> CPlotterWindow::simpleFunc2( double x )
 {
-    //временно положим сюда тесты EvalVisitor вместо sin
-    //return sin( x );
     std::shared_ptr<CIdExp> xExp = std::make_shared<CIdExp>(CIdExp("x"));
     std::shared_ptr<CNumExp> sqrExp = std::make_shared<CNumExp>( CNumExp( 2 ) );
     std::shared_ptr<COpExp> powerExp = std::make_shared<COpExp>( COpExp( xExp, sqrExp, LSVUtils::TOperation::POWER ) );
@@ -84,7 +82,40 @@ double CPlotterWindow::simpleFunc( double x )
     if( success ) {
         result = visitor.getValue();
     }
-    return result;
+    return std::make_pair( success, result );
+}
+
+std::pair<bool, double> CPlotterWindow::simpleFunc( double x )
+{
+    std::shared_ptr<CIdExp> xExp = std::make_shared<CIdExp>( CIdExp( "x" ) );
+    std::shared_ptr<CIdExp> kExp = std::make_shared<CIdExp>( CIdExp( "k" ) );
+
+    std::shared_ptr<CNumExp> oneExp = std::make_shared<CNumExp>( CNumExp( 1.0 ) );
+    std::shared_ptr<CNumExp> twoExp = std::make_shared<CNumExp>( CNumExp( 2.0 ) );
+    std::shared_ptr<CNumExp> threeExp = std::make_shared<CNumExp>( CNumExp( 3.0 ) );
+
+    std::shared_ptr<COpExp> xSqrExp = std::make_shared<COpExp>( COpExp( xExp, twoExp, LSVUtils::TOperation::POWER ) );
+    std::shared_ptr<COpExp> xCubExp = std::make_shared<COpExp>( COpExp( xExp, threeExp, LSVUtils::TOperation::POWER ) );
+
+    std::shared_ptr<COpExp> xMultExp = std::make_shared<COpExp>( COpExp( twoExp, xSqrExp, LSVUtils::TOperation::MULTIPLY ) );
+
+    std::shared_ptr<COpExp> twoPowExp = std::make_shared<COpExp>( COpExp( twoExp, kExp, LSVUtils::TOperation::POWER ) );
+    std::shared_ptr<COpExp> twoFracExp = std::make_shared<COpExp>( COpExp( oneExp, twoPowExp, LSVUtils::TOperation::FRAC ) );
+    std::shared_ptr<CSumExp> sumExp = std::make_shared<CSumExp>( CSumExp( "k", 1, 5, twoFracExp ) );
+
+    std::shared_ptr<COpExp> subtrExp = std::make_shared<COpExp>( COpExp( xCubExp, xMultExp, LSVUtils::TOperation::MINUS ) );
+    std::shared_ptr<COpExp> root = std::make_shared<COpExp>( COpExp( subtrExp, sumExp, LSVUtils::TOperation::MULTIPLY ) );
+
+    std::unordered_map<std::string, double> idExpValues( { { "x", x } } );
+    CEvalVisitor visitor( idExpValues );
+    root->Accept( visitor );
+
+    bool success = !visitor.isEvalFailed();
+    double result = 0.0;
+    if( success ) {
+        result = visitor.getValue();
+    }
+    return std::make_pair(success, result);
 }
 
 bool CPlotterWindow::drawExtremumPoints( HDC targetDC, std::vector<POINT> points )
@@ -111,15 +142,27 @@ CPlotterWindow::PointType CPlotterWindow::checkOnExtremum( int pixelX )
 
     //Предыдущая точка
     double prevX = xRange.begin + stepX * (pixelX - 1);
-    double prevY = simpleFunc( prevX );
+    std::pair<bool, double> res = simpleFunc( prevX );
+    if( !res.first ) {
+        return NONE;
+    }
+    double prevY = res.second;
 
     //Текущая точка
     double currX = xRange.begin + stepX * pixelX;
-    double currY = simpleFunc( currX );
+    res = simpleFunc( currX );
+    if( !res.first ) {
+        return NONE;
+    }
+    double currY = res.second;
 
     //Следующая точка точка
     double nextX = xRange.begin + stepX * (pixelX + 1);
-    double nextY = simpleFunc( nextX );
+    res = simpleFunc( nextX );
+    if( !res.first ) {
+        return NONE;
+    }
+    double nextY = res.second;
 
     if( prevY > currY &&  currY < nextY )
         return MINIMUM;
@@ -141,7 +184,11 @@ void CPlotterWindow::drawFunction( HDC targetDC )
     std::vector <POINT> minimums;
     for( int pixelX = 0; pixelX <= currentWidth; pixelX++ ) {
         double coordX = xRange.begin + stepX * pixelX;
-        double coordY = -simpleFunc( coordX );
+        std::pair<bool, double> res = simpleFunc( coordX );
+        if( !res.first ) {
+            continue;
+        }
+        double coordY = -res.second;
         double pixelY = coordY / stepY + currentHeight / 2;
 
         switch( checkOnExtremum( pixelX ) ) {
