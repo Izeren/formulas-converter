@@ -1,0 +1,1 @@
+sum from{i=1}to{5}(i^2) * (2 * x - 3 * y) ^ 2 * sum from {i=3}to{7}(i - 2 *sum from {j=3} to {10}(2 * {j}over{y} + {y} over {j}))

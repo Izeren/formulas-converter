@@ -84,7 +84,6 @@
     <ClCompile Include="converters\Converter.cpp" />
     <ClCompile Include="expression_tree\Expression.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MathMLBuildVisitor.cpp" />
     <ClCompile Include="parsers\MathMLParser.cpp" />
     <ClCompile Include="parsers\OpenMathParser.cpp" />
     <ClCompile Include="parsers\TexParser.cpp" />
@@ -102,6 +101,7 @@
     <ClInclude Include="expression_tree\Expression.h" />
     <ClInclude Include="parsers\MathMLParser.h" />
     <ClInclude Include="parsers\OpenMathParser.h" />
+    <ClInclude Include="parsers\Parser.h" />
     <ClInclude Include="parsers\TexParser.h" />
     <ClInclude Include="pugixml\pugiconfig.hpp" />
     <ClInclude Include="pugixml\pugixml.hpp" />
@@ -113,7 +113,9 @@
     <ClInclude Include="visitors\CSintacticValdationVisitor.h" />
     <ClInclude Include="visitors\IExportVisitor.h" />
     <ClInclude Include="visitors\IVisitor.h" />
-    <ClInclude Include="visitors\MathMLBuildVisitor.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="format_files\expr.tex" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

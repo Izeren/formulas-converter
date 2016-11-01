@@ -11,6 +11,8 @@ namespace LSVUtils
 
 	enum TPriority { EMPTY_FORMULA, SUMMATION, ADDITION_SUBSTRACTION, MULTIPLICATION_DIVISION, POWERING };
 
+	enum TFormat { TEX, MATHML, OPENMATH };
+
 	bool checkIdName(std::string name);
 
 	bool checkDouble(std::string value);

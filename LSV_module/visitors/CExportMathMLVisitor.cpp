@@ -63,9 +63,7 @@ void CExportMathMLVisitor::Visit(CSumExp &exp)
 	this->closeTag("mrow");
 	this->addNumberTag(exp.getFinishId());
 	this->closeTag("munderover");
-	this->addOperatorTag("(");
 	exp.getExpression()->Accept(*this);
-	this->addOperatorTag(")");
 	this->closeTag("mrow");
 
 	this->priorities.pop();

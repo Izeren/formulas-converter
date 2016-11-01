@@ -3,6 +3,8 @@
 #include "./../expression_tree/Expression.h"
 #include "./../pugixml/pugixml.hpp"
 #include "./../utils/LSVUtils.h"
+#include "./../visitors/CExportMathMLVisitor.h"
+#include "Parser.h"
 #include <stdexcept>
 #include <sstream>
 #include <fstream>
@@ -11,9 +13,9 @@
 #include <map>
 #include <unordered_map>
 
-class CMathMLParser {
+class CMathMLParser: public IParser {
 
-	std::unordered_map<char, TOperation> get_op;
+	std::unordered_map<char, LSVUtils::TOperation> get_op;
 
 	bool is_op(char c) {
 		return get_op.find(c) != get_op.end();
@@ -29,6 +31,7 @@ class CMathMLParser {
 		return
 			op == '+' || op == '-' ? 1 :
 			op == '*' || op == '/' || op == '%' ? 2 :
+			op == '^' ? 3 :
 			-1;
 	}
 
@@ -60,7 +63,7 @@ class CMathMLParser {
 		else {
 			std::shared_ptr<IExpression> r = expr_stack.top();  expr_stack.pop();
 			std::shared_ptr<IExpression> l = expr_stack.top();  expr_stack.pop();
-			TOperation t_op = get_op[op];
+			LSVUtils::TOperation t_op = get_op[op];
 			expr_stack.push(std::static_pointer_cast<IExpression>(std::make_shared<COpExp>(l, r, t_op)));
 		}
 	}
@@ -292,11 +295,11 @@ class CMathMLParser {
 		pugi::xml_node end_range = start_range.next_sibling();
 		pugi::xml_node range_end_val = end_range.first_child();
 
-		if (!nameEqual(range_end_val, "mn")) {
+		if (!nameEqual(end_range, "mn")) {
 			errorMessage("Sum expression node must contain end value");
 		}
 
-		std::string range_end_val_str = std::string(range_end_val.first_child().value());
+		std::string range_end_val_str = std::string(range_end_val.value());
 		if (!LSVUtils::checkDouble(range_end_val_str)) {
 			errorMessage("Sum expression node contains illegal end value");
 		}
@@ -352,20 +355,22 @@ class CMathMLParser {
 	bool nameEqual(pugi::xml_node &node, const char *name);
 	void errorMessage(std::string &message);
 	void errorMessage(const char *message);
-
+	
 public:
 
 	CMathMLParser() {
-		get_op['+'] = TOperation::PLUS;
-		get_op['-'] = TOperation::MINUS;
-		get_op['*'] = TOperation::MULTIPLY;
-		get_op['/'] = TOperation::DIVIDE;
-		get_op['^'] = TOperation::POWER;
+		get_op['+'] = LSVUtils::TOperation::PLUS;
+		get_op['-'] = LSVUtils::TOperation::MINUS;
+		get_op['*'] = LSVUtils::TOperation::MULTIPLY;
+		get_op['/'] = LSVUtils::TOperation::DIVIDE;
+		get_op['^'] = LSVUtils::TOperation::POWER;
 	}
 
-	std::string buildFromTree(std::shared_ptr<IExpression> expr);
+	std::string buildFromTree(std::shared_ptr<IExpression> expr) override;
 
-	std::shared_ptr<IExpression> parseFromFile(const char *path);
+	std::shared_ptr<IExpression> parseFromFile(const char *path) override;
+
+	std::shared_ptr<IExpression> parse(const std::string &str) override;
 
 };
 
