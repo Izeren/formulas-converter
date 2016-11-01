@@ -148,22 +148,31 @@
   <ItemGroup>
     <ClCompile Include="CEditControl.cpp" />
     <ClCompile Include="cmatheditor_window.cpp" />
-    <ClCompile Include="CRect.cpp" />
-    <ClCompile Include="FracControl.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NodeVisualisation.cpp" />
+    <ClCompile Include="TreeVisualisation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CEditControl.h" />
     <ClInclude Include="cmatheditor_window.h" />
-    <ClInclude Include="CRect.h" />
-    <ClInclude Include="FracControl.h" />
     <ClInclude Include="IChild.h" />
+    <ClInclude Include="NodeVisualisation.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="TreeVisualisation.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="interface.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="icons\delete.bmp" />
+    <Image Include="icons\divide.bmp" />
+    <Image Include="icons\empty.bmp" />
+    <Image Include="icons\equal.bmp" />
+    <Image Include="icons\minus.bmp" />
+    <Image Include="icons\multiply.bmp" />
+    <Image Include="Icons\plus.bmp" />
+    <Image Include="icons\power.bmp" />
+    <Image Include="icons\summ.bmp" />
     <Image Include="symbol_add.bmp" />
     <Image Include="toolbar1.bmp" />
     <Image Include="toolbar2.bmp" />

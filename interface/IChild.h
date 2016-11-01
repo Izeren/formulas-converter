@@ -4,6 +4,7 @@
 #include <Windows.h>
 #include <iostream>
 #include <string>
+#include <atltypes.h>
 
 class IChild : public std::enable_shared_from_this<IChild> {
 protected:
