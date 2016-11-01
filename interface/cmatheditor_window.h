@@ -3,6 +3,10 @@
 #include <Windows.h>
 #include "resource.h"
 #include "CEditControl.h"
+#include <list>
+#include <map>
+
+#include "TreeVisualisation.h"
 
 class CMatheditorWindow {
 public:
@@ -19,12 +23,29 @@ protected:
 	void OnNCCreate(HWND handle);
 	void OnCreate();
 	void OnSize();
+	void OnCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	LRESULT OnCtlColorEdit(WPARAM wParam, LPARAM lParam);
+
 private:
 	static const LPCWSTR class_name_;
-	HWND handle_;
+	HWND hWndMainWindow;
+	HWND hWndToolbar;
 
-	CEditControl editControl;
+	std::list<CEditControl> editControls;
+	std::list<CEditControl>::iterator activeEditControl;
+	std::map<HWND, std::list<CEditControl>::iterator> editControlsHandles;
 
 	virtual LRESULT __stdcall localWindowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
 	static LRESULT __stdcall windowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
+	void createToolbar();
+	HBITMAP loadTransparentBitmap(HINSTANCE hInstance, int resource);
+
+	void newFile();
+	void saveFile();
+	void loadFile();
+
+	void clickEditControl();
+	void createEditControl();
+	void createEditControl(std::wstring text);
+	void deleteEditControl();
 };
