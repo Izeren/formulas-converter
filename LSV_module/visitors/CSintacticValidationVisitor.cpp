@@ -37,11 +37,14 @@ void CSintacticValidationVisitor::Visit(COpExp &exp)
 	
 }
 
-void CSintacticValidationVisitor::Visit(CNumExp &exp) {}
+void CSintacticValidationVisitor::Visit(CNumExp &exp)
+{
+    UNREFERENCED_PARAMETER( exp );
+}
 
 void CSintacticValidationVisitor::Visit(CIdExp &exp)
 {
-	std::string &name = exp.getName();
+	const std::string &name = exp.getName();
 	if (name == BAD_ID) {
 		return this->setError("Wrong or empty variable name\n");
 	}
@@ -74,9 +77,9 @@ bool CSintacticValidationVisitor::getValidationStatus() const
 	return this->isValidated;
 }
 
-void CSintacticValidationVisitor::setVisibleIds(const std::set<std::string> &visibleIds)
+void CSintacticValidationVisitor::setVisibleIds(const std::set<std::string> &_visibleIds)
 {
-	this->visibleIds = visibleIds;
+	this->visibleIds = _visibleIds;
 }
 
 void CSintacticValidationVisitor::setError(const std::string &errorText)

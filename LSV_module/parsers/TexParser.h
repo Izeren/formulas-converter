@@ -209,6 +209,7 @@ class CTexParser: public IParser {
 	}
 
 	std::shared_ptr<IExpression> parseFrac(std::stack<std::shared_ptr<IExpression>> &expr_stack, std::string &str, size_t &ind) {
+        (void)expr_stack; // unreferenced parameter
 
 		std::regex sum_exp("\\{.*\\}\\{.*\\}.*");
 		std::string substr = str.substr(ind);
@@ -238,7 +239,7 @@ class CTexParser: public IParser {
 	}
 
 
-	void errorMessage(std::string &message);
+	void errorMessage(const std::string &message);
 	void errorMessage(const char *message);
 
 public:

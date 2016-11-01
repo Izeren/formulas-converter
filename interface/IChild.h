@@ -14,14 +14,15 @@ protected:
 		parent(parent),
 		rect(rect)
 	{
+        UNREFERENCED_PARAMETER( depth );
 	}
 public:
 	virtual ~IChild(){}
 
 	virtual std::weak_ptr<IChild> GetParent() const;
-	virtual void SetParent(const std::weak_ptr<IChild> parent);
+	virtual void SetParent(const std::weak_ptr<IChild> _parent);
 
-	virtual void SetRect(const CRect& rect);
+	virtual void SetRect(const CRect& _rect);
 	virtual CRect GetRect();
 	virtual void Resize() = 0;
 };
@@ -31,9 +32,9 @@ inline std::weak_ptr<IChild> IChild::GetParent() const
 	return parent;
 }
 
-inline void IChild::SetParent(const std::weak_ptr<IChild> parent)
+inline void IChild::SetParent(const std::weak_ptr<IChild> _parent)
 {
-	this->parent = parent;
+	this->parent = _parent;
 }
 
 inline CRect IChild::GetRect()
@@ -41,7 +42,7 @@ inline CRect IChild::GetRect()
 	return rect;
 }
 
-inline void IChild::SetRect(const CRect& rect)
+inline void IChild::SetRect(const CRect& _rect)
 {
-	this->rect = rect;
+	this->rect = _rect;
 }

@@ -24,7 +24,7 @@ bool CMatheditorWindow::RegisterClassW() {
 	wnd_class.hInstance = GetModuleHandle(NULL);
 	wnd_class.lpszClassName = class_name_;
 	wnd_class.hCursor = ::LoadCursor(GetModuleHandle(0), IDC_ARROW);
-	return RegisterClassEx(&wnd_class);
+	return RegisterClassEx(&wnd_class) != 0;
 }
 
 bool CMatheditorWindow::Create() {
@@ -95,8 +95,7 @@ bool CMatheditorWindow::Create() {
 	SendMessage(hWndToolbar, TB_AUTOSIZE, 0, 0);
 	ShowWindow(hWndToolbar, TRUE);
 
-	return hWndToolbar;
-	return true;
+	return hWndToolbar != NULL;
 }
 
 void CMatheditorWindow::Show(int cmdShow) {
@@ -140,7 +139,6 @@ LRESULT _stdcall CMatheditorWindow::windowProc(HWND handle, UINT message, WPARAM
 		}
 		return DefWindowProc(handle, message, wParam, lParam);
 	}
-	return 0;
 }
 
 void CMatheditorWindow::OnDestroy() {
@@ -160,10 +158,6 @@ LRESULT _stdcall CMatheditorWindow::localWindowProc(HWND handle, UINT message, W
 			NMLINK* pNMLink = (NMLINK*)lParam;
 			LITEM iItem = pNMLink->item;
 			// Custom OutputDebugString
-			if (wParam)
-			{
-				int c;
-			}
 			break;
 		}
 		}

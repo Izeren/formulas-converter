@@ -1,7 +1,7 @@
 #include "OpenMathParser.h"
 
 //private:
-void COpenMathParser::errorMessage(std::string &message) {
+void COpenMathParser::errorMessage(const std::string &message) {
 
 	throw std::logic_error("COpenMathParser: Formula contains the error:\n" + message);
 

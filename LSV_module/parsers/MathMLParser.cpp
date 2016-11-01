@@ -5,7 +5,7 @@ bool CMathMLParser::nameEqual(pugi::xml_node &node, const char *name) {
 	return !strcmp(node.name(), name);
 }
 
-void CMathMLParser::errorMessage(std::string &message) {
+void CMathMLParser::errorMessage(const std::string &message) {
 
 	throw std::logic_error("CMathMLParser: Formula contains the error:\n" + message);
 
@@ -58,8 +58,6 @@ std::shared_ptr<IExpression> CMathMLParser::parseFromFile(const char *path) {
 
 		throw std::runtime_error(sstream.str());
 	}
-	
-	return nullptr;
 }
 
 std::shared_ptr<IExpression> CMathMLParser::parse(const std::string &str) {
@@ -94,6 +92,4 @@ std::shared_ptr<IExpression> CMathMLParser::parse(const std::string &str) {
 
 		throw std::runtime_error(sstream.str());
 	}
-
-	return nullptr;
 }

@@ -12,12 +12,12 @@ CRect::CRect(int _left, int _top, int _right, int _bottom) :
 {
 }
 
-void CRect::Set(int left, int top, int right, int bottom)
+void CRect::Set(int _left, int _top, int _right, int _bottom)
 {
-	this->left = left;
-	this->right = right;
-	this->top = top;
-	this->bottom = bottom;
+	this->left = _left;
+	this->right = _right;
+	this->top = _top;
+	this->bottom = _bottom;
 }
 
 bool CRect::IsContain(int x, int y) const

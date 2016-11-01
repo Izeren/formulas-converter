@@ -281,6 +281,8 @@ void CPlotterWindow::OnSize()
     InvalidateRect( handle, &rect, FALSE );
 }
 
+
+
 void CPlotterWindow::OnPaint()
 {
     RECT clientRect;

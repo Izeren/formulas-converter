@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <string>
 #include <set>
+#include <Windows.h>
 
 class CSintacticValidationVisitor : public IVisitor {
 public:
@@ -22,7 +23,7 @@ public:
 
 	std::string getError() const;
 	bool getValidationStatus() const;
-	void setVisibleIds(const std::set<std::string> &visibleIds);
+	void setVisibleIds(const std::set<std::string> &_visibleIds);
 	void setError(const std::string &errorText);
 
 private:

@@ -35,7 +35,7 @@ class CMathMLParser: public IParser {
 			-1;
 	}
 
-	std::string cleanDelims(std::string &line) {
+	std::string cleanDelims(const std::string &line) {
 		std::string line_no_delims;
 		for (char ch : line) {
 			if (!isspace(ch)) {
@@ -353,7 +353,7 @@ class CMathMLParser: public IParser {
 
 
 	bool nameEqual(pugi::xml_node &node, const char *name);
-	void errorMessage(std::string &message);
+	void errorMessage(const std::string &message);
 	void errorMessage(const char *message);
 	
 public:

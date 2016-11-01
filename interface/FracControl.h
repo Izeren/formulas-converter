@@ -11,7 +11,7 @@ public:
 	FracControl(const CRect& rect, std::weak_ptr<IChild> parent);
 
 	std::list<std::shared_ptr<IChild>> GetChildren() const;
-	void SetRect(const CRect& rect);
+	void SetRect(const CRect& _rect);
 	void Resize();
 
 private:

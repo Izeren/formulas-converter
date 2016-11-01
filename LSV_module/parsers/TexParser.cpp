@@ -1,7 +1,7 @@
 #include "TexParser.h"
 
 //private:
-void CTexParser::errorMessage(std::string &message) {
+void CTexParser::errorMessage(const std::string &message) {
 
 	throw std::logic_error("CTexParser: Formula contains the error:\n" + message);
 
@@ -10,7 +10,6 @@ void CTexParser::errorMessage(std::string &message) {
 void CTexParser::errorMessage(const char *message) {
 
 	errorMessage(std::string(message));
-
 }
 
 std::string CTexParser::buildFromTree(std::shared_ptr<IExpression> expr) {

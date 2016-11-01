@@ -21,7 +21,7 @@ std::list<std::shared_ptr<IChild>> FracControl::GetChildren() const
 	return std::list<std::shared_ptr<IChild>> { firstChild, secondChild };
 }
 
-void FracControl::SetRect(const CRect& rect)
+void FracControl::SetRect(const CRect& _rect)
 {
-	this->rect = rect;
+	this->rect = _rect;
 }
