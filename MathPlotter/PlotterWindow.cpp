@@ -11,7 +11,10 @@
 const int CPlotterWindow::lineWidth = 3;
 
 CPlotterWindow::CPlotterWindow()
+    : xRange( -5, 5 ), yRange( -5, 5 )
 {
+    CTexParser parser;
+    treeRoot = parser.parseFromFile( "D:\\My Docs\\Prog\\WinProg\\4c1t_MathRedactor\\LSV_module\\format_files\\test2.tex" );
     handle = 0;
 }
 
@@ -65,7 +68,21 @@ void CPlotterWindow::OnNCCreate( HWND _handle )
 void CPlotterWindow::OnCreate()
 {}
 
-std::pair<bool, double> CPlotterWindow::simpleFunc2( double x )
+std::pair<bool, double> CPlotterWindow::simpleFunc( double x )
+{
+    std::unordered_map<std::string, double> idExpValues( { { "x", x } } );
+    CEvalVisitor visitor( idExpValues );
+    treeRoot->Accept( visitor );
+
+    bool success = !visitor.isEvalFailed();
+    double result = 0.0;
+    if( success ) {
+        result = visitor.getValue();
+    }
+    return std::make_pair( success, result );
+}
+
+std::pair<bool, double> CPlotterWindow::simpleFunc3( double x )
 {
     std::shared_ptr<CIdExp> xExp = std::make_shared<CIdExp>(CIdExp("x"));
     std::shared_ptr<CNumExp> sqrExp = std::make_shared<CNumExp>( CNumExp( 2 ) );
@@ -85,7 +102,7 @@ std::pair<bool, double> CPlotterWindow::simpleFunc2( double x )
     return std::make_pair( success, result );
 }
 
-std::pair<bool, double> CPlotterWindow::simpleFunc( double x )
+std::pair<bool, double> CPlotterWindow::simpleFunc2( double x )
 {
     std::shared_ptr<CIdExp> xExp = std::make_shared<CIdExp>( CIdExp( "x" ) );
     std::shared_ptr<CIdExp> kExp = std::make_shared<CIdExp>( CIdExp( "k" ) );
@@ -295,10 +312,6 @@ void CPlotterWindow::OnPaint()
     HGDIOBJ oldDisplayBuffer = SelectObject( displayBufferDC, displayBuffer );
 
     FillRect( displayBufferDC, &clientRect, (HBRUSH)GetStockObject( WHITE_BRUSH ) );
-
-    //рисовать здесь
-    xRange = Range( -20, 20 );
-    yRange = Range( -2, 2 );
 
     drawCoordSystem( displayBufferDC );
     drawFunction( displayBufferDC );

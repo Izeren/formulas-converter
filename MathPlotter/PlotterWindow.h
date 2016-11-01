@@ -7,6 +7,7 @@
 // сейчас используется только для тестирования работы EvalVisitor
 #include <..\LSV_module\expression_tree\Expression.h>
 #include <..\LSV_module\visitors\CEvalVisitor.h>
+#include <..\LSV_module\parsers\TexParser.h>
 
 //пока что это пробная версия без настроек взаимодействия между редактором и плоттером
 
@@ -64,6 +65,7 @@ private:
 	//пример простых функций
     std::pair<bool, double> simpleFunc( double x );
     std::pair<bool, double> simpleFunc2( double x );
+    std::pair<bool, double> simpleFunc3( double x );
 	//Проверят текущую точку на экстремум, возвращает
 	// -1 - точка локального минимума
 	// 0 - не экстремум
@@ -73,5 +75,5 @@ private:
 	
 	static LRESULT __stdcall windowProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
 
-	
+    std::shared_ptr<IExpression> treeRoot;
 };
