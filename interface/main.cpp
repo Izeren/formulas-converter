@@ -20,8 +20,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, LPWSTR, int nCmdShow) {
 			notepad_window.GetHaccel(), // handle to active accelerator table
 			&msg)) {
 			::TranslateMessage(&msg);
-			if (msg.message == WM_KEYDOWN) {
-				SendMessage(notepad_window.GetHandle(), WM_KEYDOWN, msg.wParam, msg.lParam);
+			if (msg.message == WM_KEYDOWN || msg.message == WM_KEYUP) {
+				SendMessage(notepad_window.GetHandle(), msg.message, msg.wParam, msg.lParam);
 			}
 			::DispatchMessage(&msg);
 		}

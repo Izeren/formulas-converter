@@ -258,14 +258,34 @@ LRESULT _stdcall CMatheditorWindow::localWindowProc(HWND hwnd, UINT message, WPA
 		return DefWindowProc(hwnd, message, wParam, lParam);
 	case WM_KEYDOWN: {
 		switch (wParam) {
-			case VK_LEFT:
-				editControlsTree->moveActiveControlLeft();
+			case VK_TAB: {
+				isTabClicked = true;
 				break;
+			}
+			case VK_LEFT: {
+				if (isTabClicked) {
+					editControlsTree->moveActiveControlLeft();
+				}
+				break;
+			}
 			case VK_RIGHT:
-				editControlsTree->moveActiveControlRight();
+				if (isTabClicked) {
+					editControlsTree->moveActiveControlRight();
+				}
 				break;
 			default:
 				break;
+		}
+		break;
+	}
+	case WM_KEYUP: {
+		switch (wParam) {
+		case VK_TAB: {
+			isTabClicked = false;
+			break;
+		}
+		default:
+			break;
 		}
 		break;
 	}

@@ -56,4 +56,6 @@ private:
 	void deleteEditControl();
 
 	void createEditControl(NodeType nodeType);
+
+	bool isTabClicked = false;
 };

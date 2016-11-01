@@ -148,6 +148,17 @@ void TreeVisualisation::moveActiveControlLeft() {
 }
 
 void TreeVisualisation::moveActiveControlRight() {
+	// should be corrected to check that we are behind the last letter in the editcontrol
+	//if so, do moving active control, else - not
+
+	//POINT point;
+	//if (GetCursorPos(&point)) {
+	//	ScreenToClient(activeNode->getEditControl().GetHandle(), &point);
+	//	long coord = point.x;
+	//	std::wstring str = std::to_wstring(coord);
+	//	MessageBox(mainWindow, str.c_str(), L"Не выбрана ячейка", MB_OK | MB_ICONWARNING);
+	//}
+
 	if (activeNode->getRightNode()) {
 		activeNode = activeNode->getRightNode().get();
 		while (activeNode->getLeftNode()) {
