@@ -490,3 +490,16 @@ CEditControl NodeVisualisation::getEditControl() const{
 void NodeVisualisation::setControlWidth(int width) {
 	editControl.SetWidth(width);
 }
+
+NodeVisualisation* NodeVisualisation::createCopy(NodeVisualisation* parent) {
+	NodeVisualisation* copiedNode = new NodeVisualisation(parent, nodeType, isLeftChild, hWndParentWindow);
+	if (leftChild) {
+		NodeVisualisation* copiedLeftChild = leftChild->createCopy(copiedNode);
+		copiedNode->setChild(true, std::shared_ptr<NodeVisualisation>(copiedLeftChild));
+	}
+	if (rightChild) {
+		NodeVisualisation* copiedRightChild = rightChild->createCopy(copiedNode);
+		copiedNode->setChild(false, std::shared_ptr<NodeVisualisation>(copiedRightChild));
+	}
+	return copiedNode;
+}

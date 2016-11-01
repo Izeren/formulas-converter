@@ -149,7 +149,7 @@ void TreeVisualisation::moveActiveControlLeft() {
 
 void TreeVisualisation::moveActiveControlRight() {
 	// should be corrected to check that we are behind the last letter in the editcontrol
-	//if so, do moving active control, else - not
+	// if so, do moving active control, else - not
 
 	//POINT point;
 	//if (GetCursorPos(&point)) {
@@ -175,5 +175,20 @@ void TreeVisualisation::moveActiveControlRight() {
 		}
 		activeNode = activeNodeNew->getParentNode();
 	}
+	activeNode->setFocus();
+}
+
+void TreeVisualisation::copyNode() {
+	copiedNode = activeNode->createCopy(nullptr);
+	activeNode->setFocus();
+}
+
+void TreeVisualisation::pasteNode() {
+	NodeVisualisation* parent_node = activeNode->getParentNode();
+	bool node_orientation = activeNode->getOrientation();
+	copiedNode->setOrientation(node_orientation);
+	copiedNode->setParentNode(parent_node);
+	parent_node->changeOneChildren(node_orientation, copiedNode);
+	activeNode = copiedNode;
 	activeNode->setFocus();
 }

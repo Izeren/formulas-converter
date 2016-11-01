@@ -119,6 +119,8 @@ void CMatheditorWindow::createToolbar() {
 		{ STD_FILENEW, ID_FILE_NEW, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, 0 },
 		{ STD_FILEOPEN, ID_FILE_OPEN, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, 0 },
 		{ STD_FILESAVE, ID_FILE_SAVE, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, 0 },
+		{ STD_COPY, ID_COPY, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, 0 },
+		{ STD_PASTE, ID_PASTE, TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, 0 },
 	};
 	SendMessage(hWndToolbar, (UINT)TB_ADDBUTTONS, _countof(tbb_buildin), (LPARAM)&tbb_buildin);
 
@@ -313,6 +315,14 @@ void CMatheditorWindow::OnCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 			break;
 		case ID_FILE_OPEN:
 			loadFile();
+			break;
+		case ID_COPY:
+			editControlsTree->copyNode();
+			SendMessage(hWndMainWindow, WM_SIZE, 0, 0);
+			break;
+		case ID_PASTE:
+			editControlsTree->pasteNode();
+			SendMessage(hWndMainWindow, WM_SIZE, 0, 0);
 			break;
 		case ID_OPERATOR_EMPTY:
 			createEditControl(Value);

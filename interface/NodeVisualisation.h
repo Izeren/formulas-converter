@@ -88,6 +88,8 @@ public:
 
 	NodeVisualisation* findNode(HWND hEditControl);
 
+	NodeVisualisation* createCopy(NodeVisualisation* parent);
+
 private:
 
 	NodeVisualisation() = delete;

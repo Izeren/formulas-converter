@@ -37,10 +37,14 @@ public:
 	void moveActiveControlLeft();
 	void moveActiveControlRight();
 
+	void copyNode();
+	void pasteNode();
+
 private:
 
 	HWND mainWindow;
 	std::shared_ptr<NodeVisualisation> head = nullptr;
 	NodeVisualisation* activeNode;
+	NodeVisualisation* copiedNode;
 };
 
