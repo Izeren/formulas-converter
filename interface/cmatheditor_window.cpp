@@ -254,23 +254,21 @@ LRESULT _stdcall CMatheditorWindow::localWindowProc(HWND hwnd, UINT message, WPA
 		OnSize();
 		return DefWindowProc(hwnd, message, wParam, lParam);
 	case WM_COMMAND:
-		//switch (HIWORD(wParam)) { // ID control
-		//case 1:
-		//{
-		//	switch (LOWORD(wParam)) {
-		//	case ID_ACCELERATOR40012:
-		//	{
-		//		::PostQuitMessage(0);
-		//		return 0;
-		//	}
-		//	}
-		//}
-		//default:
-		//{
 			OnCommand(hwnd, message, wParam, lParam);
-		/*}
-		}*/
 		return DefWindowProc(hwnd, message, wParam, lParam);
+	case WM_KEYDOWN: {
+		switch (wParam) {
+			case VK_LEFT:
+				editControlsTree->moveActiveControlLeft();
+				break;
+			case VK_RIGHT:
+				editControlsTree->moveActiveControlRight();
+				break;
+			default:
+				break;
+		}
+		break;
+	}
 	case WM_CTLCOLOREDIT: {
 		return OnCtlColorEdit(wParam, lParam);
 	}

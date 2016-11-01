@@ -126,3 +126,43 @@ NodeVisualisation TreeVisualisation::getActiveNode() {
 void TreeVisualisation::setControlWidth(int width) {
 	activeNode->setControlWidth(width);
 }
+
+
+void TreeVisualisation::moveActiveControlLeft() {
+	if (activeNode->getLeftNode()) {
+		activeNode = activeNode->getLeftNode().get();
+		while (activeNode->getRightNode()) {
+			activeNode = activeNode->getRightNode().get();
+		}
+	} else {
+		NodeVisualisation* activeNodeNew = activeNode;
+		while (activeNodeNew->getOrientation() == true) {
+			activeNodeNew = activeNodeNew->getParentNode();
+			if (!activeNodeNew->getParentNode()) {
+				return;
+			}
+		}
+		activeNode = activeNodeNew->getParentNode();
+	}
+	activeNode->setFocus();
+}
+
+void TreeVisualisation::moveActiveControlRight() {
+	if (activeNode->getRightNode()) {
+		activeNode = activeNode->getRightNode().get();
+		while (activeNode->getLeftNode()) {
+			activeNode = activeNode->getLeftNode().get();
+		}
+	}
+	else {
+		NodeVisualisation* activeNodeNew = activeNode;
+		while (activeNodeNew->getOrientation() == false) {
+			activeNodeNew = activeNodeNew->getParentNode();
+			if (!activeNodeNew->getParentNode()) {
+				return;
+			}
+		}
+		activeNode = activeNodeNew->getParentNode();
+	}
+	activeNode->setFocus();
+}

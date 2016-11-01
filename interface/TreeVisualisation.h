@@ -33,6 +33,10 @@ public:
 	NodeVisualisation getActiveNode();
 
 	void setControlWidth(int);
+
+	void moveActiveControlLeft();
+	void moveActiveControlRight();
+
 private:
 
 	HWND mainWindow;
