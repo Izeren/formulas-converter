@@ -182,7 +182,6 @@ void CMatheditorWindow::OnSize()
 	::FillRect(paintStruct.hdc, &paintStruct.rcPaint, brush);
 	::EndPaint(hWndMainWindow, &paintStruct);
 
-
 	RECT mainRect;
 	::GetClientRect(hWndMainWindow, &mainRect);
 

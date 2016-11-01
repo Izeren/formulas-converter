@@ -493,6 +493,8 @@ void NodeVisualisation::setControlWidth(int width) {
 
 NodeVisualisation* NodeVisualisation::createCopy(NodeVisualisation* parent) {
 	NodeVisualisation* copiedNode = new NodeVisualisation(parent, nodeType, isLeftChild, hWndParentWindow);
+	std::wstring text = editControl.GetText();
+	::SetWindowText(copiedNode->editControl.GetHandle(), (LPWSTR)text.c_str());
 	if (leftChild) {
 		NodeVisualisation* copiedLeftChild = leftChild->createCopy(copiedNode);
 		copiedNode->setChild(true, std::shared_ptr<NodeVisualisation>(copiedLeftChild));

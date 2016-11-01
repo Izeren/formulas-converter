@@ -188,6 +188,7 @@ void TreeVisualisation::pasteNode() {
 	bool node_orientation = activeNode->getOrientation();
 	copiedNode->setOrientation(node_orientation);
 	copiedNode->setParentNode(parent_node);
+	DestroyWindow(activeNode->getEditControl().GetHandle());
 	parent_node->changeOneChildren(node_orientation, copiedNode);
 	activeNode = copiedNode;
 	activeNode->setFocus();
