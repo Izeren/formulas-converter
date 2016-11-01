@@ -495,6 +495,9 @@ NodeVisualisation* NodeVisualisation::createCopy(NodeVisualisation* parent) {
 	NodeVisualisation* copiedNode = new NodeVisualisation(parent, nodeType, isLeftChild, hWndParentWindow);
 	std::wstring text = editControl.GetText();
 	::SetWindowText(copiedNode->editControl.GetHandle(), (LPWSTR)text.c_str());
+	CEditControl copiedEditControl = copiedNode->getEditControl();
+	copiedEditControl.deleteWhiteSpaces();
+	copiedNode->setControlWidth(copiedEditControl.GetWidth());
 	if (leftChild) {
 		NodeVisualisation* copiedLeftChild = leftChild->createCopy(copiedNode);
 		copiedNode->setChild(true, std::shared_ptr<NodeVisualisation>(copiedLeftChild));
