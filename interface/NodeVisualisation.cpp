@@ -84,9 +84,9 @@ void NodeVisualisation::setParentNode(NodeVisualisation* parent_new)
 }
 
 
-std::shared_ptr<NodeVisualisation> NodeVisualisation::getNode(bool isLeftChild)
+std::shared_ptr<NodeVisualisation> NodeVisualisation::getNode(bool _isLeftChild)
 {
-	if (isLeftChild) {
+	if (_isLeftChild) {
 		return getLeftNode();
 	} else {
 		return getRightNode();
@@ -94,9 +94,9 @@ std::shared_ptr<NodeVisualisation> NodeVisualisation::getNode(bool isLeftChild)
 }
 
 
-void NodeVisualisation::setChild(bool isLeftChild, std::shared_ptr<NodeVisualisation> child)
+void NodeVisualisation::setChild(bool _isLeftChild, std::shared_ptr<NodeVisualisation> child)
 {
-	if (isLeftChild) {
+	if (_isLeftChild) {
 		leftChild = child;
 	} else {
 		rightChild = child;
@@ -433,7 +433,7 @@ NodeVisualisation* NodeVisualisation::findNode(HWND hEditControl)
 	return nullptr;
 }
 
-Positioning NodeVisualisation::determinePositioning(NodeVisualisation* node, bool isLeftChild)
+Positioning NodeVisualisation::determinePositioning(NodeVisualisation* node, bool _isLeftChild)
 {
 	if (!node) {
 		return PositioningError;
@@ -445,14 +445,14 @@ Positioning NodeVisualisation::determinePositioning(NodeVisualisation* node, boo
 	case Plus:
 	case Minus:
 	case Multiply:
-		if (isLeftChild) {
+		if (_isLeftChild) {
 			return Left;
 		} else {
 			return Right;
 		}
 		break;
 	case Divide:
-		if (isLeftChild) {
+		if (_isLeftChild) {
 			return Up;
 		}
 		else {
@@ -460,7 +460,7 @@ Positioning NodeVisualisation::determinePositioning(NodeVisualisation* node, boo
 		}
 		break;
 	case Power:
-		if (isLeftChild) {
+		if (_isLeftChild) {
 			return Left;
 		}
 		else {
@@ -479,8 +479,8 @@ Positioning NodeVisualisation::determinePositioning(NodeVisualisation* node, boo
 	return PositioningError;
 }
 
-Positioning NodeVisualisation::determinePositioning(bool isLeftChild) {
-	return determinePositioning(this, isLeftChild);
+Positioning NodeVisualisation::determinePositioning(bool _isLeftChild) {
+	return determinePositioning(this, _isLeftChild);
 }
 
 CEditControl NodeVisualisation::getEditControl() const{
@@ -491,8 +491,8 @@ void NodeVisualisation::setControlWidth(int width) {
 	editControl.SetWidth(width);
 }
 
-NodeVisualisation* NodeVisualisation::createCopy(NodeVisualisation* parent) {
-	NodeVisualisation* copiedNode = new NodeVisualisation(parent, nodeType, isLeftChild, hWndParentWindow);
+NodeVisualisation* NodeVisualisation::createCopy(NodeVisualisation* _parent) {
+	NodeVisualisation* copiedNode = new NodeVisualisation(_parent, nodeType, isLeftChild, hWndParentWindow);
 	std::wstring text = editControl.GetText();
 	::SetWindowText(copiedNode->editControl.GetHandle(), (LPWSTR)text.c_str());
 	CEditControl copiedEditControl = copiedNode->getEditControl();

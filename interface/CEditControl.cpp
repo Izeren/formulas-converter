@@ -46,26 +46,26 @@ int CEditControl::GetWidth()
 	return width;
 }
 
-void CEditControl::SetHeight(int height)
+void CEditControl::SetHeight(int _height)
 {
-	if ( height >= MIN_HEIGHT_DEFAULT ) {
-		this->height = height;
+	if ( _height >= MIN_HEIGHT_DEFAULT ) {
+		this->height = _height;
 	}
 }
 
-void CEditControl::SetWidth(int width) {
-	if ( width >= MIN_WIDTH_DEFAULT 
+void CEditControl::SetWidth(int _width) {
+	if ( _width >= MIN_WIDTH_DEFAULT 
 		//&& !isSpecialSymbol 
 		)
 	{
-		this->width = width;
+		this->width = _width;
 	}
 }
 
-void CEditControl::SetCountSymbols(int countSymbols)
+void CEditControl::SetCountSymbols(int _countSymbols)
 {
-	if ( countSymbols >= this->countSymbols && !isSpecialSymbol ) {
-		this->countSymbols = countSymbols;
+	if ( _countSymbols >= this->countSymbols && !isSpecialSymbol ) {
+		this->countSymbols = _countSymbols;
 		SetWidth(this->countSymbols * MIN_SIZE_SYMBOL);
 		SetWindowPos(GetHandle(), HWND_TOP, 0, 0, width, height, SWP_NOMOVE);
 	}
@@ -177,6 +177,6 @@ void CEditControl::SetFont(HWND handleEditControl) {
 	::SendMessage(handleEditControl, WM_SETFONT, (WPARAM)font, true);
 }
 
-void CEditControl::setIsSpecialSymbol(bool isSpecialSymbol) {
-	this->isSpecialSymbol = isSpecialSymbol;
+void CEditControl::setIsSpecialSymbol(bool _isSpecialSymbol) {
+	this->isSpecialSymbol = _isSpecialSymbol;
 }

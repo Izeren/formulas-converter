@@ -50,8 +50,8 @@ public:
 	std::shared_ptr<NodeVisualisation> getRightNode();
 	NodeVisualisation* getParentNode();
 	void setParentNode(NodeVisualisation*);
-	std::shared_ptr<NodeVisualisation> getNode(bool isLeftChild);
-	void setChild(bool isLeftChild, std::shared_ptr<NodeVisualisation> child);
+	std::shared_ptr<NodeVisualisation> getNode(bool _isLeftChild);
+	void setChild(bool _isLeftChild, std::shared_ptr<NodeVisualisation> child);
 	
 	void createChildren();
 	bool createChildrens(NodeType operationValue);
@@ -88,7 +88,7 @@ public:
 
 	NodeVisualisation* findNode(HWND hEditControl);
 
-	NodeVisualisation* createCopy(NodeVisualisation* parent);
+	NodeVisualisation* createCopy(NodeVisualisation* _parent);
 
 private:
 
@@ -106,9 +106,9 @@ private:
 
 	void processNodeType();
 	// определить местоположение ребенка узла относительно родителя
-	Positioning determinePositioning(NodeVisualisation* node, bool isLeftChild);
+	Positioning determinePositioning(NodeVisualisation* node, bool _isLeftChild);
 	// определить местоположение ребенка этой вершины относительно родителя
-	Positioning determinePositioning(bool isLeftChild);
+	Positioning determinePositioning(bool _isLeftChild);
 
 	// смещаем местоположение всех узлов поддерева на offset
 	void offsetTreeDown(CPoint offset);

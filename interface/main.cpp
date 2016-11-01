@@ -3,6 +3,7 @@
 #include "cmatheditor_window.h"
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, LPWSTR, int nCmdShow) {
+    UNREFERENCED_PARAMETER( hInstance );
     if( !CMatheditorWindow::RegisterClassW() ) {
         return -1;
     }

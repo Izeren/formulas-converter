@@ -236,7 +236,6 @@ LRESULT _stdcall CMatheditorWindow::windowProc(HWND hWnd, UINT message, WPARAM w
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
 	}
-	return 0;
 }
 
 void CMatheditorWindow::OnDestroy() {
@@ -301,6 +300,7 @@ LRESULT _stdcall CMatheditorWindow::localWindowProc(HWND hwnd, UINT message, WPA
 
 void CMatheditorWindow::OnCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    UNREFERENCED_PARAMETER( message );
 	if (HIWORD(wParam) == 0) {
 		switch (LOWORD(wParam)) {
 		case ID_FILE_NEW:

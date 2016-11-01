@@ -24,9 +24,9 @@ public:
 	HWND GetHandle();
 	int GetHeight();
 	int GetWidth();
-	void SetHeight(int height);
-	void SetWidth(int width);
-	void SetCountSymbols(int countSymbols);
+	void SetHeight(int _height);
+	void SetWidth(int _width);
+	void SetCountSymbols(int _countSymbols);
 	int GetCountSymbols() const;
 	std::wstring GetText() const;
 	void SetFont(HWND handleEditControl);
